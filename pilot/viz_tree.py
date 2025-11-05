@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 from typing import List, Tuple
-import hashlib
-import json
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from pilot.tree import tree
 from pilot.predsplot import predsplot
@@ -169,14 +169,50 @@ class LeafNodePredsplot(Node):
 
         predsplot(self.X, self.coefficients, self.y_hat, n_max=5, fig_size=(5, 3), truncate_total_pred=True,
                   variable_tick_width=True, file_directory=directory_predsplot_file)
-        # return (
-        #     f'node{id}[shape={NODE_SHAPES[self.type]}, label=<LeafNodePredsplot>, fontcolor={NODE_FONT_COLOR}, '
-        #     f'fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
-        #     f'margin=0.01, width=0.9]')
 
         return (
-            f'node{id}[margin="0" shape=none label='
-            f'<<table border="0"><tr><td><img src="{directory_predsplot_file}"/></td></tr></table>>]')
+            f'node{id}[shape = none, width=5, height=3, label="", image="{directory_predsplot_file}"]')
+        # return (
+        #     f'node{id}[margin="0" shape=box, width=3, height=3, label='
+        #     f'<<table border="0"><tr><td><img src="{directory_predsplot_file}"/></td></tr></table>>]')
+
+class NodeRegplot(Node):
+    X: np.ndarray
+    y_res: np.ndarray
+    directory_regplot_map: str
+
+    def __init__(self,node:Node, X, y_res,left_child_node, right_child_node, directory):
+
+        if directory is None:
+            raise Exception(f"No directory specified for regplots")
+        self.directory_regplot_map = directory
+
+        self.X = X
+        self.y_res = y_res
+
+        super().__init__(
+            type=node.type,
+            pivot_idx=node.pivot_idx,
+            pivot_value=node.pivot_value,
+            categorical=node.categorical,
+            left_lin_model=node.left_lin_model,
+            left_child_node=left_child_node,
+            right_lin_model=node.right_lin_model,
+            right_child_node=right_child_node
+        )
+
+    def get_dot(self, id):
+        self.dot_id = id
+        os.makedirs(self.directory_regplot_map, exist_ok=True)
+        directory_regplot_file = os.path.join(self.directory_regplot_map, f"regplot_node{id}.svg")
+
+        regplot(self, file_directory=directory_regplot_file)
+
+        return (
+            f'node{id}[shape = none, width=5, height=3, label="", image="{directory_regplot_file}"]')
+        # return (
+        #     f'node{id}[margin="0" shape=box label='
+        #     f'<<table border="0"><tr><td><img src="{directory_regplot_file}"/></td></tr></table>>]')
 
 class VizTree:
     root_node: Node
@@ -186,16 +222,19 @@ class VizTree:
     target_name: str
     X_train: np.ndarray
     y_train: np.ndarray
+    rankdir: str
     directory: str
-    predsplot_leafs: bool
+    is_predsplot_leafs: bool
 
     def __init__(self,
                  tree_model: tree,
                  X_train: (pd.DataFrame, np.ndarray),
                  y_train: (pd.Series, np.ndarray),
+                 rankdir: str,
                  feature_names: List[str] = None,
                  target_name: str = None,
-                 predsplot_leafs: bool = False,
+                 is_predsplot_leafs: bool = False,
+                 is_regplot_nodes: bool = False,
                  output_directory: str = None,
                  ):
         """
@@ -216,6 +255,7 @@ class VizTree:
 
         self.feature_names = feature_names
         self.target_name = target_name
+        self.rankdir = rankdir
         if isinstance(X_train, pd.core.frame.DataFrame):
             self.X_train = np.array(X_train)
         else:
@@ -226,17 +266,23 @@ class VizTree:
             self.y_train = y_train
 
         self.root_node = get_root_node(tree_model)
-        self.predsplot_leafs = predsplot_leafs
+        self.is_predsplot_leafs = is_predsplot_leafs
+        self.is_regplot_nodes = is_regplot_nodes
 
         if output_directory is not None:
-            directory_map = os.path.join(output_directory, "predsplots")
-            os.makedirs(directory_map, exist_ok=True)
             tree_id = datetime.now().strftime('%d-%m-%y_%H-%M-%S')
-            self.directory_predsplot_map = os.path.join(directory_map, f"tree_id_{tree_id}")
+            if is_predsplot_leafs:
+                directory_map = os.path.join(output_directory, "predsplots")
+                os.makedirs(directory_map, exist_ok=True)
+                self.directory_predsplot_map = os.path.join(directory_map, f"tree_id_{tree_id}")
+            if is_regplot_nodes:
+                directory_map2 = os.path.join(output_directory, "regplots")
+                os.makedirs(directory_map2, exist_ok=True)
+                self.directory_regplot_map = os.path.join(directory_map2, f"tree_id_{tree_id}")
 
-        if self.predsplot_leafs:
-            self.root_node = self._make_leaf_nodes_predsplot(self.root_node, np.ones(self.X_train.shape[0], dtype=bool),
-                                                             np.zeros(self.X_train.shape[1]), 0)
+        if self.is_predsplot_leafs or self.is_regplot_nodes:
+            self.root_node = self._change_node_types(self.root_node, np.ones(self.X_train.shape[0], dtype=bool),
+                                                     self.y_train, np.zeros(self.X_train.shape[1]), 0)
 
         self.nodes = get_nodes_list(self.root_node)
 
@@ -249,22 +295,29 @@ class VizTree:
         self.edges = edges
 
 
-    def _make_leaf_nodes_predsplot(self, node: Node, indices: np.ndarray, coefficients: np.ndarray, intercept: float) -> Node|None:
+    def _change_node_types(self, node: Node, indices: np.ndarray, y_res, coefficients: np.ndarray, intercept: float) -> Node | None:
         """Recursively traverse and replace leaf nodes with LeafNodePredsplot"""
         if node is None:
             return None
 
         if node.type == 'leaf':
-            new_leaf = LeafNodePredsplot(self.X_train[indices,:], coefficients, intercept, self.directory_predsplot_map)
-            return new_leaf
+            if self.is_predsplot_leafs:
+                new_leaf = LeafNodePredsplot(self.X_train[indices,:], coefficients, intercept, self.directory_predsplot_map)
+                return new_leaf
+            else:
+                return node
         else:
             if node.type == 'lin':
                 left_indices = indices
                 right_indices = None
+                y_res_left = y_res - (node.left_lin_model[1] + node.left_lin_model[0] * self.X_train[left_indices,node.pivot_idx])
+                y_res_right = None
             else:
                 left_of_pivot = self.X_train[:,node.pivot_idx] <= node.pivot_value
                 left_indices = indices & left_of_pivot
                 right_indices = indices & (~left_of_pivot)
+                y_res_left = y_res[left_of_pivot[indices]] - (node.left_lin_model[1] + node.left_lin_model[0] * self.X_train[left_indices, node.pivot_idx])
+                y_res_right = y_res[~left_of_pivot[indices]] - (node.right_lin_model[1] + node.right_lin_model[0] * self.X_train[right_indices, node.pivot_idx])
 
             left_coefficients = coefficients.copy()
             right_coefficients = coefficients.copy()
@@ -274,9 +327,15 @@ class VizTree:
             left_intercept = intercept + node.left_lin_model[1]
             right_intercept = intercept + node.right_lin_model[1]
 
-            node.left_child_node = self._make_leaf_nodes_predsplot(node.left_child_node, left_indices, left_coefficients, left_intercept)
-            node.right_child_node = self._make_leaf_nodes_predsplot(node.right_child_node, right_indices, right_coefficients, right_intercept)
-            return node
+            left_child_node = self._change_node_types(node.left_child_node, left_indices, y_res_left, left_coefficients, left_intercept)
+            right_child_node = self._change_node_types(node.right_child_node, right_indices, y_res_right, right_coefficients, right_intercept)
+            if self.is_regplot_nodes:
+                new_node = NodeRegplot(node, self.X_train[indices,:], y_res, left_child_node, right_child_node, self.directory_regplot_map)
+                return new_node
+            else:
+                node.left_child_node = left_child_node
+                node.right_child_node = right_child_node
+                return node
 
     def get_dot(self, combine_lin=False, x=None):
         # Find nodes and edges to highlight along path for x
@@ -377,7 +436,7 @@ class VizTree:
             f"""
                 digraph G {{
                     splines=line;
-                    rankdir=TD;
+                    rankdir={self.rankdir};
 
                     {newline.join(nodes_dot)}
                     {newline.join(edges_dot)}
@@ -386,7 +445,46 @@ class VizTree:
 
         return dot
 
+def regplot(node:NodeRegplot,file_directory, fig_size=(5, 3), w = None, idx_point=None):
+    if node is None:
+        return
 
+    plt.figure(figsize=fig_size, layout="constrained")
+    if w is None:
+        w = np.ones(len(node.y_res))
+    feature_idx = node.pivot_idx
+    min_x = min(node.X[:, feature_idx])
+    max_x = max(node.X[:, feature_idx])
+    scaled_weights = (w.flatten() - np.mean(w))*100 + 10
+    plt.scatter(node.X[:, feature_idx], node.y_res, s=scaled_weights, color='slategrey')
+    if idx_point is not None:
+        plt.scatter(node.X[idx_point, feature_idx], node.y_res[idx_point], s=60+scaled_weights[idx_point],
+                facecolors='r', marker='*')
+
+    if node.type == "lin":
+        x = [min_x, max_x]
+        y = [node.left_lin_model[1] + node.left_lin_model[0]*x for x in x]
+        plt.plot(x,y, color=NODE_FILL_COLOR[node.type], linewidth=3)
+        plt.title(f"Node: LIN - Feature: $X_{feature_idx}$")
+
+    elif node.type == "pconc":
+        pass
+
+    else: # tree.node == "pcon", "plin", "blin"
+        pivot = node.pivot_value
+        x1 = [min_x, pivot]
+        x2 = [pivot, max_x]
+        y1 = [node.left_lin_model[1] + node.left_lin_model[0]*x for x in x1]
+        y2 = [node.right_lin_model[1] + node.right_lin_model[0]*x for x in x2]
+        plt.plot(x1, y1, x2, y2, color=NODE_FILL_COLOR[node.type], linewidth=3)
+        node_name = str(node.type).upper()
+        plt.title(f"Node: {node_name} - Feature: $X_{feature_idx}$ - Pivot: {np.round(pivot,2)}")
+
+    plt.xlabel(f"$X_{feature_idx}$")
+    y_label = "y" if node.dot_id == 0 else "Residuals"
+    plt.ylabel(y_label)
+    plt.savefig(file_directory)
+    plt.close()
 
 def get_tree_nodes(tree_model: tree) -> Tuple[Node, List[Node]]:
     root_node = get_root_node(tree_model)

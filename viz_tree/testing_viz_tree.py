@@ -16,7 +16,7 @@ from graphviz import Source
 from subprocess import run
 
 #%%
-dataset_name = "547_no2" # "547_no2" "294_satellite_image" #"658_fri_c3_250_25"
+dataset_name = "294_satellite_image" # "547_no2" "294_satellite_image" #"658_fri_c3_250_25"
 data = fetch_data(dataset_name)
 X = np.array(data.iloc[:, :-1])
 y = np.array(data.iloc[:, -1])
@@ -24,7 +24,7 @@ feature_names = data.iloc[:, :-1].columns.tolist()
 target_name = "Target"
 
 #%%
-pilot_model = PILOT(max_model_depth=5)
+pilot_model = PILOT(min_sample_leaf=25, max_model_depth=5)
 pilot_model.fit(X, y)
 pilot_tree = pilot_model.model_tree
 
@@ -42,9 +42,11 @@ os.makedirs(map_directory_gv, exist_ok=True)
 my_viz_model = VizTree(tree_model = pilot_tree,
                        X_train=X,
                        y_train=y,
+                       rankdir = "LR",
                        feature_names=feature_names,
                        target_name=target_name,
-                       predsplot_leafs=True,
+                       is_predsplot_leafs=True,
+                       is_regplot_nodes=True,
                        output_directory=map_directory)
 
 #%%

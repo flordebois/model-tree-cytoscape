@@ -139,7 +139,9 @@ def predsplot(X, coefficients, y_hat, n_max=5, fig_size=(12,8), intercept = None
         sub_axes[i].tick_params(bottom=False, labelbottom=False)
         sub_axes[i].ticklabel_format(scilimits=[-3, 4])
 
-        sub_ax_ticks_labels = sub_axes[i].get_yticklabels()[1:-1] # first and last tick are not shown in plot
+        sub_ax_ticks_labels = sub_axes[i].get_yticklabels()[1:-1]
+        if len(sub_ax_ticks_labels) < 1:
+            sub_ax_ticks_labels = sub_axes[i].get_yticklabels()
         sub_ax_ticks_boxes = [fig.transFigure.inverted().transform_bbox(tick_label.get_window_extent()) for tick_label in sub_ax_ticks_labels]
         sub_axes_tick_width[i] = max([x0 - ticks_box.x0 for ticks_box in sub_ax_ticks_boxes])
 
