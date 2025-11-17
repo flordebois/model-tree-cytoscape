@@ -1,12 +1,11 @@
 print("importing PILOT...")
 from pilot.pilot import PILOT
-from pilot.viz_tree import VizTree
+from viz_tree.viz_tree import VizTree
 
 print("import done")
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pmlb import fetch_data
 from graphviz import Source
 # Use 'TkAgg' for external window
 import matplotlib

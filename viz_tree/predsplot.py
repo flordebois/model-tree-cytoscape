@@ -1,25 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import os
-from typing import List
-from scipy.stats import gaussian_kde
 import seaborn as sns
 import warnings
 from matplotlib.patches import ConnectionPatch
 
-# class LinearModel:
-#
-#     X: np.ndarray
-#     Y: np.ndarray
-#     attributes: List[str]
-#
-#     def __init__(self, lin_model):
-#         pass
-#
-#     def get_prediction_density(self):
-#         pass
-
-
+# TODO: make predsplot with highlight_x
 def predsplot(X, coefficients, y_hat, n_max=5, fig_size=(12,8), intercept = None, displaytype = "histogram", truncate_total_pred = False,
               variable_tick_width = True, file_directory=None):
     if intercept is None:

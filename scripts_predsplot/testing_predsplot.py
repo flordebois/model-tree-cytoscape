@@ -1,6 +1,6 @@
 import numpy as np
 from pmlb import fetch_data
-from pilot.predsplot import predsplot
+from viz_tree.predsplot import predsplot
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
 import os

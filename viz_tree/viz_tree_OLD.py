@@ -4,10 +4,9 @@ from typing import List, Tuple
 import os
 from datetime import datetime
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from pilot.tree import tree
-from pilot.predsplot import predsplot
+from viz_tree.predsplot import predsplot
 
 NODE_SHAPES = {"leaf": "ellipse", "lin": "ellipse", "blin": "box", "pcon": "box", "plin": "box", "pconc": "box"}
 NODE_LABEL = {"leaf": "Leaf", "lin": "LIN", "blin": "BLIN", "pcon": "PCON", "plin": "PLIN", "pconc": "PCONC"}

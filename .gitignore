@@ -4,6 +4,6 @@
 __pycache__/
 .DS_Store
 
-predsplot/output/*
+scripts_predsplot/output/*
 viz_tree/output/*
 viz_tree/output_OLD/*

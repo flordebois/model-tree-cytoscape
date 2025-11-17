@@ -2,8 +2,6 @@ import pickle
 
 import sys
 
-from matplotlib.pyplot import tight_layout
-
 import pilot.pilot as new_module
 sys.modules['pilot.Pilot'] = new_module
 
@@ -16,7 +14,7 @@ with open('/Users/flor/Pycharm/PILOT/Results Benchmark CS/Results_29-10-25_19-01
     model_NW = pickle.load(inp)
 
 #%%
-from pilot.viz_tree import VizTree
+from viz_tree.viz_tree import VizTree
 from graphviz import Source
 
 viz_model  = model_NW
