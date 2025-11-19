@@ -6,6 +6,7 @@ import os
 import matplotlib.pyplot as plt
 
 from viz_tree.predsplot import predsplot
+from viz_tree.dot_settings import DotSettings
 
 NODE_SHAPES = {"leaf": "ellipse", "lin": "ellipse", "blin": "box", "pcon": "box", "plin": "box", "pconc": "box"}
 NODE_LABEL = {"leaf": "Leaf", "lin": "LIN", "blin": "BLIN", "pcon": "PCON", "plin": "PLIN", "pconc": "PCONC"}
@@ -45,21 +46,27 @@ class LeafNode(BaseNode):
             f'fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
             f'margin=0.01, width=0.9]')
 
-    def get_dot_predsplot(self, node_id, directory_predsplot_map, plot_size=(5, 3), highlight_x=None) -> str:
+    def get_dot_predsplot(self, node_id, directory_predsplot_map, dot_set: DotSettings, highlight) -> str:
         self.node_id = node_id
 
         os.makedirs(directory_predsplot_map, exist_ok=True)
         directory_predsplot_file = os.path.join(directory_predsplot_map, f"predsplot_node{self.node_id}.svg")
 
         y_hat = np.sum(self.coefficients * self.X, axis=1) + self.intercept
-        predsplot(self.X, self.coefficients, y_hat, n_max=5, fig_size=(plot_size[0], plot_size[1]),
-                  truncate_total_pred=True, variable_tick_width=True, file_directory=directory_predsplot_file)
-        if highlight_x is None:
-            return (f'node{self.node_id}[shape = none, width={plot_size[0]+ 0.2}, height={plot_size[1]+ 0.2},'
-                    f' label="",image="{directory_predsplot_file}"]')
-        else:
-            return (f'node{self.node_id}[shape = box, width={plot_size[0] + 0.2}, height={plot_size[1]+ 0.2},'
+        highlight_x = dot_set.highlight_x if highlight else None
+        intercept = self.intercept if dot_set.use_intercept else None
+        predsplot(self.X, self.coefficients, y_hat, n_max=dot_set.n_max, intercept=intercept, fig_size=dot_set.fig_size,
+                  feature_names = dot_set.feature_names, display_type=dot_set.display_type, truncate_total_pred=dot_set.truncate_total_pred, variable_tick_width=dot_set.variable_tick_width,
+                  file_directory=directory_predsplot_file, highlight_x=highlight_x, staircase=dot_set.staircase)
+        if highlight:
+            return (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
+                    f' height={dot_set.fig_size[1] + 0.2},'
                     f' label="", image="{directory_predsplot_file}", penwidth=3]')
+        else:
+            return (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
+                    f' height={dot_set.fig_size[1] + 0.2},'
+                    f' label="",image="{directory_predsplot_file}"]')
+
 
 class InternalNode(BaseNode):
     type: str
@@ -101,29 +108,33 @@ class InternalNode(BaseNode):
                 f'margin=0.01, width=1.1]')
         else:
             return (
-                f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx} </FONT></SUB>&gt; {np.round(self.pivot_value, 2)}>,'
+                f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx} </FONT></SUB>&gt; {self.pivot_value:.3g}>,'
                 f'fontcolor={NODE_FONT_COLOR}, fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
                 f'margin = 0.1]')
 
-    def get_dot_regplot(self, node_id, directory_regplot_map, plot_size=(5, 3), w=None, highlight_x=None):
+    def get_dot_regplot(self, node_id, directory_regplot_map, dot_set: DotSettings, highlight):
         self.node_id = node_id
 
         os.makedirs(directory_regplot_map, exist_ok=True)
         directory_regplot_file = os.path.join(directory_regplot_map, f"regplot_node{self.node_id}.svg")
 
-        plt.figure(figsize=plot_size, layout="constrained")
-        if w is None:
-            w = np.ones(len(self.y_res))
+        plt.figure(figsize=dot_set.fig_size, layout="constrained")
+        plt.gca().ticklabel_format(scilimits=[-3, 4])
+        w = np.ones(len(self.y_res))
         feature_idx = self.pivot_idx
+        if dot_set.feature_names is None:
+            feature_label = "$X_{" + f"{feature_idx}" + "}$"
+        else:
+            feature_label = dot_set.feature_names[feature_idx]
         min_x = min(self.X[:, feature_idx])
         max_x = max(self.X[:, feature_idx])
         scaled_weights = (w.flatten() - np.mean(w)) * 100 + 10
         plt.scatter(self.X[:, feature_idx], self.y_res, s=scaled_weights, color='slategrey')
-        if highlight_x is not None:
-            matches = np.all(self.X == highlight_x, axis=1)
+        if highlight:
+            matches = np.all(self.X == dot_set.highlight_x, axis=1)
             idx_point = np.argmax(matches) if np.any(matches) else None
             if idx_point is None:
-                plt.axvline(x=highlight_x[feature_idx], linestyle='--', color='r')
+                plt.axvline(x=dot_set.highlight_x[feature_idx], linestyle='--', color='r')
             else:
                 plt.scatter(self.X[idx_point, feature_idx], self.y_res[idx_point], s=60 + scaled_weights[idx_point],
                             facecolors='r', marker='*')
@@ -132,7 +143,7 @@ class InternalNode(BaseNode):
             x = [min_x, max_x]
             y = [self.left_lin_model[1] + self.left_lin_model[0] * x for x in x]
             plt.plot(x, y, color=NODE_FILL_COLOR[self.type], linewidth=3)
-            plt.title(f"Node: LIN - Feature: $X_{feature_idx}$")
+            plt.title(f"Node: LIN - Feature: {feature_label}")
 
         elif self.type == "pconc":
             pass
@@ -145,20 +156,22 @@ class InternalNode(BaseNode):
             y2 = [self.right_lin_model[1] + self.right_lin_model[0] * x for x in x2]
             plt.plot(x1, y1, x2, y2, color=NODE_FILL_COLOR[self.type], linewidth=3)
             node_name = str(self.type).upper()
-            plt.title(f"Node: {node_name} - Feature: $X_{feature_idx}$ - Pivot: {np.round(pivot, 2)}")
+            plt.title(f"Node: {node_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
 
-        plt.xlabel(f"$X_{feature_idx}$")
+        plt.xlabel(feature_label)
         y_label = "y" if self.node_id == 0 else "Residuals"
         plt.ylabel(y_label)
         plt.savefig(directory_regplot_file)
         plt.close()
 
-        if highlight_x is None:
-            return (f'node{self.node_id}[shape = none, width={plot_size[0]+ 0.2}, height={plot_size[1]+ 0.2},'
-                    f' label="",image="{directory_regplot_file}"]')
-        else:
-            return (f'node{self.node_id}[shape = box, width={plot_size[0] + 0.2}, height={plot_size[1]+ 0.2},'
+        if highlight:
+            return (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
+                    f' height={dot_set.fig_size[1]+ 0.2},'
                     f' label="", image="{directory_regplot_file}", penwidth=3]')
+        else:
+            return (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
+                    f' height={dot_set.fig_size[1] + 0.2},'
+                    f' label="",image="{directory_regplot_file}"]')
 
 class CombinedLinNode(BaseNode):
     def __init__(self, nodes: List[InternalNode]):

@@ -2,6 +2,7 @@ print("importing PILOT...")
 from pilot.pilot import PILOT
 from pilot.copilot import coPILOT
 from viz_tree.viz_tree import VizTree
+from viz_tree.dot_settings import DotSettings
 
 print("import done")
 
@@ -13,7 +14,7 @@ from graphviz import Source
 from subprocess import run
 
 #%%
-dataset_name = "294_satellite_image" # "547_no2" "294_satellite_image" #"658_fri_c3_250_25"
+dataset_name = "658_fri_c3_250_25" # "547_no2" "294_satellite_image" #"658_fri_c3_250_25"
 data = fetch_data(dataset_name)
 X = np.array(data.iloc[:, :-1])
 y = np.array(data.iloc[:, -1])
@@ -21,7 +22,7 @@ feature_names = data.iloc[:, :-1].columns.tolist()
 target_name = "Target"
 
 #%%
-pilot_model = PILOT() #min_sample_leaf=25, max_model_depth=3)
+pilot_model = PILOT(min_sample_leaf=25, max_model_depth=3)
 pilot_model.fit(X, y)
 pilot_tree = pilot_model.model_tree
 
@@ -40,9 +41,6 @@ count=0
 my_viz_model = VizTree(pilot_tree = pilot_tree,
                        X_train=X,
                        y_train=y,
-                       rankdir = "TB",
-                       feature_names=feature_names,
-                       target_name=target_name,
                        output_directory=map_directory,
                        tree_id = id_results)
 
@@ -55,10 +53,17 @@ highlight_x = X[20,:]
 highlight_x[19] = 95
 highlight_x[20] = 59
 highlight_x[17] = 56
-pilot_dot = my_viz_model.get_dot(combine_lin=True,
-                                 use_predsplot=False,
-                                 use_regplot=False,
-                                 highlight_x=highlight_x)
+dot_settings = DotSettings(rankdir = "TB",
+                           feature_names=feature_names,
+                           combine_lin=False,
+                           use_predsplot=True,
+                           use_regplot=True,
+                           n_max = 4,
+                           highlight_x=X[0,:],
+                           staircase=True,
+                           use_intercept=False)
+pilot_dot = my_viz_model.get_dot(dot_settings)
+
 src = Source(pilot_dot)
 src.save(file_directory_gv)
 pdf_bytes = src.pipe(format="pdf")
