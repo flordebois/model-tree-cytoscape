@@ -4,6 +4,7 @@ class DotSettings:
         self.combine_lin = False
         self.use_predsplot = False
         self.use_regplot = False
+        self.print_model = False
 
         self.n_max = 5
         self.use_intercept = False

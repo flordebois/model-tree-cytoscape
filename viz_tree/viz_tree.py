@@ -137,8 +137,11 @@ class VizTree:
         for i, node in enumerate(nodes):
             highlight = node in highlight_nodes
 
-            if isinstance(node, LeafNode) and dot_set.use_predsplot:
-                dot = node.get_dot_predsplot(i, directory_predsplot_map, dot_set, highlight)
+            if isinstance(node, LeafNode):
+                if dot_set.use_predsplot:
+                    dot = node.get_dot_predsplot(i, directory_predsplot_map, dot_set, highlight)
+                else:
+                    dot = node.get_dot(i, print_model = dot_set.print_model)
             elif isinstance(node, InternalNode) and dot_set.use_regplot:
                 dot = node.get_dot_regplot(i, directory_regplot_map, dot_set, highlight)
             else:
@@ -178,7 +181,8 @@ class VizTree:
                 edges_dot.append(f'node{parent_node.node_id} -> node{child_node.node_id}'
                                  f'[penwidth=3 fontname={NODE_FONT_NAME}, label=<{label}>]')
             else:
-                edges_dot.append(f"node{parent_node.node_id} -> node{child_node.node_id}")
+                edges_dot.append(f"node{parent_node.node_id} -> node{child_node.node_id} "
+                                 f"[penwidth={child_node.X.shape[0]/self.X_train.shape[0]*50}, arrowhead=none]")
 
         # Combine .dot of nodes and edges
         newline = "\n\t"

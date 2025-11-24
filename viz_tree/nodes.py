@@ -39,12 +39,22 @@ class LeafNode(BaseNode):
     def get_children(self) -> List[BaseNode]:
         return []
 
-    def get_dot(self, node_id) -> str:
+    def get_dot(self, node_id, **kwargs) -> str:
         self.node_id = node_id
-        return (
+        dot = (
             f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}>, fontcolor={NODE_FONT_COLOR}, '
             f'fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
             f'margin=0.01, width=0.9]')
+        if kwargs["print_model"]:
+            linear_label = ""
+            for i, coef in enumerate(self.coefficients):
+                if coef != 0:
+                    linear_label += f'{coef:.3g}X<SUB><FONT POINT-SIZE="9">{i}</FONT></SUB> + '
+            label = f'<table border="0"><tr><td border="0">{linear_label}{self.intercept:.3g}</td></tr></table>'
+            text_node = f'node{self.node_id}text[shape = box,label=<{label}>]'
+            edge = f'node{self.node_id} -> node{self.node_id}text [arrowhead=none, len=0.01]'
+            dot += "\n\t" + text_node + "\n\t" + edge
+        return dot
 
     def get_dot_predsplot(self, node_id, directory_predsplot_map, dot_set: DotSettings, highlight) -> str:
         self.node_id = node_id
@@ -59,13 +69,23 @@ class LeafNode(BaseNode):
                   feature_names = dot_set.feature_names, display_type=dot_set.display_type, truncate_total_pred=dot_set.truncate_total_pred, variable_tick_width=dot_set.variable_tick_width,
                   file_directory=directory_predsplot_file, highlight_x=highlight_x, staircase=dot_set.staircase)
         if highlight:
-            return (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
-                    f' height={dot_set.fig_size[1] + 0.2},'
-                    f' label="", image="{directory_predsplot_file}", penwidth=3]')
+            dot = (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
+                   f' height={dot_set.fig_size[1] + 0.2},'
+                   f' label="", image="{directory_predsplot_file}", penwidth=3]')
         else:
-            return (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
-                    f' height={dot_set.fig_size[1] + 0.2},'
-                    f' label="",image="{directory_predsplot_file}"]')
+            dot = (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
+                   f' height={dot_set.fig_size[1] + 0.2},'
+                   f' label="",image="{directory_predsplot_file}"]')
+        if dot_set.print_model:
+            linear_label = ""
+            for i, coef in enumerate(self.coefficients):
+                if coef != 0:
+                    linear_label += f'{coef:.3g}X<SUB><FONT POINT-SIZE="9">{i}</FONT></SUB> + '
+            label = f'<table border="0"><tr><td border="0">{linear_label}{self.intercept:.3g}</td></tr></table>'
+            text_node = f'node{self.node_id}text[shape = box,label=<{label}>]'
+            edge = f'node{self.node_id} -> node{self.node_id}text [arrowhead=none, len=0.01]'
+            dot += "\n\t" + text_node + "\n\t" + edge
+        return dot
 
 
 class InternalNode(BaseNode):

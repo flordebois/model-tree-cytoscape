@@ -1,34 +1,29 @@
 print("importing PILOT...")
 from pilot.pilot import PILOT
-from pilot.copilot import coPILOT
 from viz_tree.viz_tree import VizTree
 from viz_tree.dot_settings import DotSettings
+from viz_tree.make_synthetic_datasets import synthetic_dataset
 
 print("import done")
 
 import numpy as np
 import os
 from datetime import datetime
-from pmlb import fetch_data
 from graphviz import Source
 from subprocess import run
+from sklearn.metrics import r2_score
 
 #%%
-dataset_name = "294_satellite_image" # "547_no2" "294_satellite_image" #"658_fri_c3_250_25"
-data = fetch_data(dataset_name)
-X = np.array(data.iloc[:, :-1])
-y = np.array(data.iloc[:, -1])
-feature_names = data.iloc[:, :-1].columns.tolist()
-target_name = "Target"
+dataset_name = "hard"
+n = 500
+X, y = synthetic_dataset(name=dataset_name, n=n)
 
-#%%
-pilot_model = PILOT(min_sample_leaf=25, max_model_depth=3)
+pilot_model = PILOT(min_sample_leaf=50)
 pilot_model.fit(X, y)
 pilot_tree = pilot_model.model_tree
 
-# copilot_model = coPILOT(max_model_depth=4, max_n_estimators=2, alpha=0.5)
-# copilot_model.fit(X, y, stop_early=False)
-# pilot_tree = copilot_model.pilot_trees[0].model_tree
+y_pred = pilot_model.predict(X)
+print(f"R2 score = {r2_score(y, y_pred)}")
 
 #%%
 output_directory = "/Users/flor/Pycharm/PILOT-VIS/scripts/output"
@@ -50,10 +45,10 @@ file_directory_gv =  os.path.join(map_directory_gv, f"pilot_graph_{dataset_name}
 file_directory_pdf =  os.path.join(map_directory, f"pilot_graph_{dataset_name}_{id_results}_{count}.pdf")
 
 dot_settings = DotSettings(rankdir = "TB",
-                           feature_names=feature_names,
                            combine_lin=False,
                            use_predsplot=True,
                            use_regplot=True,
+                           print_model = True,
                            n_max = 4,
                            highlight_x=None,
                            staircase=True,
