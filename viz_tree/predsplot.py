@@ -18,7 +18,7 @@ DOT_LINE_WIDTH = 2
 DOT_SIZE = 4
 
 def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
-              feature_names= None, display_type="histogram", truncate_total_pred=False,
+              feature_names= None, all_feature_colors=None, display_type="histogram", truncate_total_pred=False,
               variable_tick_width=True, file_directory=None, highlight_x=None, staircase=False):
     """
     Create a prediction contribution plot for linear regression models.
@@ -39,6 +39,8 @@ def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
         Figure size (width, height) in inches
     feature_names : List (n_features)
         Feature names of X
+    all_feature_colors : List (n_features)
+        Feature colors of X
     display_type : {"histogram", "density"}, default="histogram"
         Type of distribution display
     truncate_total_pred : bool, default=False
@@ -116,6 +118,10 @@ def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
         features_labels = [all_feature_labels[i] for i in features_to_keep]
         features_labels.append("Remainder")
 
+        if all_feature_colors is not None:
+            feature_colors = [all_feature_colors[i] for i in features_to_keep]
+            feature_colors.append("grey")
+
         if highlight:
             highlight_x_contributions = np.empty(n_max)
             highlight_x_contributions[:n_max-1] = highlight_x_all_contributions[features_to_keep]
@@ -130,6 +136,8 @@ def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
         is_coefficients_positive = (coefficients > 0)[features_to_keep]
         contributions = all_contributions[:,features_to_keep]
         features_labels = [all_feature_labels[i] for i in features_to_keep]
+        if all_feature_colors is not None:
+            feature_colors = [all_feature_colors[i] for i in features_to_keep]
         
         if highlight:
             highlight_x_combined = highlight_x[features_to_keep]
@@ -217,10 +225,9 @@ def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
 
     # Plot distribution
     if display_type == "density":
-        distribution_artist = sns.kdeplot(y=centered_predictions, fill=True, ax=ax_main, color="C0")
+         sns.kdeplot(y=centered_predictions, fill=True, ax=ax_main, color="grey")
     elif display_type == "histogram":
-        distribution_artist = sns.histplot(y=centered_predictions, fill=True, ax=ax_main, color="C0",
-                                           linewidth=0)
+         sns.histplot(y=centered_predictions, fill=True, ax=ax_main, color="grey", linewidth=0)
 
     # Configure main plot appearance
     margin_multiplier = ((2 * extra_width + num_features_to_plot * (tick_width + feature_plot_width))
@@ -297,16 +304,22 @@ def predsplot(X, coefficients, y_hat, n_max=5, intercept=None, fig_size=(10, 5),
         # Create subplot
         feature_axes[i] = fig.add_axes([subplot_left,subplot_bottom_positions[i],
                                         feature_plot_width,subplot_heights[i]])
+        # dy_marker = (6/72 * feature_axes[0].transData.inverted().transform((0, 1))[1] -
+        #       feature_axes[0].transData.inverted().transform((0, 0))[1])/2
 
         # Configure subplot based on coefficient sign
         if is_coefficients_positive[i]:
             plot_color = "green"
+            feature_axes[i].plot(0, np.max(feature_values), "^k", clip_on=False)
             feature_axes[i].set_ylim([np.min(feature_values), np.max(feature_values)])
         else:
             plot_color = "firebrick"
+            feature_axes[i].plot(0, np.max(feature_values), "vk", clip_on=False)
             feature_axes[i].set_ylim([np.max(feature_values), np.min(feature_values)])
         if highlight:
             plot_color = "grey"
+        if all_feature_colors is not None:
+            plot_color = feature_colors[i]
 
         # Plot feature distribution
         if display_type == "density":

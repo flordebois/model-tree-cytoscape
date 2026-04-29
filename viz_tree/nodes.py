@@ -56,7 +56,7 @@ class LeafNode(BaseNode):
             dot += "\n\t" + text_node + "\n\t" + edge
         return dot
 
-    def get_dot_predsplot(self, node_id, directory_predsplot_map, dot_set: DotSettings, highlight) -> str:
+    def get_dot_predsplot(self, node_id, directory_predsplot_map, dot_set: DotSettings, feature_colors, highlight) -> str:
         self.node_id = node_id
 
         os.makedirs(directory_predsplot_map, exist_ok=True)
@@ -66,7 +66,8 @@ class LeafNode(BaseNode):
         highlight_x = dot_set.highlight_x if highlight else None
         intercept = self.intercept if dot_set.use_intercept else None
         predsplot(self.X, self.coefficients, y_hat, n_max=dot_set.n_max, intercept=intercept, fig_size=dot_set.fig_size,
-                  feature_names = dot_set.feature_names, display_type=dot_set.display_type, truncate_total_pred=dot_set.truncate_total_pred, variable_tick_width=dot_set.variable_tick_width,
+                  feature_names = dot_set.feature_names, all_feature_colors=feature_colors, display_type=dot_set.display_type,
+                  truncate_total_pred=dot_set.truncate_total_pred, variable_tick_width=dot_set.variable_tick_width,
                   file_directory=directory_predsplot_file, highlight_x=highlight_x, staircase=dot_set.staircase)
         if highlight:
             dot = (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
@@ -132,16 +133,18 @@ class InternalNode(BaseNode):
                 f'fontcolor={NODE_FONT_COLOR}, fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
                 f'margin = 0.1]')
 
-    def get_dot_regplot(self, node_id, directory_regplot_map, dot_set: DotSettings, highlight):
+    def get_dot_regplot(self, node_id, directory_regplot_map, dot_set: DotSettings, feature_colors, highlight):
         self.node_id = node_id
 
         os.makedirs(directory_regplot_map, exist_ok=True)
         directory_regplot_file = os.path.join(directory_regplot_map, f"regplot_node{self.node_id}.svg")
 
-        plt.figure(figsize=dot_set.fig_size, layout="constrained")
+        fig = plt.figure(figsize=dot_set.fig_size, layout="constrained")
         plt.gca().ticklabel_format(scilimits=[-3, 4])
         w = np.ones(len(self.y_res))
         feature_idx = self.pivot_idx
+        fig.patch.set_linewidth(2)
+        fig.patch.set_edgecolor(feature_colors[feature_idx])
         if dot_set.feature_names is None:
             feature_label = "$X_{" + f"{feature_idx}" + "}$"
         else:
@@ -162,8 +165,8 @@ class InternalNode(BaseNode):
         if self.type == "lin":
             x = [min_x, max_x]
             y = [self.left_lin_model[1] + self.left_lin_model[0] * x for x in x]
-            plt.plot(x, y, color=NODE_FILL_COLOR[self.type], linewidth=3)
-            plt.title(f"Node: LIN - Feature: {feature_label}")
+            plt.plot(x, y, color=feature_colors[feature_idx], linewidth=3) #color=NODE_FILL_COLOR[self.type]
+            plt.title(f"LIN - Feature: {feature_label}")
 
         elif self.type == "pconc":
             pass
@@ -174,9 +177,9 @@ class InternalNode(BaseNode):
             x2 = [pivot, max_x]
             y1 = [self.left_lin_model[1] + self.left_lin_model[0] * x for x in x1]
             y2 = [self.right_lin_model[1] + self.right_lin_model[0] * x for x in x2]
-            plt.plot(x1, y1, x2, y2, color=NODE_FILL_COLOR[self.type], linewidth=3)
+            plt.plot(x1, y1, x2, y2, color=feature_colors[feature_idx], linewidth=3)
             node_name = str(self.type).upper()
-            plt.title(f"Node: {node_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
+            plt.title(f"{node_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
 
         plt.xlabel(feature_label)
         y_label = "y" if self.node_id == 0 else "Residuals"

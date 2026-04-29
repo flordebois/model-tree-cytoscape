@@ -3,6 +3,7 @@ import pandas as pd
 from typing import List, Tuple
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 from viz_tree.nodes import NODE_FONT_NAME
 from viz_tree.nodes import BaseNode, LeafNode, InternalNode, CombinedLinNode
@@ -14,6 +15,7 @@ class VizTree:
     nodes: List[BaseNode]
     edges: List[Tuple[InternalNode, BaseNode]]
     X_train: np.ndarray
+    feature_colors: List
     y_train: np.ndarray
     output_directory: str
     tree_id: str
@@ -29,6 +31,12 @@ class VizTree:
             self.X_train = np.array(X_train)
         else:
             self.X_train = X_train
+
+        cmap = plt.cm.tab10.colors
+        # TODO: make robust for each dataset
+        self.feature_colors = [cmap[3], cmap[1], cmap[9], cmap[2], "grey", "grey", cmap[5]]
+        # cmap = plt.cm.tab10
+        # self.feature_colors = cmap(np.linspace(0, 1, X_train.shape[1]))
 
         if isinstance(y_train, pd.core.frame.DataFrame):
             self.y_train = np.array(y_train)
@@ -139,11 +147,11 @@ class VizTree:
 
             if isinstance(node, LeafNode):
                 if dot_set.use_predsplot:
-                    dot = node.get_dot_predsplot(i, directory_predsplot_map, dot_set, highlight)
+                    dot = node.get_dot_predsplot(i, directory_predsplot_map, dot_set, self.feature_colors, highlight)
                 else:
                     dot = node.get_dot(i, print_model = dot_set.print_model)
             elif isinstance(node, InternalNode) and dot_set.use_regplot:
-                dot = node.get_dot_regplot(i, directory_regplot_map, dot_set, highlight)
+                dot = node.get_dot_regplot(i, directory_regplot_map, dot_set, self.feature_colors, highlight)
             else:
                 dot = node.get_dot(i)
                 if highlight:
@@ -181,8 +189,8 @@ class VizTree:
                 edges_dot.append(f'node{parent_node.node_id} -> node{child_node.node_id}'
                                  f'[penwidth=3 fontname={NODE_FONT_NAME}, label=<{label}>]')
             else:
-                edges_dot.append(f"node{parent_node.node_id} -> node{child_node.node_id} "
-                                 f"[penwidth={child_node.X.shape[0]/self.X_train.shape[0]*50}, arrowhead=none]")
+                edges_dot.append(f"node{parent_node.node_id} -> node{child_node.node_id}")
+                                 #f" [penwidth={child_node.X.shape[0]/self.X_train.shape[0]*50}, arrowhead=none]")
 
         # Combine .dot of nodes and edges
         newline = "\n\t"
