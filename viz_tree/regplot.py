@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from viz_tree.nodes import InternalNode
+
+
+def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file, fig_size, feature_colors, feature_names, highlight_x=None):
+    X = viz_tree_X[node.indices,:]
+    
+    fig = plt.figure(figsize=fig_size, layout="constrained")
+    plt.gca().ticklabel_format(scilimits=[-3, 4])
+    w = np.ones(len(node.y_res))
+    feature_idx = node.pivot_idx
+    fig.patch.set_linewidth(2)
+    fig.patch.set_edgecolor(feature_colors[feature_idx])
+    if feature_names is None:
+        feature_label = "$X_{" + f"{feature_idx}" + "}$"
+    else:
+        feature_label = feature_names[feature_idx]
+    min_x = min(X[:, feature_idx])
+    max_x = max(X[:, feature_idx])
+    scaled_weights = (w.flatten() - np.mean(w)) * 100 + 10
+    plt.scatter(X[:, feature_idx], node.y_res, s=scaled_weights, color='slategrey')
+    if highlight_x is not None:
+        matches = np.all(X == highlight_x, axis=1)
+        idx_point = np.argmax(matches) if np.any(matches) else None
+        if idx_point is None:
+            plt.axvline(x=highlight_x[feature_idx], linestyle='--', color='r')
+        else:
+            plt.scatter(X[idx_point, feature_idx], node.y_res[idx_point], s=60 + scaled_weights[idx_point],
+                        facecolors='r', marker='*')
+
+    if node.type == "lin":
+        x = [min_x, max_x]
+        y = [node.left_lin_model[1] + node.left_lin_model[0] * x for x in x]
+        plt.plot(x, y, color=feature_colors[feature_idx], linewidth=3)
+        plt.title(f"LIN - Feature: {feature_label}")
+
+    elif node.type == "pconc":
+        pass
+
+    else:  # node.type == "pcon", "plin", "blin"
+        pivot = node.pivot_value
+        x1 = [min_x, pivot]
+        x2 = [pivot, max_x]
+        y1 = [node.left_lin_model[1] + node.left_lin_model[0] * x for x in x1]
+        y2 = [node.right_lin_model[1] + node.right_lin_model[0] * x for x in x2]
+        plt.plot(x1, y1, x2, y2, color=feature_colors[feature_idx], linewidth=3)
+        self_name = str(node.type).upper()
+        plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
+
+    plt.xlabel(feature_label)
+    y_label = "y" if node.id == 0 else "Residuals"
+    plt.ylabel(y_label)
+    plt.savefig(directory_regplot_file)
+    plt.close()

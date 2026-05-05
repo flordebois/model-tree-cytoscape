@@ -5,10 +5,8 @@ from viz_tree.nodes import CombinedLinNode, InternalNode, LeafNode
 import numpy as np
 import matplotlib.pyplot as plt
 from viz_tree.predsplot import predsplot
-
-# TODO: fix colors
-cmap = plt.cm.tab10.colors
-feature_colors = [cmap[3], cmap[1], cmap[9], cmap[2], "grey", "grey", cmap[5]]
+from viz_tree.regplot import make_regression_plot
+from datetime import datetime
 
 
 # ── Convert a VizTree into Cytoscape elements (nodes + edges) ──────────────────
@@ -17,6 +15,12 @@ def to_cytoscape_elements(
         combine_lin: bool = False,
         use_regplots: bool = False,
         use_predsplots: bool = False,
+        fig_size = (5, 3),
+        predsplot_n_max = 5,
+        predsplot_use_intercept = False,
+        predsplot_display_type = "histogram",
+        predsplot_truncate_total_pred = True,
+        predsplot_staircase = False,
 ) -> list[dict[str, Any]]:
     nodes = viz_tree.nodes
     edges = viz_tree.edges
@@ -62,12 +66,12 @@ def to_cytoscape_elements(
 
     # ── Build node elements ────────────────────────────────────────────────────
     elements: list[dict[str, Any]] = []
-    node_to_id: dict = {}
+    elements_id  = datetime.now().strftime('%d-%m-%y_%H-%M-%S')
 
     for node in nodes:
         node_type = node.type
         label = node.get_label()
-        n_samples = int(node.X.shape[0])
+        n_samples = int(node.indices.shape[0])
 
         data: dict[str, Any] = {
             "id": f"node{node.id}",
@@ -78,23 +82,32 @@ def to_cytoscape_elements(
 
         regplot_class = ""
         if use_regplots and isinstance(node, InternalNode):
-            directory_regplot_file = node.make_regression_plot(
-                "/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/regplots",
-                (5, 3),
-                feature_colors,
+            make_regression_plot(
+                node,
+                viz_tree.X_train,
+                f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/regplots/regplot_node{node.id}_{elements_id}.svg",
+                fig_size,
+                viz_tree.feature_colors,
                 None,
-                None)
-            data["dir_regplot"] = f"/internal_regplots/regplot_node{node.id}.svg"
+                None
+            )
+            data["dir_regplot"] = f"/internal_regplots/regplot_node{node.id}_{elements_id}.svg"
             regplot_class = " regplot"
 
         predsplot_class = ""
         if use_predsplots and isinstance(node, LeafNode):
-            predsplot(node.X, node.coefficients, y_hat=np.sum(node.coefficients * node.X, axis=1) + node.intercept,
-                      n_max=5, intercept=None, fig_size=(5, 3), feature_names=None, all_feature_colors=feature_colors,
-                      display_type="histogram", truncate_total_pred=False, variable_tick_width=True,
-                      file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}.svg",
-                      highlight_x=None, staircase=False)
-            data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}.svg"
+            X = viz_tree.X_train[node.indices, :]
+            if predsplot_use_intercept:
+                intercept = node.intercept
+            else:
+                intercept = None
+            predsplot(X, node.coefficients, y_hat=np.sum(node.coefficients * X, axis=1) + node.intercept,
+                      n_max=predsplot_n_max, intercept=intercept, fig_size=fig_size, feature_names=None,
+                      all_feature_colors=viz_tree.feature_colors,
+                      display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
+                      file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}_{elements_id}.svg",
+                      highlight_x=None, staircase=predsplot_staircase)
+            data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
             predsplot_class = " predsplot"
 
         elements.append({"data": data, "classes": node_type + regplot_class + predsplot_class})

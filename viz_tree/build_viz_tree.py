@@ -5,7 +5,7 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
 
     if pilot_node.node == 'con' or pilot_node.node == 'END':
         return LeafNode(
-            X=X_train[current_indices],
+            indices=current_indices,
             y_res=current_y_res,
             coefficients=accumulated_coefficients,
             intercept=accumulated_intercept
@@ -26,10 +26,10 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
 
         return InternalNode(
             type='lin',
+            indices=current_indices,
+            y_res=current_y_res,
             pivot_idx=pivot_idx,
             pivot_value=None,
-            X=X_train[current_indices],
-            y_res=current_y_res,
             left_lin_model=pilot_node.lm_l,
             left_child_node=child,
             right_lin_model=None,
@@ -62,10 +62,10 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
 
         return InternalNode(
             type=pilot_node.node,
+            indices=current_indices,
+            y_res=current_y_res,
             pivot_idx=pivot_idx,
             pivot_value=pivot_value,
-            X=X_train[current_indices],
-            y_res=current_y_res,
             left_lin_model=pilot_node.lm_l,
             right_lin_model=pilot_node.lm_r,
             left_child_node=left_child,
