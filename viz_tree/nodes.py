@@ -16,16 +16,23 @@ NODE_FONT_NAME = "Arial"
 NODE_FONT_COLOR = "white"
 
 class BaseNode(ABC):
-    node_id: int = None
+    id: int = None
     type: str = None
-
-    @abstractmethod
-    def get_dot(self, node_id) -> str:
-        pass
+    X: np.ndarray = None
+    y_res: np.ndarray = None
+    
+    def set_id(self, id: int):
+        self.id = id
 
     @abstractmethod
     def get_children(self):
         pass
+
+    @abstractmethod
+    def get_label(self) -> str:
+        return NODE_LABEL[self.type]
+
+
 
 
 class LeafNode(BaseNode):
@@ -39,55 +46,13 @@ class LeafNode(BaseNode):
     def get_children(self) -> List[BaseNode]:
         return []
 
-    def get_dot(self, node_id, **kwargs) -> str:
-        self.node_id = node_id
-        dot = (
-            f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}>, fontcolor={NODE_FONT_COLOR}, '
-            f'fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
-            f'margin=0.01, width=0.9]')
-        if kwargs["print_model"]:
-            linear_label = ""
-            for i, coef in enumerate(self.coefficients):
-                if coef != 0:
-                    linear_label += f'{coef:.3g}X<SUB><FONT POINT-SIZE="9">{i}</FONT></SUB> + '
-            label = f'<table border="0"><tr><td border="0">{linear_label}{self.intercept:.3g}</td></tr></table>'
-            text_node = f'node{self.node_id}text[shape = box,label=<{label}>]'
-            edge = f'node{self.node_id} -> node{self.node_id}text [arrowhead=none, len=0.01]'
-            dot += "\n\t" + text_node + "\n\t" + edge
-        return dot
-
-    def get_dot_predsplot(self, node_id, directory_predsplot_map, dot_set: DotSettings, feature_colors, highlight) -> str:
-        self.node_id = node_id
-
-        os.makedirs(directory_predsplot_map, exist_ok=True)
-        directory_predsplot_file = os.path.join(directory_predsplot_map, f"predsplot_node{self.node_id}.svg")
-
-        y_hat = np.sum(self.coefficients * self.X, axis=1) + self.intercept
-        highlight_x = dot_set.highlight_x if highlight else None
-        intercept = self.intercept if dot_set.use_intercept else None
-        predsplot(self.X, self.coefficients, y_hat, n_max=dot_set.n_max, intercept=intercept, fig_size=dot_set.fig_size,
-                  feature_names = dot_set.feature_names, all_feature_colors=feature_colors, display_type=dot_set.display_type,
-                  truncate_total_pred=dot_set.truncate_total_pred, variable_tick_width=dot_set.variable_tick_width,
-                  file_directory=directory_predsplot_file, highlight_x=highlight_x, staircase=dot_set.staircase)
-        if highlight:
-            dot = (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
-                   f' height={dot_set.fig_size[1] + 0.2},'
-                   f' label="", image="{directory_predsplot_file}", penwidth=3]')
-        else:
-            dot = (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
-                   f' height={dot_set.fig_size[1] + 0.2},'
-                   f' label="",image="{directory_predsplot_file}"]')
-        if dot_set.print_model:
-            linear_label = ""
-            for i, coef in enumerate(self.coefficients):
-                if coef != 0:
-                    linear_label += f'{coef:.3g}X<SUB><FONT POINT-SIZE="9">{i}</FONT></SUB> + '
-            label = f'<table border="0"><tr><td border="0">{linear_label}{self.intercept:.3g}</td></tr></table>'
-            text_node = f'node{self.node_id}text[shape = box,label=<{label}>]'
-            edge = f'node{self.node_id} -> node{self.node_id}text [arrowhead=none, len=0.01]'
-            dot += "\n\t" + text_node + "\n\t" + edge
-        return dot
-
+    def get_label(self) -> str:
+        parts = []
+        for i, coef in enumerate(self.coefficients):
+            if coef != 0:
+                parts.append(f"{coef:.3g}·X{i}")
+        parts.append(f"{self.intercept:.3g}")
+        return "Leaf\n" + " + ".join(parts)
 
 class InternalNode(BaseNode):
     type: str
@@ -99,7 +64,7 @@ class InternalNode(BaseNode):
     left_child_node: 'BaseNode'
     right_lin_model: Tuple[float, float] # None for 'lin' type
     right_child_node: 'BaseNode' # None for 'lin' type
-    node_id: int = None
+    id: int = None
 
     def __init__(self, type, X, y_res, pivot_idx, pivot_value, left_lin_model, left_child_node,
                  right_lin_model, right_child_node):
@@ -119,45 +84,49 @@ class InternalNode(BaseNode):
             children.append(self.right_child_node)
         return children
 
-    def get_dot(self, node_id):
-        self.node_id = node_id
+    def get_label(self) -> str:
+        ntype = self.type.upper()
+        if self.type == "lin":
+            return f"{ntype}\nX{self.pivot_idx}"
+        return f"{ntype}\nX{self.pivot_idx} > {self.pivot_value:.3g}"
+
+    def get_dot(self, id):
+        self.id = id
 
         if self.type == "lin":
             return (
-                f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx}</FONT></SUB>>,'
+                f'node{self.id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx}</FONT></SUB>>,'
                 f'fontcolor={NODE_FONT_COLOR}, fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
                 f'margin=0.01, width=1.1]')
         else:
             return (
-                f'node{self.node_id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx} </FONT></SUB>&gt; {self.pivot_value:.3g}>,'
+                f'node{self.id}[shape={NODE_SHAPES[self.type]}, label=<{NODE_LABEL[self.type]}<BR/>X<SUB><FONT POINT-SIZE="9">{self.pivot_idx} </FONT></SUB>&gt; {self.pivot_value:.3g}>,'
                 f'fontcolor={NODE_FONT_COLOR}, fontname="{NODE_FONT_NAME}", fillcolor="{NODE_FILL_COLOR[self.type]}", style="{NODE_STYLE[self.type]}", '
                 f'margin = 0.1]')
 
-    def get_dot_regplot(self, node_id, directory_regplot_map, dot_set: DotSettings, feature_colors, highlight):
-        self.node_id = node_id
-
+    def make_regression_plot(self, directory_regplot_map, fig_size, feature_colors, feature_names, highlight_x=None):
         os.makedirs(directory_regplot_map, exist_ok=True)
-        directory_regplot_file = os.path.join(directory_regplot_map, f"regplot_node{self.node_id}.svg")
+        directory_regplot_file = os.path.join(directory_regplot_map, f"regplot_node{self.id}.svg")
 
-        fig = plt.figure(figsize=dot_set.fig_size, layout="constrained")
+        fig = plt.figure(figsize=fig_size, layout="constrained")
         plt.gca().ticklabel_format(scilimits=[-3, 4])
         w = np.ones(len(self.y_res))
         feature_idx = self.pivot_idx
         fig.patch.set_linewidth(2)
         fig.patch.set_edgecolor(feature_colors[feature_idx])
-        if dot_set.feature_names is None:
+        if feature_names is None:
             feature_label = "$X_{" + f"{feature_idx}" + "}$"
         else:
-            feature_label = dot_set.feature_names[feature_idx]
+            feature_label = feature_names[feature_idx]
         min_x = min(self.X[:, feature_idx])
         max_x = max(self.X[:, feature_idx])
         scaled_weights = (w.flatten() - np.mean(w)) * 100 + 10
         plt.scatter(self.X[:, feature_idx], self.y_res, s=scaled_weights, color='slategrey')
-        if highlight:
-            matches = np.all(self.X == dot_set.highlight_x, axis=1)
+        if highlight_x is not None:
+            matches = np.all(self.X == highlight_x, axis=1)
             idx_point = np.argmax(matches) if np.any(matches) else None
             if idx_point is None:
-                plt.axvline(x=dot_set.highlight_x[feature_idx], linestyle='--', color='r')
+                plt.axvline(x=highlight_x[feature_idx], linestyle='--', color='r')
             else:
                 plt.scatter(self.X[idx_point, feature_idx], self.y_res[idx_point], s=60 + scaled_weights[idx_point],
                             facecolors='r', marker='*')
@@ -165,7 +134,7 @@ class InternalNode(BaseNode):
         if self.type == "lin":
             x = [min_x, max_x]
             y = [self.left_lin_model[1] + self.left_lin_model[0] * x for x in x]
-            plt.plot(x, y, color=feature_colors[feature_idx], linewidth=3) #color=NODE_FILL_COLOR[self.type]
+            plt.plot(x, y, color=feature_colors[feature_idx], linewidth=3)  # color=NODE_FILL_COLOR[self.type]
             plt.title(f"LIN - Feature: {feature_label}")
 
         elif self.type == "pconc":
@@ -178,23 +147,15 @@ class InternalNode(BaseNode):
             y1 = [self.left_lin_model[1] + self.left_lin_model[0] * x for x in x1]
             y2 = [self.right_lin_model[1] + self.right_lin_model[0] * x for x in x2]
             plt.plot(x1, y1, x2, y2, color=feature_colors[feature_idx], linewidth=3)
-            node_name = str(self.type).upper()
-            plt.title(f"{node_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
+            self_name = str(self.type).upper()
+            plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
 
         plt.xlabel(feature_label)
-        y_label = "y" if self.node_id == 0 else "Residuals"
+        y_label = "y" if self.id == 0 else "Residuals"
         plt.ylabel(y_label)
         plt.savefig(directory_regplot_file)
         plt.close()
-
-        if highlight:
-            return (f'node{self.node_id}[shape = box, width={dot_set.fig_size[0] + 0.2},'
-                    f' height={dot_set.fig_size[1]+ 0.2},'
-                    f' label="", image="{directory_regplot_file}", penwidth=3]')
-        else:
-            return (f'node{self.node_id}[shape = none, width={dot_set.fig_size[0] + 0.2},'
-                    f' height={dot_set.fig_size[1] + 0.2},'
-                    f' label="",image="{directory_regplot_file}"]')
+        return directory_regplot_file
 
 class CombinedLinNode(BaseNode):
     def __init__(self, nodes: List[InternalNode]):
@@ -219,47 +180,13 @@ class CombinedLinNode(BaseNode):
         self.pivot_indices = pivot_indices
         self.lin_coefficients = lin_coefficients
         self.intercept = intercept
-
+        self.type = "combined_lin"
+        self.X = nodes[-1].X
+        self.y_res = nodes[-1].y_res
 
     def get_children(self):
         return [self.child]
 
-    def get_dot(self, node_id):
-        self.node_id = node_id
-        indices_str = ','.join(map(str, self.pivot_indices))
-
-        # Function to split string at comma boundaries
-        def split_at_comma(s, max_len):
-            if len(s) <= max_len:
-                return s, ""
-
-            last_comma = s[:max_len].rfind(',')
-            if last_comma == -1:
-                return split_at_comma(s, max_len + 1)
-
-            return s[:last_comma + 1], s[last_comma + 1:]
-
-        # Split the string into parts
-        part1, rest = split_at_comma(indices_str, 12)
-        parts = [part1]
-
-        while len(rest) != 0:
-            part, rest = split_at_comma(rest, 16)
-            parts.append(part)
-
-        # Build the HTML table
-        table = '<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="-1">\n'
-        table += '    <TR>\n'
-        table += '        <TD>LIN - X<SUB><FONT POINT-SIZE="9">idx</FONT></SUB></TD>\n'
-        table += '    </TR>\n'
-        for i, part in enumerate(parts):
-            prefix = "idx=" if i == 0 else ""
-            table += '    <TR>\n'
-            table += f'        <TD>{prefix}{part}</TD>\n'
-            table += '    </TR>\n'
-        table += '</TABLE>'
-
-        return (f'node{self.node_id}[shape={NODE_SHAPES["lin"]}, label=<{table}>,'
-                f'fontcolor={NODE_FONT_COLOR}, fontname="{NODE_FONT_NAME}", '
-                f'fillcolor="{NODE_FILL_COLOR["lin"]}", '
-                f'style="{NODE_STYLE["lin"]}", margin=0, width=1.3]')
+    def get_label(self) -> str:
+        idx_str = ", ".join(str(i) for i in self.pivot_indices)
+        return f"LIN\nidx={idx_str}"
