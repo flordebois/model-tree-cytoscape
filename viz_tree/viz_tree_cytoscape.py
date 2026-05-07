@@ -71,12 +71,13 @@ def to_cytoscape_elements(
     for node in nodes:
         node_type = node.type
         label = node.get_label()
-        n_samples = int(node.indices.shape[0])
+        n_samples = np.sum(node.indices)
 
         data: dict[str, Any] = {
             "id": f"node{node.id}",
             "node_type": node_type,
             "label": label,
+            "label_minimal": node.get_minimal_label(),
             "n_samples": n_samples,
         }
 
@@ -237,6 +238,15 @@ def build_cytoscape_stylesheet() -> list[dict]:
                 "height": "300px",
             },
         },
+        {
+            "selector": "node.minimal",
+            "style": {
+                "label": "data(label_minimal)",
+                "width": "30px",
+                "height": "15px",
+            },
+        },
+
         # ── Selected highlight ────────────────────────────────────────────────
         {
             "selector": "node:selected",

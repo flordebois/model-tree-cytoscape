@@ -27,6 +27,11 @@ class BaseNode(ABC):
     def get_label(self) -> str:
         pass
 
+    @abstractmethod
+    def get_minimal_label(self) -> str:
+        pass
+
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -53,6 +58,9 @@ class LeafNode(BaseNode):
                 parts.append(f"{coef:.3g}·X{i}")
         parts.append(f"{self.intercept:.3g}")
         return "Leaf\n" + " + ".join(parts)
+
+    def get_minimal_label(self) -> str:
+        return ""
 
     def to_dict(self):
         node_dict = super().to_dict()
@@ -86,6 +94,9 @@ class InternalNode(BaseNode):
         if self.type == "lin":
             return f"{ntype}\nX{self.pivot_idx}"
         return f"{ntype}\nX{self.pivot_idx} > {self.pivot_value:.3g}"
+
+    def get_minimal_label(self) -> str:
+        return f"X{self.pivot_idx}"
 
     def to_dict(self):
         node_dict = super().to_dict()
@@ -132,6 +143,10 @@ class CombinedLinNode(BaseNode):
     def get_label(self) -> str:
         idx_str = ", ".join(str(i) for i in self.pivot_indices)
         return f"LIN\nidx={idx_str}"
+
+    def get_minimal_label(self) -> str:
+        idx_str = ",".join(str(i) for i in self.pivot_indices[:1])
+        return f"X{idx_str}.."
 
     def to_dict(self):
         node_dict = super().to_dict()
