@@ -103,8 +103,8 @@ class InternalNode(BaseNode):
         node_dict.update({
                 "pivot_idx": self.pivot_idx,
                 "pivot_value": self.pivot_value,
-                "left_lin_model": self.left_lin_model,
-                "right_lin_model": self.right_lin_model,
+                "left_lin_model": list(self.left_lin_model) if self.left_lin_model is not None else None,
+                "right_lin_model": list(self.right_lin_model) if self.right_lin_model is not None else None,
                 "left_child": self.left_child_node.id,
                 "right_child": self.right_child_node.id if self.right_child_node else None,
             })

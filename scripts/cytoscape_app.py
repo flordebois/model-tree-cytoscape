@@ -26,7 +26,7 @@ from viz_tree.viz_tree import VizTree
 
 def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf, initial=False):
     if initial: #Initial bypass
-        with open("/Users/flor/Pycharm/PILOT-VIS/scripts/output/saved_viz_trees/tree_547_no2-12-30-10-5.pkl", "rb") as f:
+        with open("/Users/flor/Pycharm/PILOT-VIS/scripts/output/saved_viz_trees/tree-547_no2-3-30-10-5.pkl", "rb") as f:
             dict_viz_tree = pickle.load(f)
             viz_tree = VizTree.from_dict(dict_viz_tree)
         return viz_tree
@@ -45,7 +45,7 @@ def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min
     return viz_tree
 
 default_dataset_name = "547_no2"
-default_max_depth = 12
+default_max_depth = 3
 default_max_model_depth = 30
 default_min_sample_split = 10
 default_min_sample_leaf = 5
@@ -342,9 +342,16 @@ app.layout = html.Div(
                                 html.Div(
                                     style={"display": "flex", "gap": "10px", "flexWrap": "wrap", "marginBottom": "10px"},
                                     children=[
-                                        daq.BooleanSwitch(id="switch-intercept", label="Use intercept", on=False),
-                                        daq.BooleanSwitch(id="switch-truncate", label="Truncate total pred", on=True),
-                                        daq.BooleanSwitch(id="switch-staircase", label="Staircase (highlight only)",on=True),
+                                        dcc.Checklist(
+                                            id="predsplot-options",
+                                            options=[
+                                                {"label": "Use intercept", "value": "intercept"},
+                                                {"label": "Truncate total pred", "value": "truncate"},
+                                                {"label": "Staircase (highlight only)", "value": "staircase"},
+                                            ],
+                                            value=["truncate"],
+                                            inline=True,
+                                        )
                                     ],
                                 ),
 
@@ -378,17 +385,7 @@ app.layout = html.Div(
                                 html.Div(
                                     style={"display": "flex", "gap": "8px"},
                                     children=[
-                                        dcc.Input(
-                                            id="sample-input",
-                                            type="text",
-                                            placeholder="e.g. 1.2, 0.5, 3.1",
-                                            style={
-                                                "flex": "1",
-                                                "padding": "6px 8px",
-                                                "borderRadius": "6px",
-                                                "border": "1px solid #ccc",
-                                            },
-                                        ),
+
                                         html.Button(
                                             "Highlight",
                                             id="btn-highlight",
@@ -411,8 +408,39 @@ app.layout = html.Div(
                                                 "background": "#eee",
                                             },
                                         ),
+                                        dcc.Input(
+                                            id="input-highlight",
+                                            type="text",
+                                            placeholder="e.g. 1.2, 0.5, 3.1",
+                                            style={
+                                                "flex": "1",
+                                                "padding": "6px 8px",
+                                                "borderRadius": "6px",
+                                                "border": "1px solid #ccc",
+                                            },
+                                        ),
+                                        html.Button(
+                                            "Random point",
+                                            id="btn-random-point",
+                                            style={
+                                                "padding": "6px 12px",
+                                                "borderRadius": "6px",
+                                                "border": "1px solid #ccc",
+                                                "cursor": "pointer",
+                                                "background": "#eee",
+                                            },
+                                        ),
                                     ],
                                 ),
+
+                                dcc.Checklist(
+                                    id="highlight-options",
+                                    options=[
+                                        {"label": "Only show highlighted path", "value": "only_show_highlight"},
+                                    ],
+                                    value=[],
+                                    inline=True,
+                                )
                             ],
                         ),
                         # --- Node info card ---
@@ -435,10 +463,11 @@ app.layout = html.Div(
             ],
         ),
 
-        dcc.Store(id="elements_trigger", data="initial"),
+        dcc.Store(id="elements-trigger", data="initial"),
         dcc.Store(id="store-viz-tree", data=initial_viz_tree.to_dict()),
         dcc.Store(id="store-elements", data=initial_base_elements),
         dcc.Store(id="store-node-click", data={"last_click": 0, "last_id": None}),
+        dcc.Store(id="store-highlight-x", data=None),
         dcc.Store(id="shown-tree-params", data={
                 "dataset": "547_no2",
                 "max_depth": 12,
@@ -455,21 +484,12 @@ app.layout = html.Div(
 # Callbacks
 # ══════════════════════════════════════════════════════════════════════════════
 
-# @app.callback(
-#     Output("base-elements-store", "data"),
-#     Input("tree-graph", "elements"),
-#     State("base-elements-store", "data"),
-#     prevent_initial_call=False,
-# )
-# def initialize_store(elements, stored):
-#     if stored is None and elements:
-#         return elements
-#     return no_update
-
 # ── Node click ───────────────────────────────────────────────────
 @app.callback(
     Output("node-info", "children"),
     Output("tree-graph", "elements", allow_duplicate=True),
+    Output("store-elements", "data", allow_duplicate=True),
+    Output("store-viz-tree", "data", allow_duplicate=True),
     Output("store-node-click", "data"),
     Input("tree-graph", "tapNodeData"),
     State("store-node-click", "data"),
@@ -494,6 +514,12 @@ def handle_click(data, store, elements, dict_viz_tree):
         while f"node{root.id}" != node_id:
             root = next(iter_nodes)
 
+        viz_tree.root_node = root
+        viz_tree.nodes = viz_tree.collect_nodes()
+        viz_tree.edges = viz_tree.collect_edges()
+        print([node.id for node in viz_tree.nodes])
+        print([(par.id, child.id) for par, child in viz_tree.edges])
+
         # collect subtree
         subtree_ids = set()
         def collect(node):
@@ -512,8 +538,7 @@ def handle_click(data, store, elements, dict_viz_tree):
                  el["data"]["target"] in subtree_ids)
             )
         ]
-
-        return f"Subtree from {node_id}", new_elements, {"last_click": 0, "last_id": None}
+        return f"Subtree from {node_id}", new_elements, new_elements, viz_tree.to_dict(), {"last_click": 0, "last_id": None}
 
     # SINGLE CLICK
     lines = [
@@ -521,53 +546,53 @@ def handle_click(data, store, elements, dict_viz_tree):
         for k, v in data.items()
         if not k.startswith("_")
     ]
+    return " | ".join(lines), elements, elements, dict_viz_tree, {"last_click": now, "last_id": node_id}
 
-    return (
-        " | ".join(lines),
-        elements,
-        {"last_click": now, "last_id": node_id},
-    )
+# ── Highlight ────────────────────────────────────────────────────────────
+@app.callback(
+    Output("input-highlight", "value"),
+    Input("btn-random-point", "n_clicks"),
+    State("store-viz-tree", "data"),
+    prevent_initial_call=True,
+)
+def set_random_point(_, dict_viz_tree):
+    viz_tree = VizTree.from_dict(dict_viz_tree)
+    X_train = viz_tree.X_train
+    string = ", ".join(map(str, X_train[np.random.randint(X_train.shape[0])]))
+    return string
 
-# ── Path highlight ────────────────────────────────────────────────────────────
-# @app.callback(
-#     Output("tree-graph", "elements", allow_duplicate=True),
-#     Output("debug-info", "children", allow_duplicate=True),
-#     Input("btn-highlight", "n_clicks"),
-#     Input("btn-highlight-reset", "n_clicks"),
-#     State("sample-input", "value"),
-#     State("base-elements-store", "data"),
-#     State("store-viz-tree", "data"),
-#     prevent_initial_call=True,
-# )
-# def update_highlight(n_hl, n_reset, sample_text, base_elements, viz_tree):
-#     """
-#     When the user clicks 'Highlight', parse their sample and walk the tree.
-#     When they click 'Reset highlight', restore base elements.
-#     """
-#
-#     triggered = callback_context.triggered_id
-#     if not base_elements:
-#         return [], "No tree loaded yet", time.time()
-#
-#     if triggered == "btn-highlight-reset" or not sample_text:
-#         return base_elements, "Highlight cleared", time.time()
-#
-#     # Parse the sample
-#     try:
-#         x = np.array([float(v.strip()) for v in sample_text.split(",")])
-#     except ValueError:
-#         return base_elements, "⚠ Could not parse sample – use comma-separated numbers", time.time()
-#
-#     # Highlight path
-#     highlighted = highlight_path_for_x(viz_tree, x, base_elements)
-#     return highlighted, f"Path highlighted for sample with {len(x)} features", time.time()
+@app.callback(
+    Output("store-highlight-x", "data", allow_duplicate=True),
+    Output("debug-info", "children", allow_duplicate=True),
+    Output("elements-trigger", "data", allow_duplicate=True),
+    Input("btn-highlight", "n_clicks"),
+    Input("btn-highlight-reset", "n_clicks"),
+    State("input-highlight", "value"),
+    State("store-viz-tree", "data"),
+    prevent_initial_call=True,
+)
+def highlight_path(_, __, input_highlight_x, dict_viz_tree):
+    if ctx.triggered_id == "btn-highlight-reset" or input_highlight_x is None:
+        highlight_x = None
+    else:
+        viz_tree = VizTree.from_dict(dict_viz_tree)
+        n_features = viz_tree.X_train.shape[1]
+        try:
+            highlight_x = np.array([float(char.strip()) for char in input_highlight_x.split(",")])
+        except ValueError as e:
+            raise ValueError("Cound't read input for highlighting") from e
+        if len(highlight_x) != n_features:
+            raise ValueError(f"Highlight input has length {highlight_x.shape[0]} != {n_features}")
 
+    return highlight_x, f"Highlighting path.", time.time()
+
+# ── Plot switches ──────────────────────────────────────────────────────
 @app.callback(
     Output("switch-combine-lin", "on"),
     Output("switch-reg-plots", "on"),
     Output("switch-preds-plots", "on"),
     Output("switch-minimal", "on"),
-    Output("elements_trigger", "data"),
+    Output("elements-trigger", "data", allow_duplicate=True),
     Input("btn_refit-plots", "n_clicks"),
     Input("switch-combine-lin", "on"),
     Input("switch-reg-plots", "on"),
@@ -577,7 +602,10 @@ def handle_click(data, store, elements, dict_viz_tree):
 )
 def refit_plots(_, s1, s2, s3, s4):
     if ctx.triggered_id == "btn_refit-plots":
-        return False, True, True, False, time.time()
+        if not (s2 or s3):
+            return False, True, True, False, time.time()
+        else:
+            return False, s2, s3, False, time.time()
     elif ctx.triggered_id == "switch-combine-lin":
         return s1, False, s3, s4, time.time()
     elif ctx.triggered_id == "switch-reg-plots":
@@ -589,31 +617,36 @@ def refit_plots(_, s1, s2, s3, s4):
     return s1, s2, s3, s4, time.time()
 
 
-
 # ── Elements update ──────────────────────────────────────────────────────
 @app.callback(
     Output("tree-graph", "elements", allow_duplicate=True),
     Output("store-elements", "data", allow_duplicate=True),
     Output("debug-info", "children", allow_duplicate=True),
-    Input("elements_trigger", "data"),
+    Input("elements-trigger", "data"),
     State("switch-combine-lin", "on"),
     State("switch-reg-plots", "on"),
     State("switch-preds-plots", "on"),
     State("switch-minimal", "on"),
-    Input("store-viz-tree", "data"),
+    State("store-viz-tree", "data"),
     State("input-display-type", "value"),
     State("input-nmax", "value"),
     State("input-fig-w", "value"),
     State("input-fig-h", "value"),
-    State("switch-intercept", "on"),
-    State("switch-truncate", "on"),
-    State("switch-staircase", "on"),
-
+    State("predsplot-options", "value"),
+    State("store-highlight-x", "data"),
+    State("highlight-options", "value"),
     prevent_initial_call=True,
 )
 def update_elements(_, combine_lin, use_regplots, use_predsplots, use_minimal, dict_viz_tree,
-                    display_type, nmax, figw, figh, use_intercept, truncate_total_pred, staircase):
+                    display_type, nmax, figw, figh, predsplot_options, read_highlight_x, highlight_options):
+    use_intercept = "intercept" in predsplot_options
+    truncate_total_pred = "truncate" in predsplot_options
+    staircase = "staircase" in predsplot_options
     viz_tree = VizTree.from_dict(dict_viz_tree)
+
+    only_show_highlight = "only_show_highlight" in highlight_options
+    highlight_x = np.array(read_highlight_x) if read_highlight_x is not None else None
+
     elements = to_cytoscape_elements(viz_tree,
                                      combine_lin=combine_lin,
                                      use_regplots=use_regplots,
@@ -624,7 +657,8 @@ def update_elements(_, combine_lin, use_regplots, use_predsplots, use_minimal, d
                                      predsplot_display_type = display_type,
                                      predsplot_truncate_total_pred = truncate_total_pred,
                                      predsplot_staircase = staircase,
-                                     )
+                                     highlight_x = highlight_x,
+                                     only_show_highlight=only_show_highlight)
     if use_minimal:
         for el in elements:
             if "data" in el and "id" in el["data"]:  # node
@@ -636,7 +670,7 @@ def update_elements(_, combine_lin, use_regplots, use_predsplots, use_minimal, d
 
 # ── Layout update ──────────────────────────────────────────────────────
 @app.callback(
-    Output("tree-graph", "layout"),
+    Output("tree-graph", "layout", allow_duplicate=True),
     Output("debug-info", "children", allow_duplicate=True),
     Input("btn-layout", "n_clicks"),
     Input("rank-dir", "value"),
@@ -657,10 +691,12 @@ def update_layout(_, rank_dir, rank_sep, node_sep):
 
 # ── Viz tree update ──────────────────────────────────────────────────────
 @app.callback(
-    Output("store-viz-tree", "data"),
+    Output("store-viz-tree", "data", allow_duplicate=True),
     Output("debug-info", "children", allow_duplicate=True),
-    Output("shown-tree-params", "data"),
-    Output("tree-info", "children"),
+    Output("shown-tree-params", "data", allow_duplicate=True),
+    Output("tree-info", "children", allow_duplicate=True),
+    Output("store-highlight-x", "data", allow_duplicate=True),
+    Output("elements-trigger", "data", allow_duplicate=True),
     Input("btn-load-tree", "n_clicks"),
     Input("btn-fit-pilot", "n_clicks"),
     State("input-load-tree", "value"),
@@ -705,7 +741,7 @@ def update_viz_tree(_, __,dir_load_tree, dataset_name, max_depth, max_model_dept
         f"Min sample split: {min_sample_split}, "
         f"Min sample leaf: {min_sample_leaf}"
     )
-    return dict_viz_tree, message, tree_params, tree_info
+    return dict_viz_tree, message, tree_params, tree_info, None, time.time()
 
 # ── Save Viz tree ──────────────────────────────────────────────────────
 @app.callback(
@@ -730,7 +766,7 @@ def update_viz_tree(_, dict_viz_tree, tree_params):
         pickle.dump(dict_viz_tree, handle)
     return f"Tree saved to {dir_save}"
 
-# ── Save Viz tree ──────────────────────────────────────────────────────
+# ── Download figure tree ──────────────────────────────────────────────────────
 @app.callback(
     Output("tree-graph", "generateImage"),
     Input("btn-save-tree-svg", "n_clicks"),

@@ -46,12 +46,12 @@ class VizTree:
             accumulated_coefficients=np.zeros(X_train.shape[1]),
             accumulated_intercept=0.0
         )
-        self.nodes = self._collect_nodes()
-        self.edges = self._collect_edges()
+        self.nodes = self.collect_nodes()
+        self.edges = self.collect_edges()
         for i, node in enumerate(self.nodes):
             node.set_id(i)
 
-    def _collect_nodes(self) -> List[BaseNode]:
+    def collect_nodes(self) -> List[BaseNode]:
         def traverse_tree(node):
             if node is None:
                 return []
@@ -59,7 +59,7 @@ class VizTree:
 
         return traverse_tree(self.root_node)
 
-    def _collect_edges(self) -> List[Tuple[BaseNode, BaseNode]]:
+    def collect_edges(self) -> List[Tuple[BaseNode, BaseNode]]:
         edges = []
         for node in self.nodes:
             for child in node.get_children():
@@ -76,6 +76,7 @@ class VizTree:
 
             "nodes": [node.to_dict() for node in self.nodes],
             "edges": [(parent_node.id, child_node.id) for parent_node, child_node in self.edges],
+            "root_id": self.root_node.id
         }
 
     @classmethod
@@ -146,6 +147,6 @@ class VizTree:
                      for parent_node, child_node in viz_dict["edges"]]
 
         # --- root ---
-        obj.root_node = id_to_node[0]
+        obj.root_node = id_to_node[viz_dict["root_id"]]
 
         return obj

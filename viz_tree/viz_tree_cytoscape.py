@@ -21,9 +21,33 @@ def to_cytoscape_elements(
         predsplot_display_type = "histogram",
         predsplot_truncate_total_pred = True,
         predsplot_staircase = False,
+        highlight_x = None,
+        only_show_highlight = False,
 ) -> list[dict[str, Any]]:
     nodes = viz_tree.nodes
     edges = viz_tree.edges
+
+    # ── Find nodes to highlight ──────────────────────────────────────────
+    highlight_nodes = []
+    highlight_edges = []
+    if highlight_x is not None:
+        highlight_nodes.append(viz_tree.root_node)
+        node_in_path = viz_tree.root_node
+        while node_in_path.type != "leaf":
+            parent_node_in_path = node_in_path
+            if node_in_path.type == "lin":
+                node_in_path = node_in_path.left_child_node
+            else:
+                if highlight_x[node_in_path.pivot_idx] > node_in_path.pivot_value:
+                    node_in_path = node_in_path.right_child_node
+                else:
+                    node_in_path = node_in_path.left_child_node
+            highlight_nodes.append(node_in_path)
+            highlight_edges.append((parent_node_in_path, node_in_path))
+
+        if only_show_highlight:
+            nodes = highlight_nodes
+            edges = highlight_edges
 
     # ── combine consecutive lin nodes ──────────────────────────────────────────
     if combine_lin:  # Same code as in viz_tree.py method .get_dot(...)
@@ -48,6 +72,8 @@ def to_cytoscape_elements(
                 combined_nodes.append(combined_lin_node)
                 for node_chain in chain:
                     new_mapping[node_chain] = combined_lin_node
+                if node in highlight_nodes:
+                    highlight_nodes.append(combined_lin_node)
             elif node.type == "lin" and new_mapping[node] is not node:
                 continue  # Already combined linear nodes
             else:
@@ -60,6 +86,8 @@ def to_cytoscape_elements(
             # Don't add edges that connect combined linear nodes
             if new_parent_node is not new_child_node:
                 combined_edges.append((new_parent_node, new_child_node))
+                if (parent, child) in highlight_edges:
+                    highlight_edges.append((new_parent_node, new_child_node))
 
         nodes = combined_nodes
         edges = combined_edges
@@ -80,8 +108,12 @@ def to_cytoscape_elements(
             "label_minimal": node.get_minimal_label(),
             "n_samples": n_samples,
         }
+        classes  = [node_type]
+        node_highlight_x = None
+        if node in highlight_nodes:
+            classes.append("highlight")
+            node_highlight_x = highlight_x
 
-        regplot_class = ""
         if use_regplots and isinstance(node, InternalNode):
             make_regression_plot(
                 node,
@@ -90,12 +122,11 @@ def to_cytoscape_elements(
                 fig_size,
                 viz_tree.feature_colors,
                 None,
-                None
+                node_highlight_x
             )
             data["dir_regplot"] = f"/internal_regplots/regplot_node{node.id}_{elements_id}.svg"
-            regplot_class = " regplot"
+            classes.append("regplot")
 
-        predsplot_class = ""
         if use_predsplots and isinstance(node, LeafNode):
             X = viz_tree.X_train[node.indices, :]
             if predsplot_use_intercept:
@@ -107,16 +138,18 @@ def to_cytoscape_elements(
                       all_feature_colors=viz_tree.feature_colors,
                       display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
                       file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}_{elements_id}.svg",
-                      highlight_x=None, staircase=predsplot_staircase)
+                      highlight_x=node_highlight_x, staircase=predsplot_staircase)
             data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
-            predsplot_class = " predsplot"
+            classes.append("predsplot")
 
-        elements.append({"data": data, "classes": node_type + regplot_class + predsplot_class})
+
+        elements.append({"data": data, "classes": " ".join(classes)})
 
     # ── Build edge elements ────────────────────────────────────────────────────
     for parent, child in edges:
         edge_data: dict[str, Any] = {"source": f"node{parent.id}", "target": f"node{child.id}"}
-        elements.append({"data": edge_data})
+        classes = "highlight" if (parent,child) in highlight_edges else ""
+        elements.append({"data": edge_data, "classes": classes})
 
     return elements
 
@@ -255,9 +288,9 @@ def build_cytoscape_stylesheet() -> list[dict]:
                 "border-color": "#f0e442",
             },
         },
-        # ── Highlighted path (add class "on-path" via callback) ───────────────
+        # ── Highlighted path  ────────────────────────────────────────────────
         {
-            "selector": "node.on-path",
+            "selector": "node.highlight",
             "style": {
                 "border-width": "5px",
                 "border-color": selected_color,
@@ -265,7 +298,7 @@ def build_cytoscape_stylesheet() -> list[dict]:
             },
         },
         {
-            "selector": "edge.on-path",
+            "selector": "edge.highlight",
             "style": {
                 "line-color": selected_color,
                 "target-arrow-color": selected_color,
