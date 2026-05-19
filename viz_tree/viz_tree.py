@@ -3,8 +3,9 @@ import pandas as pd
 from typing import List, Tuple
 from datetime import datetime
 import matplotlib.pyplot as plt
+from pyvis import edge
 
-from viz_tree.nodes import BaseNode, LeafNode, InternalNode, CombinedLinNode
+from viz_tree.nodes import BaseNode, LeafNode, InternalNode, CombinedLinNode, CollapsedNode
 from viz_tree.build_viz_tree import build_viz_tree_from_pilot
 
 class VizTree:
@@ -52,12 +53,8 @@ class VizTree:
             node.set_id(i)
 
     def collect_nodes(self) -> List[BaseNode]:
-        def traverse_tree(node):
-            if node is None:
-                return []
-            return [node] + sum([traverse_tree(c) for c in node.get_children()], [])
-
-        return traverse_tree(self.root_node)
+        nodes = [self.root_node] + self.root_node.get_all_children()
+        return nodes
 
     def collect_edges(self) -> List[Tuple[BaseNode, BaseNode]]:
         edges = []
@@ -65,6 +62,60 @@ class VizTree:
             for child in node.get_children():
                 edges.append((node, child))
         return edges
+
+    def get_n_leafs(self) -> int:
+        count = 0
+        for node in self.nodes:
+            if isinstance(node, LeafNode):
+                count += 1
+        return count
+
+    def collapse(self, parent_node: InternalNode):
+        for child in parent_node.get_all_children():
+            if isinstance(child, CollapsedNode):
+                self.expand(child)
+
+        collapsed_node = CollapsedNode(parent_node)
+
+        nodes_to_remove = collapsed_node.child_nodes
+        for node in nodes_to_remove:
+            self.nodes.remove(node)
+
+        for node in nodes_to_remove:
+            for child in node.get_children():
+                self.edges.remove((node, child))
+        for child in parent_node.get_children():
+            self.edges.remove((parent_node, child))
+
+        parent_node.left_child_node = collapsed_node
+        parent_node.right_child_node = None
+        self.nodes.append(collapsed_node)
+        self.edges.append((parent_node, collapsed_node))
+
+    def expand(self, node: CollapsedNode):
+        parent_node = node.parent
+        self.nodes.remove(node)
+        self.edges.remove((parent_node, node))
+        parent_node.left_child_node = node.parent_left_child_node
+        parent_node.right_child_node = node.parent_right_child_node
+
+        nodes_to_add = node.child_nodes
+        for child in nodes_to_add:
+            self.nodes.append(child)
+
+        for node in nodes_to_add:
+            for child in node.get_children():
+                self.edges.append((node, child))
+        for child in parent_node.get_children():
+            self.edges.append((parent_node, child))
+
+    def expand_all_nodes(self):
+        nodes_to_expand = []
+        for node in self.nodes:
+            if isinstance(node, CollapsedNode):
+                nodes_to_expand.append(node)
+        for node in nodes_to_expand:
+            self.expand(node)
 
     def to_dict(self):
         return {
@@ -90,12 +141,8 @@ class VizTree:
         obj.output_directory = viz_dict["output_directory"]
 
         # --- rebuild nodes ---
-        id_to_node = {}
-
-        for node_dict in viz_dict["nodes"]:
-            type = node_dict["type"]
-
-            if type == "leaf":
+        def internal_and_leaf_from_dict(node_dict):
+            if node_dict["type"] == "leaf":
                 node = LeafNode(
                     np.array(node_dict["indices"]),
                     np.array(node_dict["y_res"]),
@@ -103,18 +150,9 @@ class VizTree:
                     node_dict["intercept"],
                 )
 
-            elif type == "combined_lin":
-                node = CombinedLinNode.__new__(CombinedLinNode)
-                node.pivot_indices = node_dict["pivot_indices"]
-                node.lin_coefficients = node_dict["lin_coefficients"]
-                node.intercept = node_dict["intercept"]
-                node.type = "combined_lin"
-                node.y_res = np.array(node_dict["y_res"])
-                node.child = None
-
             else: # type in ["lin", "pcon", "plin", "blin", "pconc"]:
                 node = InternalNode(
-                    type,
+                    node_dict["type"],
                     np.array(node_dict["indices"]),
                     np.array(node_dict["y_res"]),
                     node_dict["pivot_idx"],
@@ -122,8 +160,52 @@ class VizTree:
                     tuple(node_dict["left_lin_model"]) if node_dict["left_lin_model"] else None,
                     None,  # temporary
                     tuple(node_dict["right_lin_model"]) if node_dict["right_lin_model"] else None,
-                    None, # temporary
+                    None,  # temporary
                 )
+
+            return node
+
+        id_to_node = {}
+        for node_dict in viz_dict["nodes"]:
+            if node_dict["type"] == "combined_lin":
+                node = CombinedLinNode.__new__(CombinedLinNode)
+                node.pivot_indices = node_dict["pivot_indices"]
+                node.lin_coefficients = node_dict["lin_coefficients"]
+                node.intercept = node_dict["intercept"]
+                node.type = "combined_lin"
+                node.indices = node_dict["indices"]
+                node.y_res = np.array(node_dict["y_res"])
+                node.child = None # temporary
+
+            elif node_dict["type"] == "collapsed":
+                node = CollapsedNode.__new__(CollapsedNode)
+                node.type = "collapsed"
+                node.indices = node_dict["indices"]
+                node.y_res = np.array(node_dict["y_res"])
+                node.n_nodes = node_dict["n_nodes"]
+                node.parent = None  # temporary
+
+                # - rebuild children -
+                id_to_node2 = {}
+                for node_dict2 in node_dict["child_nodes"]:
+                    node2 = internal_and_leaf_from_dict(node_dict2)
+                    node2.set_id(node_dict2["id"])
+                    id_to_node2[node2.id] = node2
+
+                # - reconnect children -
+                for node_dict2 in node_dict["child_nodes"]:
+                    node2 = id_to_node2[node_dict2["id"]]
+                    if isinstance(node2, InternalNode):
+                        node2.left_child_node = id_to_node2[node_dict2["left_child"]]
+                        if node_dict2["right_child"] is not None:
+                            node2.right_child_node = id_to_node2[node_dict2["right_child"]]
+
+                node.child_nodes = list(id_to_node2.values())
+                node.parent_left_child_node = id_to_node2[node_dict["parent_left_child_node"]]
+                node.parent_right_child_node = id_to_node2[node_dict["parent_right_child_node"]] if node_dict["parent_right_child_node"] is not None else None
+
+            else: # type is "leaf" or in ["lin", "pcon", "plin", "blin", "pconc"]
+                node = internal_and_leaf_from_dict(node_dict)
 
             node.set_id(node_dict["id"])
             id_to_node[node.id] = node
@@ -139,6 +221,9 @@ class VizTree:
 
             elif isinstance(node, CombinedLinNode):
                 node.child = id_to_node[node_dict["child"]]
+
+            elif isinstance(node, CollapsedNode):
+                node.parent = id_to_node[node_dict["parent"]]
 
         obj.nodes = list(id_to_node.values())
 

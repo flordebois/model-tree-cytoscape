@@ -12,7 +12,7 @@ from datetime import datetime
 # ── Convert a VizTree into Cytoscape elements (nodes + edges) ──────────────────
 def to_cytoscape_elements(
         viz_tree: "VizTree",
-        combine_lin: bool = False,
+        combine_lin: int = 1, # 1 - don't combine, 2 - combine to node, 3 - combine to edge
         use_regplots: bool = False,
         use_predsplots: bool = False,
         fig_size = (5, 3),
@@ -50,7 +50,8 @@ def to_cytoscape_elements(
             edges = highlight_edges
 
     # ── combine consecutive lin nodes ──────────────────────────────────────────
-    if combine_lin:  # Same code as in viz_tree.py method .get_dot(...)
+    combined_lin_edges = []
+    if combine_lin != 0:
         new_mapping: dict = {}
         for node in nodes:
             new_mapping[node] = node
@@ -67,15 +68,23 @@ def to_cytoscape_elements(
                 while next_node.type == "lin":
                     chain.append(next_node)
                     next_node = next_node.left_child_node
-                combined_lin_node = CombinedLinNode(chain)
-                combined_lin_node.set_id(chain[0].id)
-                combined_nodes.append(combined_lin_node)
-                for node_chain in chain:
-                    new_mapping[node_chain] = combined_lin_node
-                if node in highlight_nodes:
-                    highlight_nodes.append(combined_lin_node)
+
+                if combine_lin == 1:
+                    combined_lin_node = CombinedLinNode(chain)
+                    combined_lin_node.set_id(chain[0].id)
+                    combined_nodes.append(combined_lin_node)
+                    for node_chain in chain:
+                        new_mapping[node_chain] = combined_lin_node
+                    if node in highlight_nodes:
+                        highlight_nodes.append(combined_lin_node)
+                elif combine_lin == 2:
+                    for node_chain in chain:
+                        new_mapping[node_chain] = chain[-1].left_child_node
+
             elif node.type == "lin" and new_mapping[node] is not node:
                 continue  # Already combined linear nodes
+            elif combine_lin == 2 and node.type == "lin":
+                new_mapping[node] = node.left_child_node
             else:
                 combined_nodes.append(node)  # Other nodes
 
@@ -84,10 +93,12 @@ def to_cytoscape_elements(
             new_parent_node = new_mapping[parent]
             new_child_node = new_mapping[child]
             # Don't add edges that connect combined linear nodes
-            if new_parent_node is not new_child_node:
+            if new_parent_node is not None and new_parent_node is not new_child_node:
                 combined_edges.append((new_parent_node, new_child_node))
                 if (parent, child) in highlight_edges:
                     highlight_edges.append((new_parent_node, new_child_node))
+                if combine_lin == 2 and child != new_child_node:
+                    combined_lin_edges.append((new_parent_node, new_child_node))
 
         nodes = combined_nodes
         edges = combined_edges
@@ -148,8 +159,12 @@ def to_cytoscape_elements(
     # ── Build edge elements ────────────────────────────────────────────────────
     for parent, child in edges:
         edge_data: dict[str, Any] = {"source": f"node{parent.id}", "target": f"node{child.id}"}
-        classes = "highlight" if (parent,child) in highlight_edges else ""
-        elements.append({"data": edge_data, "classes": classes})
+        classes = []
+        if (parent, child) in highlight_edges:
+            classes.append("highlight")
+        if (parent, child) in combined_lin_edges:
+            classes.append("combine_lin")
+        elements.append({"data": edge_data, "classes": " ".join(classes)})
 
     return elements
 
@@ -252,6 +267,12 @@ def build_cytoscape_stylesheet() -> list[dict]:
             },
         },
         {
+            "selector": "node.collapsed",
+            "style": {
+                "background-color": "#808080",
+            },
+        },
+        {
             "selector": "node.regplot",
             "style": {
                 "label": "",
@@ -278,6 +299,14 @@ def build_cytoscape_stylesheet() -> list[dict]:
                 "width": "30px",
                 "height": "15px",
             },
+        },
+        # ── specific edges ────────────────────────────────────────────────────
+        {
+            "selector": "edge.combine_lin",
+            "style": {
+                "mid-target-arrow-shape": "circle",
+                "mid-target-arrow-color": "#9467bd",
+            }
         },
 
         # ── Selected highlight ────────────────────────────────────────────────
@@ -307,66 +336,3 @@ def build_cytoscape_stylesheet() -> list[dict]:
         },
     ]
     return base
-
-
-# ── Path-highlighting helper ───────────────────────────────────────────────────
-
-def highlight_path_for_x(
-        viz_tree: "VizTree",
-        x_sample: np.ndarray,
-        elements: list[dict[str, Any]],
-) -> list[dict[str, Any]]:
-    """
-    Given an input sample `x_sample` (1-D array-like), walk the tree and add
-    the class "on-path" to every node and edge along the prediction path.
-
-    Returns a *new* elements list (does not mutate the original).
-    """
-
-    # Collect node/edge ids on the prediction path
-    path_node_ids: set[str] = set()
-    path_edge_pairs: set[tuple[str, str]] = set()
-
-    # Walk the original viz_tree nodes list so indices match
-
-    current = viz_tree.root_node
-    path_node_ids.add(f"node{current.id}")
-
-    while current.type != "leaf":
-        parent_id = current.id
-        if current.type == "lin":
-            current = current.left_child_node
-        else:
-            if x_sample[current.pivot_idx] > current.pivot_value:
-                current = current.right_child_node
-            else:
-                current = current.left_child_node
-
-        path_node_ids.add(f"node{current.id}")
-        path_edge_pairs.add((f"node{parent_id}", f"node{current.id}"))
-
-    # Return a copy of elements with updated classes
-    new_elements = []
-    for element in elements:
-        element_copy = {**element, "data": {**element["data"]}}
-        classes = element_copy.get("classes", "")
-        class_set = set(classes.split())
-
-        # Remove stale on-path
-        class_set.discard("on-path")
-
-        if "source" not in element["data"]:
-            # It's a node
-            if element["data"]["id"] in path_node_ids:
-                class_set.add("on-path")
-        else:
-            # It's an edge
-            src = element["data"]["source"]
-            tgt = element["data"]["target"]
-            if (src, tgt) in path_edge_pairs:
-                class_set.add("on-path")
-
-        element_copy["classes"] = " ".join(class_set)
-        new_elements.append(element_copy)
-
-    return new_elements
