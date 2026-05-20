@@ -3,7 +3,6 @@ from typing import Any
 from viz_tree.viz_tree import VizTree
 from viz_tree.nodes import CombinedLinNode, InternalNode, LeafNode
 import numpy as np
-import matplotlib.pyplot as plt
 from viz_tree.predsplot import predsplot
 from viz_tree.regplot import make_regression_plot
 from datetime import datetime

@@ -1,11 +1,5 @@
 from __future__ import annotations
-
-import uuid
 import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
-
-from networkx.drawing.nx_pydot import graphviz_layout
 
 
 class tree(object):
