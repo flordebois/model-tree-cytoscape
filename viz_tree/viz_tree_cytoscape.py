@@ -12,6 +12,7 @@ from datetime import datetime
 # ── Convert a VizTree into Cytoscape elements (nodes + edges) ──────────────────
 def to_cytoscape_elements(
         viz_tree: "VizTree",
+        dir_live: str,
         combine_lin: int = 1, # 1 - don't combine, 2 - combine to node, 3 - combine to edge
         use_regplots: bool = False,
         use_predsplots: bool = False,
@@ -129,7 +130,7 @@ def to_cytoscape_elements(
             make_regression_plot(
                 node,
                 viz_tree.X_train,
-                f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/regplots/regplot_node{node.id}_{elements_id}.svg",
+                f"{dir_live}/regplots/regplot_node{node.id}_{elements_id}.svg",
                 fig_size,
                 viz_tree.feature_colors,
                 None,
@@ -149,7 +150,7 @@ def to_cytoscape_elements(
                           n_max=predsplot_n_max, intercept=intercept, fig_size=fig_size, feature_names=None,
                           all_feature_colors=viz_tree.feature_colors,
                           display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
-                          file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}_{elements_id}.svg",
+                          file_directory=f"{dir_live}/predsplots/predsplot_node{node.id}_{elements_id}.svg",
                           highlight_x=node_highlight_x, staircase=predsplot_staircase)
                 data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
                 classes.append("predsplot")

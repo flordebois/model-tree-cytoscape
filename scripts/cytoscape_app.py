@@ -8,6 +8,7 @@ from pmlb import fetch_data
 import time
 import pickle
 import os
+from pathlib import Path
 
 from dash import Dash, Input, Output, State, dcc, html, ctx
 import dash_cytoscape as cyto
@@ -23,12 +24,7 @@ from viz_tree.viz_tree import VizTree
 from viz_tree.nodes import CollapsedNode, LeafNode
 from benchmark_info import PMLB_DATASETS_CAT_IDS
 
-def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf, initial=False):
-    if initial: #Initial bypass
-        with open("/Users/flor/Pycharm/PILOT-VIS/scripts/output/saved_viz_trees/tree-547_no2-3-30-10-5.pkl", "rb") as f:
-            dict_viz_tree = pickle.load(f)
-            viz_tree = VizTree.from_dict(dict_viz_tree)
-        return viz_tree
+def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf):
     print('Fitting model dataset:')
     print(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
     data = fetch_data(dataset_name)
@@ -43,14 +39,22 @@ def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min
     viz_tree = VizTree(pilot_tree, X, y, output_directory="output")
     return viz_tree
 
+DIR_BASE = Path(__file__).resolve().parent
+DIR_LIVE_OUTPUT = DIR_BASE / "output" / "live"
+DIR_SAVED_VIZ_TREES = DIR_BASE / "output" / "saved_viz_trees"
+
+(DIR_LIVE_OUTPUT / "regplots").mkdir(parents=True, exist_ok=True)
+(DIR_LIVE_OUTPUT / "predsplots").mkdir(parents=True, exist_ok=True)
+DIR_SAVED_VIZ_TREES.mkdir(parents=True, exist_ok=True)
+
 default_dataset_name = "547_no2"
-default_max_depth = 3
+default_max_depth = 12
 default_max_model_depth = 30
 default_min_sample_split = 10
 default_min_sample_leaf = 5
 
-initial_viz_tree      = get_viz_tree(default_dataset_name, default_max_depth, default_max_model_depth, default_min_sample_split, default_min_sample_leaf, initial=True)
-initial_base_elements = to_cytoscape_elements(initial_viz_tree)
+initial_viz_tree      = get_viz_tree(default_dataset_name, default_max_depth, default_max_model_depth, default_min_sample_split, default_min_sample_leaf)
+initial_base_elements = to_cytoscape_elements(initial_viz_tree, str(DIR_LIVE_OUTPUT))
 initial_stylesheet    = build_cytoscape_stylesheet()
 print("Initial Finished")
 
@@ -62,11 +66,11 @@ app = Dash(__name__)
 
 @app.server.route("/internal_regplots/<path:filename>")
 def serve_images(filename):
-    return send_from_directory("/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/regplots", filename)
+    return send_from_directory(str(DIR_LIVE_OUTPUT / "regplots"), filename)
 
 @app.server.route("/internal_predsplots/<path:filename>")
 def serve_images2(filename):
-    return send_from_directory("/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots", filename)
+    return send_from_directory(str(DIR_LIVE_OUTPUT / "predsplots"), filename)
 
 app.layout = html.Div(
     style={"fontFamily": "Arial, sans-serif", "padding": "16px"},
@@ -633,7 +637,7 @@ def highlight_path(_, __, input_highlight_x, dict_viz_tree):
     prevent_initial_call=True,
 )
 def refit_plots(_, trigger_time, v1, s2, s3, s4):
-    if time.time() - trigger_time < 0.5:
+    if time.time() - trigger_time < 1:
         raise PreventUpdate
     if ctx.triggered_id == "btn_refit-plots":
         if not (s2 or s3):
@@ -681,6 +685,7 @@ def update_elements(_, combine_lin, use_regplots, use_predsplots, use_minimal, d
     highlight_x = np.array(read_highlight_x) if read_highlight_x is not None else None
 
     elements = to_cytoscape_elements(viz_tree,
+                                     str(DIR_LIVE_OUTPUT),
                                      combine_lin=combine_lin,
                                      use_regplots=use_regplots,
                                      use_predsplots=use_predsplots,
@@ -748,9 +753,8 @@ def update_viz_tree(_, __,dir_load_tree, dataset_name, max_depth, max_model_dept
     if ctx.triggered_id == "btn-load-tree":
         dir_load_tree_copy = dir_load_tree
         if dir_load_tree_copy is None or not os.path.exists(dir_load_tree_copy):
-            folder = "/Users/flor/Pycharm/PILOT-VIS/scripts/output/saved_viz_trees"
             dir_load_tree_copy = max(
-                (os.path.join(folder, f) for f in os.listdir(folder) if f.endswith(".pkl")),
+                (str(DIR_SAVED_VIZ_TREES / f) for f in os.listdir(str(DIR_SAVED_VIZ_TREES)) if f.endswith(".pkl")),
                 key=os.path.getctime
             )
         with open(dir_load_tree_copy, "rb") as f:
@@ -801,7 +805,7 @@ def update_viz_tree(_, dict_viz_tree, tree_params):
         f"{tree_params['min_sample_leaf']}"
         ".pkl"
     )
-    dir_save = os.path.join("/Users/flor/Pycharm/PILOT-VIS/scripts/output/saved_viz_trees", file_name)
+    dir_save = str(DIR_SAVED_VIZ_TREES / file_name)
     with open(dir_save, 'wb') as handle:
         pickle.dump(dict_viz_tree, handle)
     return f"Tree saved to {dir_save}"
