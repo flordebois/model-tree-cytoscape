@@ -1,18 +1,13 @@
-import os
-from pyexpat.errors import messages
+print("importing PILOT...")
+from pilot.pilot import PILOT
 
-from viz_tree import nodes
-from viz_tree.nodes import CollapsedNode, LeafNode
-
-# print("importing PILOT...")
-# from pilot.pilot import PILOT
-#
-# print("import done")
+print("import done")
 
 import numpy as np
 from pmlb import fetch_data
 import time
 import pickle
+import os
 
 from dash import Dash, Input, Output, State, dcc, html, ctx
 import dash_cytoscape as cyto
@@ -25,7 +20,8 @@ cyto.load_extra_layouts()
 
 from viz_tree.viz_tree_cytoscape import to_cytoscape_elements, build_cytoscape_stylesheet
 from viz_tree.viz_tree import VizTree
-
+from viz_tree.nodes import CollapsedNode, LeafNode
+from benchmark_info import PMLB_DATASETS_CAT_IDS
 
 def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf, initial=False):
     if initial: #Initial bypass
@@ -42,7 +38,7 @@ def get_viz_tree(dataset_name, max_depth, max_model_depth, min_sample_split, min
                         max_model_depth=max_depth,
                         min_sample_split=min_sample_split,
                         min_sample_leaf=min_sample_leaf)
-    pilot_model.fit(X, y)
+    pilot_model.fit(X, y, categorical=PMLB_DATASETS_CAT_IDS[dataset_name])
     pilot_tree = pilot_model.model_tree
     viz_tree = VizTree(pilot_tree, X, y, output_directory="output")
     return viz_tree
@@ -160,6 +156,11 @@ app.layout = html.Div(
                                                     {"label": "294_satellite_image", "value": "294_satellite_image"},
                                                     {"label": "1199_BNG_echoMonths", "value": "1199_BNG_echoMonths"},
                                                     {"label": "658_fri_c3_250_25", "value": "658_fri_c3_250_25"},
+                                                    {"label": "505_tecator", "value": "505_tecator"},
+                                                    {"label": "560_bodyfat", "value": "560_bodyfat"},
+                                                    {"label": "485_analcatdata_vehicle", "value": "485_analcatdata_vehicle"},
+                                                    {"label": "210_cloud", "value": "210_cloud"},
+                                                    {"label": "1028_SWD", "value": "1028_SWD"},
                                                 ],
                                                 value="547_no2",
                                                 clearable=False,
@@ -282,6 +283,14 @@ app.layout = html.Div(
                                             },
                                         ),
                                         dcc.Input(id="input-collapse-level", type="number", value=5, style={"width": "120px"}),
+                                        dcc.Checklist(
+                                            id="collapse-level-options",
+                                            options=[
+                                                {"label": "include linear nodes", "value": "include_lin"},
+                                            ],
+                                            value=["include_lin"],
+                                            inline=True,
+                                        )
                                     ],
                                 ),
                             ],
@@ -865,17 +874,29 @@ def toggle_node(_, tapped_node, dict_viz_tree):
     Output("elements-trigger", "data", allow_duplicate=True),
     Input("btn-collapse-level", "n_clicks"),
     State("input-collapse-level", "value"),
+    State("collapse-level-options", "value"),
     State("store-viz-tree", "data"),
     prevent_initial_call=True
 )
-def collapse_to_level(_, collapse_level, dict_viz_tree):
+def collapse_to_level(_, collapse_level, collapse_level_options, dict_viz_tree):
+    include_lin = "include_lin" in collapse_level_options
     viz_tree = VizTree.from_dict(dict_viz_tree)
     viz_tree.expand_all_nodes()
 
     nodes_to_collapse = [viz_tree.root_node]
     for i in range(collapse_level-1):
         nodes_to_collapse = sum([node.get_children() for node in nodes_to_collapse], [])
-    print([node.id for node in nodes_to_collapse])
+
+        if not include_lin:
+            new_nodes_to_collapse = nodes_to_collapse.copy()
+            for node in nodes_to_collapse:
+                if node.type == "lin":
+                    new_nodes_to_collapse.remove(node)
+                    while node.type == "lin":
+                        node = node.get_children()[0]
+                    new_nodes_to_collapse.append(node)
+            nodes_to_collapse = new_nodes_to_collapse
+
     for node in nodes_to_collapse:
         if node.type == "leaf" or (node.type == "lin" and isinstance(node.get_children()[0], LeafNode)):
             continue

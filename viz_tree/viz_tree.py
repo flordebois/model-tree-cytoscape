@@ -3,7 +3,6 @@ import pandas as pd
 from typing import List, Tuple
 from datetime import datetime
 import matplotlib.pyplot as plt
-from pyvis import edge
 
 from viz_tree.nodes import BaseNode, LeafNode, InternalNode, CombinedLinNode, CollapsedNode
 from viz_tree.build_viz_tree import build_viz_tree_from_pilot

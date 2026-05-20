@@ -1,4 +1,5 @@
 from viz_tree.nodes import BaseNode, LeafNode, InternalNode
+import numpy as np
 
 def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_res, 
                               accumulated_coefficients, accumulated_intercept) -> BaseNode:
@@ -38,8 +39,13 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
 
     else:  # pcon, plin, blin, pconc
         pivot_idx, pivot_value = pilot_node.pivot
-        left_mask = X_train[current_indices, pivot_idx] <= pivot_value
-        right_mask = ~left_mask
+        if pilot_node.node == 'pconc':
+            pivot_value = pilot_node.pivot_c
+            left_mask = np.isin(X_train[current_indices, pivot_idx], pivot_value)
+            right_mask = ~left_mask
+        else:
+            left_mask = X_train[current_indices, pivot_idx] <= pivot_value
+            right_mask = ~left_mask
         left_indices, right_indices = current_indices.copy(), current_indices.copy()
         left_indices[current_indices] = left_mask
         right_indices[current_indices] = right_mask

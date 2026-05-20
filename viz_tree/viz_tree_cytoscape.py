@@ -139,19 +139,20 @@ def to_cytoscape_elements(
             classes.append("regplot")
 
         if use_predsplots and isinstance(node, LeafNode):
-            X = viz_tree.X_train[node.indices, :]
-            if predsplot_use_intercept:
-                intercept = node.intercept
-            else:
-                intercept = None
-            predsplot(X, node.coefficients, y_hat=np.sum(node.coefficients * X, axis=1) + node.intercept,
-                      n_max=predsplot_n_max, intercept=intercept, fig_size=fig_size, feature_names=None,
-                      all_feature_colors=viz_tree.feature_colors,
-                      display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
-                      file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}_{elements_id}.svg",
-                      highlight_x=node_highlight_x, staircase=predsplot_staircase)
-            data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
-            classes.append("predsplot")
+            if np.any(node.coefficients != 0):
+                X = viz_tree.X_train[node.indices, :]
+                if predsplot_use_intercept:
+                    intercept = node.intercept
+                else:
+                    intercept = None
+                predsplot(X, node.coefficients, y_hat=np.sum(node.coefficients * X, axis=1) + node.intercept,
+                          n_max=predsplot_n_max, intercept=intercept, fig_size=fig_size, feature_names=None,
+                          all_feature_colors=viz_tree.feature_colors,
+                          display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
+                          file_directory=f"/Users/flor/Pycharm/PILOT-VIS/scripts/output/live/predsplots/predsplot_node{node.id}_{elements_id}.svg",
+                          highlight_x=node_highlight_x, staircase=predsplot_staircase)
+                data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
+                classes.append("predsplot")
 
 
         elements.append({"data": data, "classes": " ".join(classes)})

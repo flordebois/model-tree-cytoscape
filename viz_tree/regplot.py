@@ -36,7 +36,24 @@ def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file,
         plt.title(f"LIN - Feature: {feature_label}")
 
     elif node.type == "pconc":
-        pass
+        left_child_values = node.pivot_value
+        possible_values = np.unique(X[:, feature_idx])
+        for i in range(len(possible_values)):
+            value = possible_values[i]
+            if i == 0:
+                left_len = right_len = (possible_values[i+1] - value)/2
+            elif i == len(possible_values) - 1:
+                left_len = right_len = (value - possible_values[i-1])/2
+            else:
+                left_len = (value - possible_values[i-1])/2
+                right_len = (possible_values[i+1] - value)/2
+            if value in left_child_values:
+                y = node.left_lin_model[1]
+            else:
+                y = node.right_lin_model[1]
+            plt.plot([value-left_len, value+right_len], [y, y], color=feature_colors[feature_idx], linewidth=3)
+        self_name = str(node.type).upper()
+        plt.title(f"{self_name} - Feature: {feature_label}")
 
     else:  # node.type == "pcon", "plin", "blin"
         pivot = node.pivot_value

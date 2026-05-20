@@ -91,6 +91,8 @@ class InternalNode(BaseNode):
         ntype = self.type.upper()
         if self.type == "lin":
             return f"{ntype}\nX{self.pivot_idx}"
+        if self.type == "pconc":
+            return f"{ntype} - X{self.pivot_idx}\nleft:{self.pivot_value}"
         return f"{ntype}\nX{self.pivot_idx} > {self.pivot_value:.3g}"
 
     def get_minimal_label(self) -> str:
