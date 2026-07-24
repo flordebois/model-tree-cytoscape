@@ -1,0 +1,28 @@
+import numpy as np
+
+PMLB_DATASETS_CAT_IDS = {
+    '556_analcatdata_apnea2': np.array([0,1]),
+    '557_analcatdata_apnea1': np.array([0,1]),
+    '522_pm10': np.array([-1]),
+    '1028_SWD': np.array([0,1,2,3,4,5,6,7,8,9]),
+    '485_analcatdata_vehicle': np.array([0,1,2,3]),
+    '547_no2': np.array([-1]),
+    '665_sleuth_case2002': np.array([0,1,2,3]),
+    '210_cloud': np.array([0,1]),
+    '229_pwLinear': np.array([0,1,2,3,4,5,6,7,8,9]),
+    '230_machine_cpu': np.array([-1]),
+    '656_fri_c1_100_5': np.array([-1]),
+    '192_vineyard': np.array([-1]),
+    '653_fri_c0_250_25': np.array([-1]),
+    '687_sleuth_ex1605': np.array([-1]),
+    '651_fri_c0_100_25': np.array([-1]),
+    '658_fri_c3_250_25': np.array([-1]),
+    '294_satellite_image': np.array([-1]),
+    '1199_BNG_echoMonths': np.array([0,2,8]),
+    '505_tecator': np.array([-1]),
+    '560_bodyfat': np.array([-1]),
+    '197_cpu_act': np.array([-1]),
+    '225_puma8NH': np.array([-1]),
+    '503_wind': np.array([-1]),
+    '4544_GeographicalOriginalofMusic': np.array([-1]),
+}
