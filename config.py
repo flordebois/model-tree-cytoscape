@@ -1,4 +1,5 @@
 from pathlib import Path
+import pickle
 
 # --- Filesystem (used by app.py's image-serving Flask routes) ----------
 DIR_BASE = Path(__file__).resolve().parent
@@ -7,9 +8,6 @@ DIR_SAVED_VIZ_TREES = DIR_BASE / "output" / "saved_viz_trees"
 DIR_DATASETS = DIR_BASE / "datasets"
 
 # --- New Tree card defaults / options -----------------------------------
-# TODO: this list + PMLB_DATASETS_CAT_IDS lookup came from benchmark_info.py
-# in the old single-file app -- bring that module back in once you've
-# decided where dataset/category metadata should live.
 DATASET_OPTIONS = [
     {"label": "547_no2", "value": "547_no2"},
     {"label": "294_satellite_image", "value": "294_satellite_image"},
@@ -20,22 +18,29 @@ DATASET_OPTIONS = [
     {"label": "485_analcatdata_vehicle", "value": "485_analcatdata_vehicle"},
     {"label": "210_cloud", "value": "210_cloud"},
     {"label": "1028_SWD", "value": "1028_SWD"},
-    {"label": "simulated_linear", "value": "simulated_linear"},
-    {"label": "california", "value": "california"},
+    # {"label": "simulated_linear", "value": "simulated_linear"},
+    # {"label": "california", "value": "california"},
     {"label": "197_cpu_act", "value": "197_cpu_act"},
 ]
 
-NODE_COLORS = {
-    "leafnode": "#2ca02c",
-    "linearnode": "#9467bd",
-    "blinnode": "#1f77b4",
-    "pconnode": "#d62728",
-    "plinnode": "#ff7f0e",
-    "pconcnode": "#8c564b",
-    "combinedlinnode": "#9467bd",
-    "collapsednode": "#808080",
+METHOD_OPTIONS = [
+    {"label": "Pilot", "value": "Pilot"},
+    {"label": "M5", "value": "M5"},
+]
+
+NODE_TYPE_COLORS = {
+    "LeafNode": "#2ca02c",
+    "LinearNode": "#9467bd",
+    "BlinNode": "#1f77b4",
+    "PconNode": "#d62728",
+    "SplitNode": "#d62728",
+    "PlinNode": "#ff7f0e",
+    "PconcNode": "#8c564b",
+    "CombinedLinNode": "#9467bd",
+    "CollapsedNode": "#808080",
 }
 
+DEFAULT_METHOD_NAME = "Pilot"
 DEFAULT_DATASET_NAME = "547_no2"
 DEFAULT_MAX_DEPTH = 12
 DEFAULT_MAX_MODEL_DEPTH = 30
@@ -50,10 +55,17 @@ DEFAULT_NODE_SEP = 20
 DEFAULT_COLLAPSE_LEVEL = 5
 DEFAULT_DISPLAY_TYPE = "histogram"
 DEFAULT_NMAX = 5
-DEFAULT_FIG_W = 7
+DEFAULT_FIG_W = 5
 DEFAULT_FIG_H = 3
 
 SPINNER_COLOR = "primary"
+
+def get_initial_graph_info():
+    with open(
+            "/Users/flor/Pycharm/Dash/output/saved_viz_trees/tree_28-07-26_16-29-53__1199_BNG_echoMonths-Pilot-12-30-2000-5.pkl",
+            "rb") as f:
+        input_dict = pickle.load(f)
+    return input_dict["viz_tree_dict"], input_dict["tree_params"]
 
 # ── Stylesheet builder ─────────────────────────────────────────────────────────
 font_family = "Arial, sans-serif"
@@ -72,8 +84,8 @@ CYTOSCAPE_STYLESHEET = [
             "font-family": font_family,
             "font-size": f"{font_size}px",
             "color": "#ffffff",
-            "background-color": "#000000",  # default, normally not used
-            "shape": "rectangle",  # default, normally not used
+            "background-color": "data(color)",
+            "shape": "roundrectangle",
             "width": "100px",
             "height": "40px",
             "padding": "6px",
@@ -81,80 +93,25 @@ CYTOSCAPE_STYLESHEET = [
             "border-color": "#000000",
         },
     },
-    # ── Default edge ──────────────────────────────────────────────────────
-    {
-        "selector": "edge",
-        "style": {
-            "curve-style": "bezier",
-            "target-arrow-shape": "triangle",
-            "target-arrow-color": "#000000",
-            "line-color": "#000000",
-            "width": 1.5,
-            "label": "data(label)",
-            "font-family": font_family,
-            "font-size": f"{font_size}px",
-            "color": "#000000",
-            "text-background-color": "#ffffff",
-            "text-background-opacity": 0.7,
-            "text-background-padding": "2px",
-        },
-    },
     # ── specific nodes ────────────────────────────────────────────────────
     {
         "selector": "node.LeafNode",
         "style": {
-            "background-color": "#2ca02c",
             "shape": "ellipse",
             "width": "160px",
             "height": "60px",
         },
     },
     {
-        "selector": "node.LinearNode",
+        "selector": "node.LinearNode, node.CombinedLinNode",
         "style": {
-            "background-color": "#9467bd",
-            "shape": "ellipse",
-        },
-    },
-    {
-        "selector": "node.BlinNode",
-        "style": {
-            "background-color": "#1f77b4",
-            "shape": "roundrectangle",
-        },
-    },
-    {
-        "selector": "node.PconNode",
-        "style": {
-            "background-color": "#d62728",
-            "shape": "roundrectangle",
-        },
-    },
-    {
-        "selector": "node.PlinNode",
-        "style": {
-            "background-color": "#ff7f0e",
-            "shape": "roundrectangle",
-        },
-    },
-    {
-        "selector": "node.PconcNode",
-        "style": {
-            "background-color": "#8c564b",
-            "shape": "roundrectangle",
-        },
-    },
-    {
-        "selector": "node.CombinedLinNode",
-        "style": {
-            "background-color": "#9467bd",
             "shape": "ellipse",
         },
     },
     {
         "selector": "node.CollapsedNode",
         "style": {
-            "background-color": "#808080",
+            "shape": "rectangle",
         },
     },
     {
@@ -183,6 +140,25 @@ CYTOSCAPE_STYLESHEET = [
             "label": "data(label_minimal)",
             "width": "30px",
             "height": "15px",
+        },
+    },
+
+    # ── Default edge ──────────────────────────────────────────────────────
+    {
+        "selector": "edge",
+        "style": {
+            "curve-style": "bezier",
+            "target-arrow-shape": "triangle",
+            "target-arrow-color": "#000000",
+            "line-color": "#000000",
+            "width": 1.5,
+            "label": "data(label)",
+            "font-family": font_family,
+            "font-size": f"{font_size}px",
+            "color": "#000000",
+            "text-background-color": "#ffffff",
+            "text-background-opacity": 0.7,
+            "text-background-padding": "2px",
         },
     },
     # ── specific edges ────────────────────────────────────────────────────

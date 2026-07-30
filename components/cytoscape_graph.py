@@ -17,18 +17,12 @@ cyto.load_extra_layouts()
 from viz_tree.viz_tree_cytoscape import viz_tree_to_cytoscape_elements
 import ids
 from config import *
-import pickle
 
 (DIR_LIVE_OUTPUT / "regplots").mkdir(parents=True, exist_ok=True)
 (DIR_LIVE_OUTPUT / "predsplots").mkdir(parents=True, exist_ok=True)
 DIR_SAVED_VIZ_TREES.mkdir(parents=True, exist_ok=True)
 
-# initial_viz_tree      = fit_new_tree(DEFAULT_DATASET_NAME, DEFAULT_MAX_DEPTH, DEFAULT_MAX_MODEL_DEPTH, DEFAULT_MIN_SAMPLE_SPLIT, DEFAULT_MIN_SAMPLE_LEAF)
-# initial_base_elements = viz_tree_to_cytoscape_elements(initial_viz_tree, str(DIR_LIVE_OUTPUT))
-with open("/Users/flor/Pycharm/Dash/output/saved_viz_trees/tree_24-07-26_10-55-19.pkl", "rb") as f:
-    input_dict = pickle.load(f)
-
-viz_tree_dict = input_dict["viz_tree_dict"]
+viz_tree_dict, _ = get_initial_graph_info()
 initial_viz_tree      = VizTree.from_dict(viz_tree_dict)
 initial_base_elements = viz_tree_to_cytoscape_elements(initial_viz_tree, str(DIR_LIVE_OUTPUT))
 initial_stylesheet    = CYTOSCAPE_STYLESHEET
@@ -41,8 +35,8 @@ def make_cytoscape_graph() -> cyto.Cytoscape:
         layout={
             "name": "dagre",
             "rankDir": "TB",
-            "rankSep": 30,
-            "nodeSep": 20,
+            "rankSep": DEFAULT_RANK_SEP,
+            "nodeSep": DEFAULT_NODE_SEP,
             "animate": True,
             "fit": True,
         },

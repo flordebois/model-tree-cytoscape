@@ -17,6 +17,7 @@ NODE_INFO_PLOT_CONTAINER = "node-info-plot-container"    # NEW
 
 # --- New Tree card (fit / load / save / reload) --------------------------
 INPUT_DATASET = "input-dataset"
+INPUT_METHOD = "input-method"
 INPUT_MAX_DEPTH = "input-max-depth"
 INPUT_MAX_MODEL_DEPTH = "input-max-model-depth"
 INPUT_MIN_SAMPLE_SPLIT = "input-min-sample-split"
@@ -53,10 +54,14 @@ COLLAPSE_LEVEL_OPTIONS = "collapse-level-options"
 
 # Display-switches section
 SWITCH_COMBINE_LIN = "switch-combine-lin"
-SWITCH_REG_PLOTS = "switch-reg-plots"
-SWITCH_PREDS_PLOTS = "switch-preds-plots"
+SWITCH_NODE_PLOTS = "switch-node-plots"
 SWITCH_MINIMAL = "switch-minimal"
+SWITCH_COLOR_FEATURES = "switch-color-features"
 SWITCH_RSS = "switch-rss"
+MODAL_NODE_PLOTS = "modal-node-plots"
+MODAL_BTN_CONFIRM = "modal-btn-confirm"
+MODAL_BTN_CANCEL = "modal-btn-cancel"
+MODAL_CHECK_DONT_ASK = "modal-dont-ask"
 
 # Plot-settings section
 INPUT_DISPLAY_TYPE = "input-display-type"
@@ -76,6 +81,7 @@ STORE_NODE_CLICK = "store-node-click"
 STORE_HIGHLIGHT_X = "store-highlight-x"
 STORE_TREE_PARAMS = "store-tree-params"
 STORE_TREE_PARAMS_BASE = "store-tree-params-base"
+STORE_MODAL_DONT_ASK = "store-modal-dont-ask"
 
 # --- Explain page ------------------------------------------------------------
 EXPLAIN_COMPUTE_BUTTON = "explain-compute-button"

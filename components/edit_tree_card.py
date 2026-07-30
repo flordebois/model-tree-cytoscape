@@ -71,15 +71,30 @@ def make_edit_tree_card() -> dbc.Card:
                             html.Div(
                                 style={"display": "flex", "gap": "16px", "flexWrap": "wrap"},
                                 children=[
-                                    daq.BooleanSwitch(id=ids.SWITCH_REG_PLOTS, label="Show regression plots"),
-                                    daq.BooleanSwitch(id=ids.SWITCH_PREDS_PLOTS, label="Show prediction plots"),
-                                    daq.BooleanSwitch(id=ids.SWITCH_MINIMAL, label="Minimal nodes"),
-                                    daq.BooleanSwitch(id=ids.SWITCH_RSS, label="Show RSS"),
+                                    daq.BooleanSwitch(id=ids.SWITCH_NODE_PLOTS, label="Show all node plots", on=False),
+                                    daq.BooleanSwitch(id=ids.SWITCH_MINIMAL, label="Minimal nodes", on=False),
+                                    daq.BooleanSwitch(id=ids.SWITCH_COLOR_FEATURES, label="Features colors", on=False),
+                                    daq.BooleanSwitch(id=ids.SWITCH_RSS, label="Show RSS", on=False),
                                 ],
                             ),
                         ],
                         className="mb-3",
-                    )
+                    ),
+                    dbc.Modal([
+                        dbc.ModalHeader("Confirmation"),
+                        dbc.ModalBody([
+                            html.P([
+                                "Are you sure you want to show all node plots?",
+                                html.Br(),
+                                "This may take a while for large trees."
+                            ]),
+                            dbc.Checkbox(id=ids.MODAL_CHECK_DONT_ASK, label="Don't ask me again."),
+                        ]),
+                        dbc.ModalFooter([
+                            dbc.Button("No, cancel.", id=ids.MODAL_BTN_CANCEL),
+                            dbc.Button("Yes, show all node plots", id=ids.MODAL_BTN_CONFIRM)
+                        ])
+                    ], id=ids.MODAL_NODE_PLOTS, is_open=False, backdrop=False),
                 ]
             ),
         ],

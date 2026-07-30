@@ -1,6 +1,7 @@
 import time
 import numpy as np
-from dash import Input, Output, State
+import dash
+from dash import Input, Output, State, no_update, ctx
 from dash.exceptions import PreventUpdate
 
 import ids
@@ -8,29 +9,92 @@ from config import DIR_LIVE_OUTPUT
 from viz_tree.viz_tree import VizTree
 from viz_tree.viz_tree_cytoscape import viz_tree_to_cytoscape_elements
 
-
 def register_callbacks(app):
     @app.callback(
+        Output(ids.SWITCH_COMBINE_LIN, "value"),
+        Output(ids.SWITCH_NODE_PLOTS, "on"),
+        Output(ids.SWITCH_RSS, "on"),
+        Output(ids.SWITCH_MINIMAL, "on"),
+        Output(ids.SWITCH_COLOR_FEATURES, "on"),
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.SWITCH_COMBINE_LIN, "value"),
-        # Input(ids.SWITCH_REG_PLOTS, "on"), #TODO: fix
-        # Input(ids.SWITCH_PREDS_PLOTS, "on"),
+        Input(ids.SWITCH_NODE_PLOTS, "on"),
         Input(ids.SWITCH_RSS, "on"),
         Input(ids.SWITCH_MINIMAL, "on"),
+        Input(ids.SWITCH_COLOR_FEATURES, "on"),
+
         prevent_initial_call=True,
     )
-    def bump_trigger(*_):
-        return time.time()
+    def sync_switches(combine, node_plots, rss, minimal, color):
+        trig = ctx.triggered_id
+        out = [no_update] * 5
+
+        if trig == ids.SWITCH_NODE_PLOTS and node_plots:
+            out[0] = False  # combine_lin
+            out[2] = False  # rss
+            out[3] = False  # minimal
+            out[4] = True  # color_features
+
+        elif trig == ids.SWITCH_COMBINE_LIN and combine:
+            out[1] = False  # node_plots
+
+        elif trig == ids.SWITCH_RSS and rss:
+            out[1] = False  # node_plots
+            out[3] = False  # minimal
+
+        elif trig == ids.SWITCH_MINIMAL and minimal:
+            out[1] = False  # node_plots
+            out[2] = False  # rss
+
+        out.append(time.time())
+        return out
+
+    @app.callback(
+        Output(ids.MODAL_NODE_PLOTS, "is_open"),
+
+        Input(ids.ELEMENTS_TRIGGER, "data"),
+        State(ids.SWITCH_NODE_PLOTS, "on"),
+        State(ids.STORE_MODAL_DONT_ASK, "data"),
+        prevent_initial_call=True,
+    )
+    def maybe_open_modal(_, show_node_plots, dont_ask):
+        if show_node_plots and not dont_ask:
+            return True
+        raise PreventUpdate
+
+    @app.callback(
+        Output(ids.MODAL_NODE_PLOTS, "is_open", allow_duplicate=True),
+        Output(ids.SWITCH_NODE_PLOTS, "on", allow_duplicate=True),
+
+        Input(ids.MODAL_BTN_CANCEL, "n_clicks"),
+        prevent_initial_call=True,
+    )
+    def cancel_modal(_):
+        return False, False
+
+    @app.callback(
+        Output(ids.STORE_MODAL_DONT_ASK, "data"),
+        Output(ids.MODAL_NODE_PLOTS, "is_open", allow_duplicate=True),
+
+        Input(ids.MODAL_BTN_CONFIRM, "n_clicks"),
+        State(ids.MODAL_CHECK_DONT_ASK, "value"),
+        prevent_initial_call=True,
+    )
+    def confirm_modal(_, dont_ask):
+        return bool(dont_ask), False
 
     @app.callback(
         Output(ids.CYTOSCAPE_GRAPH, "elements", allow_duplicate=True),
 
         Input(ids.ELEMENTS_TRIGGER, "data"),
+        Input(ids.MODAL_BTN_CONFIRM, "n_clicks"),
+
+        State(ids.MODAL_CHECK_DONT_ASK, "value"),
         State(ids.SWITCH_COMBINE_LIN, "value"),
-        State(ids.SWITCH_REG_PLOTS, "on"),
-        State(ids.SWITCH_PREDS_PLOTS, "on"),
+        State(ids.SWITCH_NODE_PLOTS, "on"),
         State(ids.SWITCH_MINIMAL, "on"),
+        State(ids.SWITCH_COLOR_FEATURES, "on"),
         State(ids.SWITCH_RSS, "on"),
         State(ids.STORE_VIZ_TREE, "data"),
         State(ids.INPUT_DISPLAY_TYPE, "value"),
@@ -45,10 +109,12 @@ def register_callbacks(app):
     )
     def update_elements(
         trigger,
+        _,
+        modal_dont_ask,
         combine_lin,
-        use_regplots,
-        use_predsplots,
+        show_node_plots,
         use_minimal,
+        use_color_features,
         show_rss,
         viz_tree_dict,
         display_type,
@@ -60,9 +126,13 @@ def register_callbacks(app):
         highlight_options,
         predsplot_type,
     ):
-        if viz_tree_dict is None:
-            print("trigger without viz_tree_dict")
+        ctx = dash.callback_context
+        if show_node_plots and not modal_dont_ask and ctx.triggered_id != ids.MODAL_BTN_CONFIRM:
             raise PreventUpdate
+
+        if viz_tree_dict is None:
+            print(f"call to elements update with viz_tree_dict None")
+            raise PreventUpdate#
 
         use_intercept = "intercept" in predsplot_options
         truncate_total_pred = "truncate" in predsplot_options
@@ -77,9 +147,9 @@ def register_callbacks(app):
             viz_tree,
             str(DIR_LIVE_OUTPUT),
             combine_lin=combine_lin,
+            use_color_features = use_color_features,
             show_rss=show_rss,
-            use_regplots=use_regplots,
-            use_predsplots=use_predsplots,
+            show_node_plots=show_node_plots,
             fig_size=(figw, figh),
             predsplot_n_max=nmax,
             predsplot_use_intercept=use_intercept,
@@ -91,7 +161,7 @@ def register_callbacks(app):
             only_show_highlight=only_show_highlight,
         )
 
-        if use_minimal: #TODO: change to layout
+        if use_minimal:
             for el in elements:
                 if "data" in el and "id" in el["data"]:  # node, not edge
                     classes = el.get("classes", "").split()

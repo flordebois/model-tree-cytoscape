@@ -11,6 +11,8 @@ from components.loading import with_spinner
 from config import (
     DATASET_OPTIONS,
     DEFAULT_DATASET_NAME,
+    METHOD_OPTIONS,
+    DEFAULT_METHOD_NAME,
     DEFAULT_MAX_DEPTH,
     DEFAULT_MAX_MODEL_DEPTH,
     DEFAULT_MIN_SAMPLE_LEAF,
@@ -34,6 +36,18 @@ def make_new_tree_card() -> dbc.Card:
                                         id=ids.INPUT_DATASET,
                                         options=DATASET_OPTIONS,
                                         value=DEFAULT_DATASET_NAME,
+                                        clearable=False,
+                                        style={"width": "200px"},
+                                    ),
+                                ]
+                            ),
+                            html.Div(
+                                [
+                                    html.Div("Method", style={"marginBottom": "4px"}),
+                                    dcc.Dropdown(
+                                        id=ids.INPUT_METHOD,
+                                        options=METHOD_OPTIONS,
+                                        value=DEFAULT_METHOD_NAME,
                                         clearable=False,
                                         style={"width": "220px"},
                                     ),
@@ -74,7 +88,7 @@ def make_new_tree_card() -> dbc.Card:
                     html.Div(
                         style={"display": "flex", "gap": "8px", "flexWrap": "wrap", "marginBottom": "10px"},
                         children=[
-                            dbc.Button("Fit PILOT tree", id=ids.BTN_FIT_NEW_TREE, size="sm"),
+                            dbc.Button("Fit Tree", id=ids.BTN_FIT_NEW_TREE, size="sm"),
                             dbc.Button("Save shown tree", id=ids.BTN_SAVE_TREE, size="sm"),
                             dbc.Button("Download shown tree", id=ids.BTN_SAVE_TREE_SVG, size="sm"),
                             dbc.Button("Reload tree", id=ids.BTN_RELOAD_TREE, size="sm"),

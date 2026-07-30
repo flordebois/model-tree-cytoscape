@@ -1,31 +1,18 @@
 import ids
 from dash import Input, Output, State, html
-import dash_bootstrap_components as dbc
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from callbacks.edit_tree_callbacks import find_node_by_cytoscape_id
-from config import DIR_LIVE_OUTPUT
+from config import DIR_LIVE_OUTPUT, NODE_TYPE_COLORS
 from nodes.internal_node import InternalNode
 from nodes.leaf_node import LeafNode
 from plots.predsplot import predsplot
 from plots.predsplot2 import predsplot2
 from plots.regplot import make_regression_plot
 from viz_tree.viz_tree import VizTree
-from pathlib import Path
 from urllib.parse import quote
-
-NODE_TYPE_COLORS = {
-    "LeafNode": "#2ca02c",
-    "LinearNode": "#9467bd",
-    "BlinNode": "#1f77b4",
-    "PconNode": "#d62728",
-    "PlinNode": "#ff7f0e",
-    "PconcNode": "#8c564b",
-    "CombinedLinNode": "#9467bd",
-    "CollapsedNode": "#808080",
-}
 
 
 
@@ -82,7 +69,7 @@ def register_callbacks(app):
 
         prevent_initial_call=True,
     )
-    def render_node_plot(switch_on, tapped_node, n_clicks, viz_tree_dict,
+    def render_node_plot(switch_on, tapped_node, _n_clicks, viz_tree_dict,
                          display_type,
                          nmax,
                          figw,

@@ -18,17 +18,25 @@ def register_callbacks(app):
 
     @app.callback(
         Output(ids.STORE_HIGHLIGHT_X, "data", allow_duplicate=True),
+        Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.DEBUG_INFO, "children", allow_duplicate=True),
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_HIGHLIGHT, "n_clicks"),
         State(ids.INPUT_HIGHLIGHT, "value"),
         State(ids.STORE_VIZ_TREE, "data"),
+        State(ids.STORE_TREE_PARAMS, "data"),
         prevent_initial_call=True,
     )
-    def highlight_path(n_clicks, input_highlight_x, viz_tree_dict):
+    def highlight_path(n_clicks, input_highlight_x, viz_tree_dict, tree_params):
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_id != ids.BTN_HIGHLIGHT or n_clicks is None or input_highlight_x is None:
+            print(f"call to highlight path with id:{triggered_id}")
+            raise PreventUpdate##
+        if n_clicks is None:
+            print("call to highlight path with clicks None")
+            raise PreventUpdate#
+        if input_highlight_x is None:
             raise PreventUpdate
         n_features = np.array(viz_tree_dict["X_train"]).shape[1]
         try:
@@ -43,18 +51,25 @@ def register_callbacks(app):
                 time.time(),
             )
 
-        return highlight_x.tolist(), f"Highlighting path of {highlight_x}.", time.time()
+        new_tree_params = tree_params.copy()
+        new_tree_params["highlight_x"] = input_highlight_x
+        return highlight_x.tolist(), new_tree_params, f"Highlighting path of {highlight_x}.", time.time()
     
     @app.callback(
         Output(ids.STORE_HIGHLIGHT_X, "data", allow_duplicate=True),
+        Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.DEBUG_INFO, "children", allow_duplicate=True),
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_CLEAR_HIGHLIGHT, "n_clicks"),
         State(ids.STORE_HIGHLIGHT_X, "data"),
+        State(ids.STORE_TREE_PARAMS, "data"),
         prevent_initial_call=True,
     )
-    def clear_highlight(n_clicks, highlight_x):
+    def clear_highlight(n_clicks, highlight_x, tree_params):
         if highlight_x is None:
             raise PreventUpdate
-        return None, "Highlight cleared.", time.time()
+
+        new_tree_params = tree_params.copy()
+        new_tree_params["highlight_x"] = None
+        return None, new_tree_params, "Highlight cleared.", time.time()

@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Any
 
+from nodes.collapsed_node import CollapsedNode
 from nodes.split_node import PconcNode
 from viz_tree.viz_tree import VizTree
 from nodes.base_node import BaseNode
@@ -9,11 +10,13 @@ from nodes.internal_node import InternalNode, LinearNode
 from nodes.combined_lin_node import CombinedLinNode
 from nodes.none_node import NoneNode
 import numpy as np
-# from plots.predsplot import predsplot
-# from plots.predsplot2 import predsplot2
-# from plots.regplot import make_regression_plot
+import matplotlib.pyplot as plt
+from matplotlib.colors import to_hex
+from plots.predsplot import predsplot
+from plots.predsplot2 import predsplot2
+from plots.regplot import make_regression_plot
 from datetime import datetime
-
+from config import NODE_TYPE_COLORS
 
 # ── Convert a VizTree into Cytoscape elements (nodes + edges) ──────────────────
 def viz_tree_to_cytoscape_elements(
@@ -21,8 +24,8 @@ def viz_tree_to_cytoscape_elements(
         dir_live: str,
         combine_lin: int = 0, # 0 - don't combine, 1 - combine to node, 2 - combine to edge
         show_rss: bool = False,
-        use_regplots: bool = False,
-        use_predsplots: bool = False,
+        use_color_features: bool = False,
+        show_node_plots: bool = False,
         fig_size = (5, 3),
         predsplot_n_max = 5,
         predsplot_use_intercept = False,
@@ -42,7 +45,7 @@ def viz_tree_to_cytoscape_elements(
     if highlight_x is not None:
         highlight_nodes.append(viz_tree.root_node)
         node_in_path = viz_tree.root_node
-        while not isinstance(node_in_path, LeafNode):
+        while not isinstance(node_in_path, (LeafNode, CollapsedNode, NoneNode)):
             parent_node_in_path = node_in_path
             if isinstance(node_in_path, LinearNode):
                 node_in_path = node_in_path.child
@@ -116,6 +119,12 @@ def viz_tree_to_cytoscape_elements(
     elements: list[dict[str, Any]] = []
     elements_id  = datetime.now().strftime('%d-%m-%y_%H-%M-%S')
 
+    if show_node_plots or use_color_features:
+        n_features = viz_tree.X_train.shape[1]
+        cmap = plt.colormaps["tab20"].resampled(n_features)
+        feature_colors = [cmap(i) for i in range(n_features)]
+        feature_colors_hex = [to_hex(color) for color in feature_colors]
+
     for node in nodes:
         if highlight_x is not None and only_show_highlight and node not in highlight_nodes:
             continue
@@ -127,9 +136,18 @@ def viz_tree_to_cytoscape_elements(
             label += f"\nrss:{node.rss:.5g}"
         n_samples = np.sum(node.indices)
 
+        if use_color_features:
+            if isinstance(node, InternalNode):
+                color = feature_colors_hex[node.pivot_idx]
+            else:
+                color = NODE_TYPE_COLORS[node_type]
+        else:
+            color = NODE_TYPE_COLORS[node_type]
+
         data: dict[str, Any] = {
             "id": f"node{node.id}",
             "node_type": node_type,
+            "color": color,
             "label": label,
             "label_minimal": node.get_minimal_label(),
             "n_samples": n_samples,
@@ -143,20 +161,20 @@ def viz_tree_to_cytoscape_elements(
             classes.append("highlight")
             node_highlight_x = highlight_x
 
-        if use_regplots and isinstance(node, InternalNode):
+        if show_node_plots and isinstance(node, InternalNode):
             make_regression_plot(
                 node,
                 viz_tree.X_train,
                 f"{dir_live}/regplots/regplot_node{node.id}_{elements_id}.svg",
                 fig_size,
-                viz_tree.feature_colors,
+                feature_colors,
                 None,
                 node_highlight_x
             )
             data["dir_regplot"] = f"/internal_regplots/regplot_node{node.id}_{elements_id}.svg"
             classes.append("regplot")
 
-        if use_predsplots and isinstance(node, LeafNode):
+        if show_node_plots and isinstance(node, LeafNode):
             if predsplot_type2:
                 predsplot2(viz_tree=viz_tree,
                            leaf_node=node,
@@ -170,23 +188,32 @@ def viz_tree_to_cytoscape_elements(
                            highlight_x=node_highlight_x,
                            staircase=predsplot_staircase,
                            feature_names=None,
-                           all_feature_colors=viz_tree.feature_colors,
+                           all_feature_colors=feature_colors,
                            )
                 data["dir_predsplot"] = f"/internal_predsplots/predsplot2_node{node.id}_{elements_id}.svg"
                 classes.append("predsplot")
             else:
-                if np.any(node.coefficients != 0):
-                    X = viz_tree.X_train[node.indices, :]
+                if np.any(np.array(node.node_model.coefficients) != 0):
+                    node_X = viz_tree.X_train[node.indices, :]
                     if predsplot_use_intercept:
-                        intercept = node.intercept
+                        intercept = node.node_model.intercept
                     else:
                         intercept = None
-                    predsplot(X, node.coefficients, y_hat=np.sum(node.coefficients * X, axis=1) + node.intercept,
-                              n_max=predsplot_n_max, intercept=intercept, fig_size=fig_size, feature_names=None,
-                              all_feature_colors=viz_tree.feature_colors,
-                              display_type=predsplot_display_type, truncate_total_pred=predsplot_truncate_total_pred, variable_tick_width=True,
+                    predsplot(node_X,
+                              np.array(node.node_model.coefficients),
+                              y_hat=np.array(
+                                  np.sum(node.node_model.coefficients * node_X, axis=1) + node.node_model.intercept),
+                              n_max=predsplot_n_max,
+                              intercept=intercept,
+                              fig_size=fig_size,
+                              feature_names=None,
+                              all_feature_colors=feature_colors,
+                              display_type=predsplot_display_type,
+                              truncate_total_pred=predsplot_truncate_total_pred,
+                              variable_tick_width=True,
                               file_directory=f"{dir_live}/predsplots/predsplot_node{node.id}_{elements_id}.svg",
-                              highlight_x=node_highlight_x, staircase=predsplot_staircase)
+                              highlight_x=node_highlight_x,
+                              staircase=predsplot_staircase)
                     data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
                     classes.append("predsplot")
 

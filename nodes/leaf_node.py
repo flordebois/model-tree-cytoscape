@@ -1,10 +1,11 @@
 from typing import List
 from nodes.base_node import BaseNode
-from nodes.node_model import NodeModel, node_model_from_dict
+from nodes.node_model import node_model_from_dict, LinearNodeModel
+
 
 @BaseNode.register
 class LeafNode(BaseNode):
-    node_model: NodeModel = None
+    node_model: LinearNodeModel = None
 
     def __init__(self, indices, y_res, rss, node_model):
         super().__init__(indices, y_res, rss)
