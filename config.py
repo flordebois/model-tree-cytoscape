@@ -1,7 +1,7 @@
 from pathlib import Path
 import pickle
 
-# --- Filesystem (used by app.py's image-serving Flask routes) ----------
+# --- Filesystem ---------------------------------------------------------
 DIR_BASE = Path(__file__).resolve().parent
 DIR_LIVE_OUTPUT = DIR_BASE / "output" / "live"
 DIR_SAVED_VIZ_TREES = DIR_BASE / "output" / "saved_viz_trees"
@@ -18,8 +18,6 @@ DATASET_OPTIONS = [
     {"label": "485_analcatdata_vehicle", "value": "485_analcatdata_vehicle"},
     {"label": "210_cloud", "value": "210_cloud"},
     {"label": "1028_SWD", "value": "1028_SWD"},
-    # {"label": "simulated_linear", "value": "simulated_linear"},
-    # {"label": "california", "value": "california"},
     {"label": "197_cpu_act", "value": "197_cpu_act"},
 ]
 
@@ -51,7 +49,7 @@ DEFAULT_MIN_SAMPLE_LEAF = 5
 DEFAULT_RANK_SEP = 30
 DEFAULT_NODE_SEP = 20
 
-# --- Settings card / plot defaults ---------------------------------------
+# --- Settings node plot defaults -----------------------------------------
 DEFAULT_COLLAPSE_LEVEL = 5
 DEFAULT_DISPLAY_TYPE = "histogram"
 DEFAULT_NMAX = 5
@@ -67,7 +65,7 @@ def get_initial_graph_info():
         input_dict = pickle.load(f)
     return input_dict["viz_tree_dict"], input_dict["tree_params"]
 
-# ── Stylesheet builder ─────────────────────────────────────────────────────────
+# ── Stylesheet ────────────────────────────────────────────────────────────
 font_family = "Arial, sans-serif"
 font_size = 12
 selected_color = "#000000"
@@ -93,7 +91,7 @@ CYTOSCAPE_STYLESHEET = [
             "border-color": "#000000",
         },
     },
-    # ── specific nodes ────────────────────────────────────────────────────
+    # ── Specific nodes ────────────────────────────────────────────────────
     {
         "selector": "node.LeafNode",
         "style": {
@@ -161,7 +159,7 @@ CYTOSCAPE_STYLESHEET = [
             "text-background-padding": "2px",
         },
     },
-    # ── specific edges ────────────────────────────────────────────────────
+    # ── Specific edges ────────────────────────────────────────────────────
     {
         "selector": "edge.combine_lin",
         "style": {

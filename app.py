@@ -1,13 +1,3 @@
-"""
-Entry point for PILOT-VIS.
-
-Run with: python app.py
-
-Ported from the old single-file app:
-  - cyto.load_extra_layouts() is still needed for the dagre layout
-  - the two Flask routes serving regplot/predsplot images still live here,
-    since they're server-level infrastructure, not page content
-"""
 import dash
 import dash_bootstrap_components as dbc
 import dash_cytoscape as cyto
@@ -30,7 +20,6 @@ app: Dash = dash.Dash(
     suppress_callback_exceptions=True,
 )
 app.title = "PILOT-VIS"
-
 
 @app.server.route("/internal_regplots/<path:filename>")
 def serve_regplots(filename):

@@ -6,7 +6,6 @@ from nodes.leaf_node import LeafNode
 from nodes.split_node import SplitNode
 from nodes.node_model import LinearNodeModel, NoneNodeModel, ConstantNodeModel
 
-
 def build_viz_tree_from_m5(m5_model, X_train, y_train) -> BaseNode:
     # builds a viz tree from a fitted m5py model (M5Base / M5Prime).
     tree = m5_model.tree_
@@ -14,7 +13,6 @@ def build_viz_tree_from_m5(m5_model, X_train, y_train) -> BaseNode:
     root_indices = np.ones(X_train.shape[0], dtype=bool)
 
     return _build_viz_tree_from_m5(tree, node_models, X_train, y_train, root_indices, node_id=0)
-
 
 def _build_viz_tree_from_m5(tree, node_models, X_train, y_train, current_indices, node_id) -> BaseNode:
 

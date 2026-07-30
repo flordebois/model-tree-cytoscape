@@ -1,14 +1,6 @@
-"""
-dcc.Store components carried over verbatim from the old app.layout.
-Kept outside dash.page_container (see app.py) so Explain can still read
-store-viz-tree without you having to re-plumb anything.
-"""
-
-
 from dash import dcc, html
 from config import get_initial_graph_info
 import ids
-
 
 def make_global_stores() -> html.Div:
     viz_tree_dict, tree_params = get_initial_graph_info()

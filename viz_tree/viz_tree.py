@@ -8,7 +8,6 @@ from nodes.internal_node import InternalNode
 from nodes.collapsed_node import CollapsedNode
 from nodes.none_node import NoneNode
 
-
 class VizTree:
     root_node: BaseNode
     nodes: List[BaseNode]

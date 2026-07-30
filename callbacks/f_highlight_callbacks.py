@@ -7,6 +7,15 @@ import ids
 
 def register_callbacks(app):
     @app.callback(
+        Output(ids.HIGHLIGHT_COLLAPSE, "is_open"),
+        Input(ids.HIGHLIGHT_TOGGLE_BUTTON, "n_clicks"),
+        State(ids.HIGHLIGHT_COLLAPSE, "is_open"),
+        prevent_initial_call=True,
+    )
+    def toggle_card(n_clicks, is_open):
+        return not is_open
+
+    @app.callback(
         Output(ids.INPUT_HIGHLIGHT, "value"),
         Input(ids.BTN_RANDOM_POINT, "n_clicks"),
         State(ids.STORE_VIZ_TREE, "data"),

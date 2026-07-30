@@ -2,7 +2,6 @@ from typing import List
 from nodes.base_node import BaseNode
 from nodes.node_model import node_model_from_dict, LinearNodeModel
 
-
 @BaseNode.register
 class LeafNode(BaseNode):
     node_model: LinearNodeModel = None

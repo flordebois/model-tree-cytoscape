@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from nodes.internal_node import InternalNode, LinearNode
 from nodes.split_node import PconcNode, SplitNode, PconNode
 
-
 def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file, fig_size, feature_colors, feature_names, highlight_x=None):
     X = viz_tree_X[node.indices,:]
     

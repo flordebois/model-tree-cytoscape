@@ -1,9 +1,8 @@
 import dash_bootstrap_components as dbc
-from dash import dcc, html
+from dash import html
 
 import ids
 from config import DEFAULT_DISPLAY_TYPE, DEFAULT_FIG_H, DEFAULT_FIG_W, DEFAULT_NMAX
-
 
 def make_settings_card() -> dbc.Card:
     return dbc.Card(
@@ -33,7 +32,7 @@ def make_settings_card() -> dbc.Card:
                             # Number of Variables Input
                             dbc.Col(
                                 [
-                                    dbc.Label("Number of Variables", className="small fw-bold text-muted mb-1"),
+                                    dbc.Label("# Variables", className="small fw-bold text-muted mb-1"),
                                     dbc.Input(
                                         id=ids.INPUT_NMAX,
                                         type="number",

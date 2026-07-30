@@ -1,20 +1,16 @@
-from os.path import split
-
 import numpy as np
-
-from nodes.split_node import PconNode, PconcNode, SplitNode
-from plots.beeswarm import beeswarm
-from plots.predsplot import predsplot
-from viz_tree.viz_tree import VizTree
-from sklearn.linear_model import LinearRegression
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from shap.plots import colors
 from datetime import datetime
 import os
 from subprocess import run
+
+from viz_tree.viz_tree import VizTree
 from nodes.collapsed_node import CollapsedNode
 from nodes.internal_node import InternalNode, LinearNode
+from nodes.split_node import PconNode, PconcNode, SplitNode
 from nodes.leaf_node import LeafNode
+from plots.beeswarm import beeswarm
 import matplotlib.pyplot as plt
 
 # def get_contributions(viz_tree: VizTree):

@@ -1,3 +1,6 @@
+"""
+TODO: This page is a work in progress, it doesn't work yet
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -17,7 +20,6 @@ DOT_COLOR_UP = "red"
 DOT_COLOR_DOWN = "blue"
 DOT_LINE_WIDTH = 2
 DOT_SIZE = 4
-
 
 def beeswarm(all_contributions, X, y_hat, n_max=5, fig_size=(10, 5),
              feature_names=None, all_feature_colors=None, display_type="histogram", truncate_total_pred=False,

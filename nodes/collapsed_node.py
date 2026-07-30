@@ -1,5 +1,3 @@
-from typing import List
-
 from nodes.base_node import BaseNode
 
 @BaseNode.register

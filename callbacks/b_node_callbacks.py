@@ -1,10 +1,9 @@
 import ids
 from dash import Input, Output, State, html
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-from callbacks.edit_tree_callbacks import find_node_by_cytoscape_id
+from callbacks.d_edit_tree_callbacks import find_node_by_cytoscape_id
 from config import DIR_LIVE_OUTPUT, NODE_TYPE_COLORS
 from nodes.internal_node import InternalNode
 from nodes.leaf_node import LeafNode
@@ -13,8 +12,6 @@ from plots.predsplot2 import predsplot2
 from plots.regplot import make_regression_plot
 from viz_tree.viz_tree import VizTree
 from urllib.parse import quote
-
-
 
 def register_callbacks(app):
     @app.callback(

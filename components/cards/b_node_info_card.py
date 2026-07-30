@@ -1,17 +1,7 @@
-"""
-Node Information card: shows details of the currently-selected node
-(type, id, RSS, ...) plus a NEW switch that reveals a plot of the node
-at the bottom. The card is small when the switch is off; the dbc.Collapse
-expands it to show the plot when on.
-
-Card height changing based on the switch is handled entirely by
-dbc.Collapse -- no manual height math needed.
-"""
 import dash_bootstrap_components as dbc
 from dash import html, dcc
-from components.node_info_settings_card import make_settings_card
+from components.cards.bb_node_plot_settings_card import make_settings_card
 import ids
-
 
 def make_node_info_card() -> dbc.Card:
     return dbc.Card(

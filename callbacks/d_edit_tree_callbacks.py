@@ -1,6 +1,4 @@
 import time
-from pyexpat.errors import messages
-
 from dash import Input, Output, State, ctx
 from dash.exceptions import PreventUpdate
 
@@ -17,6 +15,15 @@ def find_node_by_cytoscape_id(viz_tree: VizTree, cytoscape_id: str):
     raise ValueError(f"No node found for cytoscape id {cytoscape_id!r}")
 
 def register_callbacks(app):
+    @app.callback(
+        Output(ids.EDIT_TREE_COLLAPSE, "is_open"),
+        Input(ids.EDIT_TREE_TOGGLE_BUTTON, "n_clicks"),
+        State(ids.EDIT_TREE_COLLAPSE, "is_open"),
+        prevent_initial_call=True,
+    )
+    def toggle_card(n_clicks, is_open):
+        return not is_open
+
     @app.callback(
         Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),

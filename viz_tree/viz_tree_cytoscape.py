@@ -4,7 +4,6 @@ from typing import Any
 from nodes.collapsed_node import CollapsedNode
 from nodes.split_node import PconcNode
 from viz_tree.viz_tree import VizTree
-from nodes.base_node import BaseNode
 from nodes.leaf_node import LeafNode
 from nodes.internal_node import InternalNode, LinearNode
 from nodes.combined_lin_node import CombinedLinNode
