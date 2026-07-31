@@ -1,0 +1,45 @@
+site_name: Visualisation of linear model trees
+site_description: User guide and documentation for the Dash application
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.expand
+    - content.code.copy
+    - search.suggest
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+nav:
+  - Home: home.md
+
+  - User Guide:
+      - Interface Overview: user-guide/interface-overview.md
+
+      - Interaction Cards:
+          - Tree Info: user-guide/a-tree-info.md
+          - Node Information: user-guide/b-node-info.md
+          - New Tree: user-guide/c-new-tree.md
+          - Edit Tree: user-guide/d-edit-tree.md
+          - Layout: user-guide/e-layout.md
+          - Highlight: user-guide/f-highlight.md
+
+  - Gallery: gallery.md
