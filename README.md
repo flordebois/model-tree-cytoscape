@@ -1,6 +1,6 @@
 # Linear Model Tree Visualization
 
-A Python application for visualizing and exploring **linear model trees**. The application provides an interactive interface to inspect tree structures, understand individual node models, and analyze how predictions are made.
+A Python application for visualizing and exploring **linear model trees** with dash cytoscape. The application provides an interactive interface to inspect tree structures, understand individual node models, and analyze how predictions are made.
 
 The application currently supports two linear model tree algorithms:
 
@@ -11,7 +11,7 @@ The main goal of this project is to make linear model trees easier to understand
 
 ## Documentation
 
-Full documentation, including explanations of the interface and visualization options, is available in the `docs` folder or through the project documentation website.
+Full documentation, including explanations of the interface and visualization options, is available [here](https://flordebois.github.io/model-tree-cytoscape/).
 
 ## Installation
 

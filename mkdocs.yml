@@ -1,5 +1,6 @@
 site_name: Visualisation of linear model trees
 site_description: User guide and documentation for the Dash application
+site_url: https://flordebois.github.io/model-tree-cytoscape/
 repo_name: flordebois/model-tree-cytoscape
 repo_url: https://github.com/flordebois/model-tree-cytoscape
 
