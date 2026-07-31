@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/gallery/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/gallery/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/home/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/home/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/a-tree-info/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/a-tree-info/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/b-node-info/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/b-node-info/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/c-new-tree/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/c-new-tree/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/d-edit-tree/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/d-edit-tree/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/e-layout/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/e-layout/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/f-highlight/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/f-highlight/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://flordebois.github.io/model-tree-cytoscape/user-guide/interface-overview/</loc>
+         <loc>https://flordebois.github.io/model-tree-cytoscape/home/user-guide/interface-overview/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
 </urlset>
