@@ -37,5 +37,6 @@ def make_cytoscape_graph() -> cyto.Cytoscape:
         },
         minZoom=0.1,
         maxZoom=10,
-        boxSelectionEnabled=True,
+        autounselectify=False,
+        boxSelectionEnabled=False,
     )

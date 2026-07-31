@@ -127,6 +127,9 @@ def predsplot2(viz_tree:VizTree, leaf_node:LeafNode, y_hat, n_max=5, fig_size=(1
         contributions[:, :n_max - 1] = all_contributions[:, features_to_keep]
         contributions[:, n_max - 1] = np.sum(all_contributions[:, features_to_combine], axis=1)
 
+        if np.var(feature_data[:, n_max - 1]) < 1e-15:
+            split_features.append(n_max-1)
+
         features_labels = [all_feature_labels[i] for i in features_to_keep]
         features_labels.append("Remainder")
 

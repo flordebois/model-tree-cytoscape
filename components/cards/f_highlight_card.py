@@ -29,7 +29,7 @@ def make_highlight_card() -> dbc.Card:
                         dbc.Input(
                             id=ids.INPUT_HIGHLIGHT,
                             type="text",
-                            placeholder="e.g. 1.2, 0.5, 3.1",
+                            placeholder="e.g. 1.2, 0.5, 3.1,...",
                             class_name="mb-2",
                         ),
                         dcc.Checklist(

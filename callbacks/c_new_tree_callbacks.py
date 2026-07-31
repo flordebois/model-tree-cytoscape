@@ -1,7 +1,3 @@
-# print("importing PILOT...")
-# from pilot.pilot import PILOT
-#
-# print("import done")
 from m5py import M5Prime
 import os
 import pickle
@@ -18,13 +14,17 @@ from viz_tree.build_viz_tree_pilot import build_viz_tree_from_pilot
 from viz_tree.build_viz_tree_m5 import build_viz_tree_from_m5
 from benchmark_info import PMLB_DATASETS_CAT_IDS
 
-def fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> VizTree:
+def fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> (VizTree, str):
     print('Fitting model dataset:')
     print(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
     data = fetch_data(dataset_name)
     X = np.array(data.iloc[:, :-1])
     y = np.array(data.iloc[:, -1])
     if method_name == "Pilot":
+        print("importing PILOT...")
+        from pilot.pilot import PILOT
+        print("import done")
+        start_time = time.time()
         categorical_ids = PMLB_DATASETS_CAT_IDS[dataset_name]
         model = PILOT(max_depth=max_depth,
                             max_model_depth=max_depth,
@@ -41,8 +41,9 @@ def fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_samp
             accumulated_coefficients=np.zeros(X.shape[1]),
             accumulated_intercept=0.0
         )
-
+        elapsed_time = time.time() - start_time
     elif method_name == "M5":
+        start_time = time.time()
         model = M5Prime(
             use_pruning=True,
             use_smoothing=True,
@@ -53,9 +54,10 @@ def fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_samp
         )
         model.fit(X, y)
         root_node = build_viz_tree_from_m5(model, X, y)
+        elapsed_time = time.time() - start_time
     else:
         raise ValueError(f'Method name {method_name} not recognized.')
-    return VizTree(root_node, X, y, model.predict(X))
+    return VizTree(root_node, X, y, model.predict(X)), f"{int(elapsed_time // 60)}min {int(elapsed_time % 60)}sec"
 
 def register_callbacks(app):
     @app.callback(
@@ -124,6 +126,7 @@ def register_callbacks(app):
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
+        Output(ids.DUMMY_FOR_SPINNER, "children"),
 
         Input(ids.BTN_FIT_NEW_TREE, "n_clicks"),
         State(ids.INPUT_DATASET, "value"),
@@ -139,9 +142,7 @@ def register_callbacks(app):
             print("call to fit tree with clicks None")
             raise PreventUpdate#
         print("fitting tree")
-        start_time = time.time()
-        viz_tree = fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
-        elapsed_time = time.time() - start_time
+        viz_tree, training_time = fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
         viz_tree_dict = viz_tree.to_dict()
         tree_params = {
             "dataset_name": dataset_name,
@@ -150,13 +151,13 @@ def register_callbacks(app):
             "max_model_depth": max_model_depth,
             "min_sample_split": min_sample_split,
             "min_sample_leaf": min_sample_leaf,
-            "training_time": f"{int(elapsed_time // 60)}min {int(elapsed_time % 60)}sec",
+            "training_time": training_time,
             "subtree_node_id": -1,
             "collapsed_nodes_count": 0,
             "highlight_x": None
         }
 
-        return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time()
+        return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), ""
 
     # --- SAVE TREE ---
     @app.callback(

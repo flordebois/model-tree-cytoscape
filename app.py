@@ -19,7 +19,7 @@ app: Dash = dash.Dash(
     external_stylesheets=[dbc.themes.FLATLY, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
 )
-app.title = "PILOT-VIS"
+app.title = "Visualisation of linear model trees"
 
 @app.server.route("/internal_regplots/<path:filename>")
 def serve_regplots(filename):
@@ -36,7 +36,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavLink(page["name"], href=page["path"], active="exact")
         for page in dash.page_registry.values()
     ],
-    brand="PILOT-VIS",
+    brand="Visualisation of linear model trees",
     color="dark",
     dark=True,
 )

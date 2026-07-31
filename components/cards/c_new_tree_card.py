@@ -25,91 +25,92 @@ def make_new_tree_card() -> dbc.Card:
                 )
             ),
             dbc.Collapse(
-                dbc.CardBody(
-                    [
-                        html.Div(
-                            style={"display": "flex", "gap": "10px", "flexWrap": "wrap", "marginBottom": "10px"},
-                            children=[
-                                html.Div(
-                                    [
-                                        html.Div("Dataset", style={"marginBottom": "4px"}),
-                                        dcc.Dropdown(
-                                            id=ids.INPUT_DATASET,
-                                            options=DATASET_OPTIONS,
-                                            value=DEFAULT_DATASET_NAME,
-                                            clearable=False,
-                                            style={"width": "200px"},
-                                        ),
-                                    ]
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div("Method", style={"marginBottom": "4px"}),
-                                        dcc.Dropdown(
-                                            id=ids.INPUT_METHOD,
-                                            options=METHOD_OPTIONS,
-                                            value=DEFAULT_METHOD_NAME,
-                                            clearable=False,
-                                            style={"width": "220px"},
-                                        ),
-                                    ]
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div("Max depth", style={"marginBottom": "4px"}),
-                                        dcc.Input(id=ids.INPUT_MAX_DEPTH, type="number", value=DEFAULT_MAX_DEPTH),
-                                    ]
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div("Max model depth", style={"marginBottom": "4px"}),
-                                        dcc.Input(
-                                            id=ids.INPUT_MAX_MODEL_DEPTH, type="number", value=DEFAULT_MAX_MODEL_DEPTH
-                                        ),
-                                    ]
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div("Min sample split", style={"marginBottom": "4px"}),
-                                        dcc.Input(
-                                            id=ids.INPUT_MIN_SAMPLE_SPLIT, type="number", value=DEFAULT_MIN_SAMPLE_SPLIT
-                                        ),
-                                    ]
-                                ),
-                                html.Div(
-                                    [
-                                        html.Div("Min sample leaf", style={"marginBottom": "4px"}),
-                                        dcc.Input(
-                                            id=ids.INPUT_MIN_SAMPLE_LEAF, type="number", value=DEFAULT_MIN_SAMPLE_LEAF
-                                        ),
-                                    ]
-                                ),
-                            ],
-                        ),
-                        html.Div(
-                            style={"display": "flex", "gap": "8px", "flexWrap": "wrap", "marginBottom": "10px"},
-                            children=[
-                                dbc.Button("Fit Tree", id=ids.BTN_FIT_NEW_TREE, size="sm"),
-                                dbc.Button("Save shown tree", id=ids.BTN_SAVE_TREE, size="sm"),
-                                dbc.Button("Download shown tree", id=ids.BTN_SAVE_TREE_SVG, size="sm"),
-                                dbc.Button("Reload tree", id=ids.BTN_RELOAD_TREE, size="sm"),
-                            ],
-                        ),
-                        html.Div(
-                            style={"display": "flex", "gap": "8px"},
-                            children=[
-                                dbc.Input(
-                                    id=ids.INPUT_LOAD_TREE,
-                                    type="text",
-                                    placeholder="path to saved_viz_trees/...",
-                                ),
-                                dbc.Button("Load tree", id=ids.BTN_LOAD_TREE, size="sm"),
-                            ],
-                        ),
-                        # Fitting is the slow action here -> spinner-wrapped feedback area.
-                        # with_spinner(html.Div(id=ids.NEW_TREE_FIT_OUTPUT), spinner_id=ids.NEW_TREE_FIT_SPINNER),
-                        # TODO: Make a spinner when the fitting a new tree
-                    ]
+                dbc.Spinner(
+                    dbc.CardBody(
+                        [
+                            html.Div(
+                                style={"display": "flex", "gap": "10px", "flexWrap": "wrap", "marginBottom": "10px"},
+                                children=[
+                                    html.Div(
+                                        [
+                                            html.Div("Dataset", style={"marginBottom": "4px"}),
+                                            dcc.Dropdown(
+                                                id=ids.INPUT_DATASET,
+                                                options=DATASET_OPTIONS,
+                                                value=DEFAULT_DATASET_NAME,
+                                                clearable=False,
+                                                style={"width": "200px"},
+                                            ),
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.Div("Method", style={"marginBottom": "4px"}),
+                                            dcc.Dropdown(
+                                                id=ids.INPUT_METHOD,
+                                                options=METHOD_OPTIONS,
+                                                value=DEFAULT_METHOD_NAME,
+                                                clearable=False,
+                                                style={"width": "220px"},
+                                            ),
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.Div("Max depth", style={"marginBottom": "4px"}),
+                                            dcc.Input(id=ids.INPUT_MAX_DEPTH, type="number", value=DEFAULT_MAX_DEPTH),
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.Div("Max model depth", style={"marginBottom": "4px"}),
+                                            dcc.Input(
+                                                id=ids.INPUT_MAX_MODEL_DEPTH, type="number", value=DEFAULT_MAX_MODEL_DEPTH
+                                            ),
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.Div("Min sample split", style={"marginBottom": "4px"}),
+                                            dcc.Input(
+                                                id=ids.INPUT_MIN_SAMPLE_SPLIT, type="number", value=DEFAULT_MIN_SAMPLE_SPLIT
+                                            ),
+                                        ]
+                                    ),
+                                    html.Div(
+                                        [
+                                            html.Div("Min sample leaf", style={"marginBottom": "4px"}),
+                                            dcc.Input(
+                                                id=ids.INPUT_MIN_SAMPLE_LEAF, type="number", value=DEFAULT_MIN_SAMPLE_LEAF
+                                            ),
+                                        ]
+                                    ),
+                                ],
+                            ),
+                            html.Div(
+                                style={"display": "flex", "gap": "8px", "flexWrap": "wrap", "marginBottom": "10px"},
+                                children=[
+                                    dbc.Button("Fit Tree", id=ids.BTN_FIT_NEW_TREE, size="sm"),
+                                    dbc.Button("Save shown tree", id=ids.BTN_SAVE_TREE, size="sm"),
+                                    dbc.Button("Download shown tree", id=ids.BTN_SAVE_TREE_SVG, size="sm"),
+                                    dbc.Button("Reload tree", id=ids.BTN_RELOAD_TREE, size="sm"),
+                                ],
+                            ),
+                            html.Div(
+                                style={"display": "flex", "gap": "8px"},
+                                children=[
+                                    dbc.Input(
+                                        id=ids.INPUT_LOAD_TREE,
+                                        type="text",
+                                        placeholder="path to saved_viz_trees/...",
+                                    ),
+                                    dbc.Button("Load tree", id=ids.BTN_LOAD_TREE, size="sm"),
+                                ],
+                            ),
+                            html.Div(id=ids.DUMMY_FOR_SPINNER, style={"display": "none"}),
+                        ],
+                    ),
+                    delay_show=300,
                 ),
                 id=ids.NEW_TREE_COLLAPSE,
                 is_open=False,

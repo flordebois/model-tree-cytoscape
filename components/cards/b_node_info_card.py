@@ -35,17 +35,17 @@ def make_node_info_card() -> dbc.Card:
                         html.Span(id = ids.NODE_INFO_ID, children="—", className="fs-6")
                     ], width=2),
                     dbc.Col([
-                        html.Small("Samples", className="text-muted d-block fw-bold"),
+                        html.Small("# Samples", className="text-muted d-block fw-bold"),
                         html.Span(id = ids.NODE_INFO_SAMPLES, children="—", className="fs-6")
                     ], width=2),
                     dbc.Col([
                         html.Small("Current RSS", className="text-muted d-block fw-bold"),
                         html.Span(id = ids.NODE_INFO_RSS, children="—", className="fs-6")
-                    ], width=2),
+                    ], width=3),
                     dbc.Col([
                         html.Small("RSS root Reduction", className="text-muted d-block fw-bold"),
                         html.Span(id = ids.NODE_INFO_RSS_REDUCTION, children="—", className="fs-6")
-                    ], width=3),
+                    ], width=4),
                 ], className="mb-3")
                 ,
                 dbc.Switch(
@@ -57,12 +57,13 @@ def make_node_info_card() -> dbc.Card:
                     id=ids.NODE_INFO_PLOT_COLLAPSE,
                     is_open=False,
                     children=[
-                        dcc.Loading(
+                        dbc.Spinner(
                             html.Div(
                                 id=ids.NODE_INFO_PLOT_CONTAINER,
                                 children="Plot will appear here, no node selected.",
                                 style={"marginBottom": "8px"},
                             ),
+                            delay_show=300,
                         ),
                         make_settings_card()
                     ]

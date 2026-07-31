@@ -31,17 +31,17 @@ def register_callbacks(app):
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_COLLAPSE_EXPAND, "n_clicks"),
-        State(ids.CYTOSCAPE_GRAPH, "tapNodeData"),
+        State(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
         State(ids.STORE_VIZ_TREE, "data"),
         State(ids.STORE_TREE_PARAMS, "data"),
         prevent_initial_call=True,
     )
-    def toggle_collapse_expand_node(n_clicks, tapped_node, viz_tree_dict, tree_params):
-        if tapped_node is None or "leaf" in tapped_node["node_type"]:
+    def toggle_collapse_expand_node(n_clicks, selected_node, viz_tree_dict, tree_params):
+        if not selected_node or "leaf" in selected_node[0]["node_type"]:
             raise PreventUpdate
 
         viz_tree = VizTree.from_dict(viz_tree_dict)
-        node = find_node_by_cytoscape_id(viz_tree, tapped_node["id"])
+        node = find_node_by_cytoscape_id(viz_tree, selected_node[0]["id"])
 
         n_collapsed_nodes = 0
         if isinstance(node, CollapsedNode):
@@ -141,23 +141,23 @@ def register_callbacks(app):
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_SUBTREE, "n_clicks"),
-        State(ids.CYTOSCAPE_GRAPH, "tapNodeData"),
+        State(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
         State(ids.STORE_VIZ_TREE, "data"),
         State(ids.STORE_TREE_PARAMS, "data"),
         prevent_initial_call=True,
     )
-    def subtree_from_node(n_clicks, tapped_node, viz_tree_dict, tree_params):
-        if tapped_node is None:
+    def subtree_from_node(n_clicks, selected_node, viz_tree_dict, tree_params):
+        if not selected_node:
             raise PreventUpdate
 
         viz_tree = VizTree.from_dict(viz_tree_dict)
-        root = find_node_by_cytoscape_id(viz_tree, tapped_node["id"])
+        root = find_node_by_cytoscape_id(viz_tree, selected_node[0]["id"])
 
         viz_tree.root_node = root
         viz_tree.nodes = viz_tree.collect_nodes()
         viz_tree.edges = viz_tree.collect_edges()
 
         new_tree_params = tree_params.copy()
-        new_tree_params["subtree_node_id"] = tapped_node["id"]
+        new_tree_params["subtree_node_id"] = selected_node[0]["id"]
 
-        return viz_tree.to_dict(), new_tree_params, f"Subtree from {tapped_node['id']}.", time.time()
+        return viz_tree.to_dict(), new_tree_params, f"Subtree from {selected_node[0]['id']}.", time.time()

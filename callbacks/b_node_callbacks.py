@@ -23,20 +23,23 @@ def register_callbacks(app):
         Output(ids.NODE_INFO_RSS, "children"),
         Output(ids.NODE_INFO_RSS_REDUCTION, "children"),
 
-        Input(ids.CYTOSCAPE_GRAPH, "tapNodeData"),
+        Input(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
         prevent_initial_call=True
     )
-    def update_node_info(data):
-        node_type = data.get("node_type", "—") if data else "—"
-        badge_label = "Standby" if not data else f"{node_type[:-4]} Node"
+    def update_node_info(selected_node):
+        node = selected_node[0] if selected_node else {}
+
+        node_type = node.get("node_type", "—")
+        badge_label = f"{node_type[:-4]} Node" if selected_node else "Standby"
         badge_color = NODE_TYPE_COLORS.get(node_type, "#6c757d")
         badge_style = {"backgroundColor": badge_color, "color": "#ffffff"}
 
-        label = data.get("label", "—") if data else "No node selected."
-        node_id = data.get("id", "—") if data else "—"
-        n_samples = data.get("n_samples", "—") if data else "—"
-        rss = data.get("rss", "—") if data else "—"
-        rss_root_reduction = data.get("rss_root_reduction", "—") if data else "—"
+        label = node.get("label", "No node selected.")
+        node_id = node.get("id", "—")
+        n_samples = node.get("n_samples", "—")
+        rss = node.get("rss", "—")
+        rss_root_reduction = node.get("rss_root_reduction", "—")
+
         return badge_label, badge_style, label, node_id, n_samples, rss, rss_root_reduction
 
 
@@ -52,7 +55,7 @@ def register_callbacks(app):
         Output(ids.NODE_INFO_PLOT_CONTAINER, "children"),
 
         Input(ids.NODE_INFO_PLOT_SWITCH, "value"),
-        Input(ids.CYTOSCAPE_GRAPH, "tapNodeData"),
+        Input(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
         Input(ids.BTN_REFIT_PLOTS, "n_clicks"),
         State(ids.STORE_VIZ_TREE, "data"),
 
@@ -66,7 +69,7 @@ def register_callbacks(app):
 
         prevent_initial_call=True,
     )
-    def render_node_plot(switch_on, tapped_node, _n_clicks, viz_tree_dict,
+    def render_node_plot(switch_on, selected_node, _n_clicks, viz_tree_dict,
                          display_type,
                          nmax,
                          figw,
@@ -75,17 +78,17 @@ def register_callbacks(app):
                          highlight_x,
                          predsplot_type,
                          ):
-        if not switch_on or not tapped_node:
+        if not switch_on or not selected_node:
             return "Plot will appear here, no node selected."
 
         use_intercept = "intercept" in predsplot_options
         truncate_total_pred = "truncate" in predsplot_options
         staircase = "staircase" in predsplot_options
         type2 = "type2" in predsplot_type
-        highlight_x_arr = None if highlight_x is None or not tapped_node['highlight'] else np.array(highlight_x)
+        highlight_x_arr = None if highlight_x is None or not selected_node[0]['highlight'] else np.array(highlight_x)
 
         viz_tree = VizTree.from_dict(viz_tree_dict)
-        node = find_node_by_cytoscape_id(viz_tree, tapped_node["id"])
+        node = find_node_by_cytoscape_id(viz_tree, selected_node[0]["id"])
         n_features = viz_tree.X_train.shape[1]
         cmap = plt.colormaps['tab20'].resampled(n_features)
         feature_colors = [cmap(i) for i in range(n_features)]

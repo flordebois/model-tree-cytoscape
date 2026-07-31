@@ -50,6 +50,7 @@ BTN_SAVE_TREE_SVG = "btn-save-tree-svg"
 BTN_RELOAD_TREE = "btn-reload-tree"
 INPUT_LOAD_TREE = "input-load-tree"
 BTN_LOAD_TREE = "btn-load-tree"
+DUMMY_FOR_SPINNER = "dummy-for-spinner"
 
 # --- D Edit Tree card ----------------------------------------------------
 EDIT_TREE_COLLAPSE = "edit-tree-collapse"

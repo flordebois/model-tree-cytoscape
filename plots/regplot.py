@@ -60,7 +60,7 @@ def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file,
         x1 = [min_x, pivot]
         x2 = [pivot, max_x]
         y1 = node.left_model.predict(x1)
-        y2 = node.left_model.predict(x2)
+        y2 = node.right_model.predict(x2)
         plt.plot(x1, y1, x2, y2, color=feature_colors[feature_idx], linewidth=3)
         self_name = str(node.__class__.__name__)
         plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")

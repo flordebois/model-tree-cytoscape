@@ -70,7 +70,7 @@ def get_split_and_lin_contributions_test(viz_tree: VizTree, x_test):
 
     X = viz_tree.X_train
     node = viz_tree.root_node
-    while isinstance(node, LeafNode):
+    while not isinstance(node, LeafNode):
         # Calculate contributions
         if isinstance(node, CollapsedNode):
             raise ValueError("CollapsedNode cannot be used when calculating contributions")
@@ -78,7 +78,7 @@ def get_split_and_lin_contributions_test(viz_tree: VizTree, x_test):
             pivot = node.pivot_idx
             if isinstance(node, LinearNode):
                 linear_predictions = node.linear_model.predict(X[node.child.indices, pivot])
-                linear_prediction_x_test = node.linear_model.predict([x_test[pivot]])
+                linear_prediction_x_test = node.linear_model.predict([x_test[pivot]])[0]
                 lin_contributions[pivot] += linear_prediction_x_test - np.mean(linear_predictions)
             else:
                 if isinstance(node, PconcNode) or isinstance(node, PconNode):
@@ -89,8 +89,8 @@ def get_split_and_lin_contributions_test(viz_tree: VizTree, x_test):
                     linear_predictions_right = node.right_model.predict(X[node.right_child.indices, pivot])
                     avg_pred_left = np.mean(linear_predictions_left)
                     avg_pred_right = np.mean(linear_predictions_right)
-                    linear_prediction_x_test_left = node.left_model.predict([x_test[pivot]])
-                    linear_prediction_x_test_right = node.right_model.predict([x_test[pivot]])
+                    linear_prediction_x_test_left = node.left_model.predict([x_test[pivot]])[0]
+                    linear_prediction_x_test_right = node.right_model.predict([x_test[pivot]])[0]
                 else:
                     raise ValueError(f"Node of class {node.__class__.__name__} is not implemented to calculate contributions")
 
