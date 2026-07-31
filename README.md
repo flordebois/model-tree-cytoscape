@@ -11,7 +11,7 @@ The main goal of this project is to make linear model trees easier to understand
 
 ## Documentation
 
-Full documentation, including explanations of the interface and visualization options, is available [here](https://flordebois.github.io/model-tree-cytoscape/).
+Full documentation, including explanations of the interface and visualization options, is available [here](https://flordebois.github.io/model-tree-cytoscape/home/).
 
 ## Installation
 
