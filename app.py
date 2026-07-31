@@ -7,6 +7,8 @@ from flask import send_from_directory
 from callbacks import register_all_callbacks
 from components.stores import make_global_stores
 from config import DIR_LIVE_OUTPUT
+import matplotlib
+matplotlib.use('agg')
 
 cyto.load_extra_layouts()
 
