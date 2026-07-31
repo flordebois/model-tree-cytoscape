@@ -60,7 +60,7 @@ SPINNER_COLOR = "primary"
 
 def get_initial_graph_info():
     with open(
-            "/Users/flor/Pycharm/Dash/output/saved_viz_trees/tree_28-07-26_16-29-53__1199_BNG_echoMonths-Pilot-12-30-2000-5.pkl",
+            "output/saved_viz_trees/tree_28-07-26_16-29-53__1199_BNG_echoMonths-Pilot-12-30-2000-5.pkl",
             "rb") as f:
         input_dict = pickle.load(f)
     return input_dict["viz_tree_dict"], input_dict["tree_params"]
