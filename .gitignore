@@ -12,3 +12,5 @@ output/
 !output/saved_viz_trees/tree_28-07-26_16-29-53__1199_BNG_echoMonths-Pilot-12-30-2000-5.pkl
 m5_example.py
 placeholder.py
+
+dataset/uploaded/

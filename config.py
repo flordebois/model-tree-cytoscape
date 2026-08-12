@@ -5,21 +5,12 @@ import pickle
 DIR_BASE = Path(__file__).resolve().parent
 DIR_LIVE_OUTPUT = DIR_BASE / "output" / "live"
 DIR_SAVED_VIZ_TREES = DIR_BASE / "output" / "saved_viz_trees"
-DIR_DATASETS = DIR_BASE / "datasets"
+DIR_DATASET_UPLOAD = DIR_BASE / "dataset" / "uploaded"
 
 # --- New Tree card defaults / options -----------------------------------
-DATASET_OPTIONS = [
-    {"label": "547_no2", "value": "547_no2"},
-    {"label": "294_satellite_image", "value": "294_satellite_image"},
-    {"label": "1199_BNG_echoMonths", "value": "1199_BNG_echoMonths"},
-    {"label": "658_fri_c3_250_25", "value": "658_fri_c3_250_25"},
-    {"label": "505_tecator", "value": "505_tecator"},
-    {"label": "560_bodyfat", "value": "560_bodyfat"},
-    {"label": "485_analcatdata_vehicle", "value": "485_analcatdata_vehicle"},
-    {"label": "210_cloud", "value": "210_cloud"},
-    {"label": "1028_SWD", "value": "1028_SWD"},
-    {"label": "197_cpu_act", "value": "197_cpu_act"},
-]
+
+NEW_CSV_OPTION = "__new_csv__"
+NO_FILE_SELECTED_PLACEHOLDER = "No file uploaded."
 
 METHOD_OPTIONS = [
     {"label": "Pilot", "value": "Pilot"},
@@ -39,7 +30,7 @@ NODE_TYPE_COLORS = {
 }
 
 DEFAULT_METHOD_NAME = "Pilot"
-DEFAULT_DATASET_NAME = "547_no2"
+DEFAULT_DATASET_NAME = "547_no2.pmlb"
 DEFAULT_MAX_DEPTH = 12
 DEFAULT_MAX_MODEL_DEPTH = 30
 DEFAULT_MIN_SAMPLE_SPLIT = 10

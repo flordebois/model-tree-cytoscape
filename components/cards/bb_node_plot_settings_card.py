@@ -98,7 +98,7 @@ def make_settings_card() -> dbc.Card:
                                     dbc.Label("Plot Type", className="small fw-bold text-muted d-block mb-1"),
                                     dbc.Checklist(
                                         id=ids.PREDSPLOT_TYPE,
-                                        options=[{"label": "Type 2 predsplot", "value": "type2"}],
+                                        options=[{"label": "Global predsplot", "value": "type2"}],
                                         value=[],
                                         inline=True,
                                         switch=True,

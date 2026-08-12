@@ -2,36 +2,54 @@ from m5py import M5Prime
 import os
 import pickle
 import time
-from dash import Input, Output, State, ctx
+from dash import Input, Output, State, ctx, callback, no_update
 from dash.exceptions import PreventUpdate
 import numpy as np
-from pmlb import fetch_data
+import base64
+from pathlib import Path
 
 import ids
-from config import DIR_SAVED_VIZ_TREES
+from config import DIR_SAVED_VIZ_TREES, NO_FILE_SELECTED_PLACEHOLDER, DEFAULT_DATASET_NAME
 from viz_tree.viz_tree import VizTree
 from viz_tree.build_viz_tree_pilot import build_viz_tree_from_pilot
 from viz_tree.build_viz_tree_m5 import build_viz_tree_from_m5
 from benchmark_info import PMLB_DATASETS_CAT_IDS
 
-def fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> (VizTree, str):
+from dataset.dataset_registry import (
+    NEW_CSV_OPTION,
+    DIR_DATASET_UPLOAD,
+    build_dropdown_options,
+    get_target_col,
+)
+from dataset.dataset import Dataset
+
+def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> (VizTree, str):
     print('Fitting model dataset:')
-    print(dataset_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
-    data = fetch_data(dataset_name)
-    X = np.array(data.iloc[:, :-1])
-    y = np.array(data.iloc[:, -1])
+    print(input_dataset, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
+
+    if input_dataset.endswith(".csv"):
+        csv_path = Path(input_dataset)
+        dataset_name = input_dataset[:-4]
+        dataset = Dataset.from_csv(input_dataset, target_col=get_target_col(csv_path), name=dataset_name)
+    elif input_dataset.endswith(".pmlb"):
+        dataset_name = input_dataset[:-5]
+        dataset = Dataset.from_pmlb(dataset_name)
+    else:
+        raise ValueError("Unknown dataset type")
+
+    X = dataset.X
+    y = dataset.y
     if method_name == "Pilot":
         print("importing PILOT...")
         from pilot.pilot import PILOT
         print("import done")
         start_time = time.time()
-        categorical_ids = PMLB_DATASETS_CAT_IDS[dataset_name]
         model = PILOT(max_depth=max_depth,
-                            max_model_depth=max_depth,
-                            min_sample_split=min_sample_split,
-                            min_sample_leaf=min_sample_leaf,
-                            )
-        model.fit(X, y, categorical=categorical_ids)
+                      max_model_depth=max_depth,
+                      min_sample_split=min_sample_split,
+                      min_sample_leaf=min_sample_leaf,
+                      )
+        model.fit(X, y, categorical=dataset.cat_ids)
         pilot_tree = model.model_tree
         root_node = build_viz_tree_from_pilot(
             pilot_node=pilot_tree,
@@ -68,6 +86,99 @@ def register_callbacks(app):
     )
     def toggle_card(n_clicks, is_open):
         return not is_open
+
+    # --- OPEN CSV MODAL ---
+    @app.callback(
+        Output(ids.MODAL_CSV, "is_open"),
+        Input(ids.INPUT_DATASET, "value"),
+        prevent_initial_call=True,
+    )
+    def maybe_open_csv_modal(value):
+        if value == NEW_CSV_OPTION:
+            return True
+        raise PreventUpdate
+
+    # --- CANCEL CSV MODAL ---
+    @app.callback(
+        Output(ids.MODAL_CSV_FEEDBACK, "children", allow_duplicate=True),
+        Output(ids.MODAL_CSV, "is_open", allow_duplicate=True),
+        Output(ids.INPUT_DATASET, "value", allow_duplicate=True),
+        Output(ids.MODAL_CSV_FILE_NAME, "children", allow_duplicate=True),
+        Output(ids.MODAL_CSV_INPUT_TARGET_COL, "value", allow_duplicate=True),
+
+        Input(ids.MODAL_CSV_BTN_CANCEL, "n_clicks"),
+        State(ids.MODAL_CSV_FILE_NAME, "children"),
+        prevent_initial_call=True,
+    )
+    def cancel_csv_modal(_, file_name):
+        file_path = str(DIR_DATASET_UPLOAD / file_name)
+        if file_path != NO_FILE_SELECTED_PLACEHOLDER:
+            path = Path(file_path)
+            if path.exists():
+                path.unlink()
+        return None, False, DEFAULT_DATASET_NAME, NO_FILE_SELECTED_PLACEHOLDER, None
+
+    # --- CONFIRM CSV MODAL ---
+    @app.callback(
+        Output(ids.MODAL_CSV_FEEDBACK, "children", allow_duplicate=True),
+        Output(ids.MODAL_CSV, "is_open", allow_duplicate=True),
+        Output(ids.INPUT_DATASET, "options", allow_duplicate=True),
+        Output(ids.INPUT_DATASET, "value", allow_duplicate=True),
+        Output(ids.MODAL_CSV_FILE_NAME, "children", allow_duplicate=True),
+        Output(ids.MODAL_CSV_INPUT_TARGET_COL, "value", allow_duplicate=True),
+
+        Input(ids.MODAL_CSV_BTN_CONFIRM, "n_clicks"),
+        State(ids.MODAL_CSV_FILE_NAME, "children"),
+        State(ids.MODAL_CSV_INPUT_TARGET_COL, "value"),
+        prevent_initial_call=True,
+    )
+    def confirm_csv_modal(_, file_name, target_col):
+        file_path = str(DIR_DATASET_UPLOAD / file_name)
+        if file_path == NO_FILE_SELECTED_PLACEHOLDER:
+            return "No file was uploaded yet.", no_update, no_update, no_update, no_update, no_update
+
+        if not target_col:
+            return "No target column was given.", no_update, no_update, no_update, no_update, no_update
+
+        try:
+            Dataset.from_csv(file_path, target_col=target_col)
+        except (ValueError, KeyError, TypeError) as e:
+            return f"Could not load CSV: {e}", no_update, no_update, no_update, no_update, no_update
+
+        path = Path(file_path)
+        path.with_suffix(".target.txt").write_text(target_col)
+        return None, False, build_dropdown_options(), str(path), NO_FILE_SELECTED_PLACEHOLDER, None
+
+    # --- CSV UPLOAD ---
+    @app.callback(
+        Output(ids.MODAL_CSV_FILE_NAME, "children"),
+        Output(ids.MODAL_CSV_FEEDBACK, "children"),
+
+        Input(ids.MODAL_CSV_UPLOAD, "contents"),
+        State(ids.MODAL_CSV_UPLOAD, "filename"),
+        State(ids.MODAL_CSV_FILE_NAME, "children"),
+        prevent_initial_call=True,
+    )
+    def csv_upload(contents, filename, old_file_name):
+        DIR_DATASET_UPLOAD.mkdir(parents=True, exist_ok=True)
+
+        old_file_path = str(DIR_DATASET_UPLOAD / old_file_name)
+        if old_file_path != NO_FILE_SELECTED_PLACEHOLDER:
+            path = Path(old_file_path)
+            if path.exists():
+                path.unlink()
+
+        _, content_string = contents.split(",", 1)
+        decoded = base64.b64decode(content_string)
+
+        path = DIR_DATASET_UPLOAD / filename
+
+        if path.exists():
+            return no_update, f"There already exists a dataset with the name {filename}."
+
+        path.write_bytes(decoded)
+        return filename, no_update
+
 
     # --- LOAD TREE ---
     @app.callback(

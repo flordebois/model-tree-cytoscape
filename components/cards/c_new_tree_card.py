@@ -3,7 +3,6 @@ from dash import dcc, html
 
 import ids
 from config import (
-    DATASET_OPTIONS,
     DEFAULT_DATASET_NAME,
     METHOD_OPTIONS,
     DEFAULT_METHOD_NAME,
@@ -11,7 +10,9 @@ from config import (
     DEFAULT_MAX_MODEL_DEPTH,
     DEFAULT_MIN_SAMPLE_LEAF,
     DEFAULT_MIN_SAMPLE_SPLIT,
+    NO_FILE_SELECTED_PLACEHOLDER
 )
+from dataset.dataset_registry import build_dropdown_options
 
 def make_new_tree_card() -> dbc.Card:
     return dbc.Card(
@@ -36,10 +37,10 @@ def make_new_tree_card() -> dbc.Card:
                                             html.Div("Dataset", style={"marginBottom": "4px"}),
                                             dcc.Dropdown(
                                                 id=ids.INPUT_DATASET,
-                                                options=DATASET_OPTIONS,
+                                                options=build_dropdown_options(),
                                                 value=DEFAULT_DATASET_NAME,
                                                 clearable=False,
-                                                style={"width": "200px"},
+                                                style={"width": "220px"},
                                             ),
                                         ]
                                     ),
@@ -108,6 +109,77 @@ def make_new_tree_card() -> dbc.Card:
                                 ],
                             ),
                             html.Div(id=ids.DUMMY_FOR_SPINNER, style={"display": "none"}),
+                            dbc.Modal(
+                                [
+                                    dbc.ModalHeader("Upload new dataset as CSV file"),
+                                    dbc.ModalBody(
+                                        [
+                                            dcc.Upload(
+                                                id=ids.MODAL_CSV_UPLOAD,
+                                                children=html.Div("Drag and drop or click to select a CSV file"),
+                                                style={
+                                                    "width": "100%",
+                                                    "padding": "10px",
+                                                    "border": "1px dashed gray",
+                                                    "textAlign": "center",
+                                                },
+                                                multiple=False,
+                                            ),
+                                            html.Div(
+                                                [
+                                                    html.Label(
+                                                        "File uploaded:",
+                                                        style={"margin": 0, "marginRight": "8px",
+                                                               "whiteSpace": "nowrap"},
+                                                    ),
+                                                    html.Span(
+                                                        id=ids.MODAL_CSV_FILE_NAME,
+                                                        children=NO_FILE_SELECTED_PLACEHOLDER,
+                                                        style={"color": "#6c757d", "overflowWrap": "anywhere"},
+                                                    ),
+                                                ],
+                                                style={
+                                                    "display": "flex",
+                                                    "alignItems": "center",
+                                                    "marginTop": "12px",
+                                                    "marginBottom": "4px",
+                                                },
+                                            ),
+                                            html.Div(
+                                                [
+                                                    html.Label("Target column name",
+                                                               style={"marginTop": "12px", "marginBottom": "4px"}),
+                                                    dbc.Input(
+                                                        id=ids.MODAL_CSV_INPUT_TARGET_COL,
+                                                        placeholder="e.g. price, count, time, 0, 7, -1, ...",
+                                                    ),
+                                                ],
+                                            ),
+                                            html.Div(
+                                                id=ids.MODAL_CSV_FEEDBACK,
+                                                style={"marginTop": "8px", "color": "red"},
+                                            ),
+                                        ]
+                                    ),
+                                    dbc.ModalFooter(
+                                        [
+                                            dbc.Button(
+                                                "Cancel",
+                                                id=ids.MODAL_CSV_BTN_CANCEL,
+                                                color="secondary",
+                                            ),
+                                            dbc.Button(
+                                                "Confirm",
+                                                id=ids.MODAL_CSV_BTN_CONFIRM,
+                                                color="primary",
+                                            ),
+                                        ]
+                                    ),
+                                ],
+                                id=ids.MODAL_CSV,
+                                is_open=False,
+                                backdrop=False,
+                            ),
                         ],
                     ),
                     delay_show=300,
