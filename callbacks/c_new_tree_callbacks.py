@@ -45,7 +45,7 @@ def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sam
         print("import done")
         start_time = time.time()
         model = PILOT(max_depth=max_depth,
-                      max_model_depth=max_depth,
+                      max_model_depth=max_model_depth,
                       min_sample_split=min_sample_split,
                       min_sample_leaf=min_sample_leaf,
                       )
@@ -186,7 +186,7 @@ def register_callbacks(app):
         Output(ids.STORE_VIZ_TREE_BASE, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
-        Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
+        Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_LOAD_TREE, "n_clicks"),
         State(ids.INPUT_LOAD_TREE, "value"),
@@ -217,7 +217,7 @@ def register_callbacks(app):
     @app.callback(
         Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
-        Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
+        Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
 
         Input(ids.BTN_RELOAD_TREE, "n_clicks"),
         State(ids.STORE_VIZ_TREE_BASE, "data"),
@@ -236,8 +236,8 @@ def register_callbacks(app):
         Output(ids.STORE_VIZ_TREE_BASE, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
-        Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
-        Output(ids.DUMMY_FOR_SPINNER, "children"),
+        Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
+        Output(ids.TRIGGER_FOR_SPINNER, "children"),
 
         Input(ids.BTN_FIT_NEW_TREE, "n_clicks"),
         State(ids.INPUT_DATASET, "value"),
@@ -255,6 +255,9 @@ def register_callbacks(app):
         print("fitting tree")
         viz_tree, training_time = fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
         viz_tree_dict = viz_tree.to_dict()
+        n_leafs = viz_tree.get_n_leafs()
+        n_interal_nodes = len(viz_tree.nodes) - n_leafs
+        depth = viz_tree.get_depth()
         tree_params = {
             "dataset_name": dataset_name,
             "method_name": method_name,
@@ -265,10 +268,35 @@ def register_callbacks(app):
             "training_time": training_time,
             "subtree_node_id": -1,
             "collapsed_nodes_count": 0,
-            "highlight_x": None
+            "highlight_x": None,
+            "n_internal_nodes": n_interal_nodes,
+            "n_leafs": n_leafs,
+            "depth": depth,
+            "n_samples": viz_tree.X_train.shape[0],
+            "n_features": viz_tree.X_train.shape[1],
+            "pruned": False,
         }
 
         return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), ""
+
+    # --- NEW TREE TRIGGER ---
+    @app.callback(
+        Output(ids.SWITCH_MINIMAL, "value", allow_duplicate=True),
+        Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
+
+        Input(ids.NEW_TREE_TRIGGER, "data"),
+        State(ids.SWITCH_MINIMAL, "value"),
+        State(ids.STORE_TREE_PARAMS, "data"),
+        prevent_initial_call=True,
+    )
+    def new_tree_trigger(_, minimal_on, tree_params):
+        if minimal_on:
+            return no_update, time.time()
+        else:
+            if tree_params["n_leafs"] > 8:
+                return True, no_update
+            else:
+                return no_update, time.time()
 
     # --- SAVE TREE ---
     @app.callback(

@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any
 
 from nodes.collapsed_node import CollapsedNode
-from nodes.split_node import PconcNode
+from nodes.split_node import PconcNode, SplitNode
 from viz_tree.viz_tree import VizTree
 from nodes.leaf_node import LeafNode
 from nodes.internal_node import InternalNode, LinearNode
@@ -15,7 +15,7 @@ from plots.predsplot import predsplot
 from plots.predsplot2 import predsplot2
 from plots.regplot import make_regression_plot
 from datetime import datetime
-from config import NODE_TYPE_COLORS
+from config import NODE_TYPE_COLORS, MIN_EDGE_WIDTH, MAX_EDGE_WIDTH, MIN_NODE_HEIGHT, MAX_NODE_HEIGHT
 
 # ── Convert a VizTree into Cytoscape elements (nodes + edges) ──────────────────
 def viz_tree_to_cytoscape_elements(
@@ -34,6 +34,9 @@ def viz_tree_to_cytoscape_elements(
         predsplot_type2 = False,
         highlight_x = None,
         only_show_highlight = False,
+        use_edge_width = False,
+        use_node_size = False,
+        show_all_labels = False,
 ) -> list[dict[str, Any]]:
     nodes = viz_tree.nodes
     edges = viz_tree.edges
@@ -123,6 +126,13 @@ def viz_tree_to_cytoscape_elements(
         cmap = plt.colormaps["tab20"].resampled(n_features)
         feature_colors = [cmap(i) for i in range(n_features)]
         feature_colors_hex = [to_hex(color) for color in feature_colors]
+
+    if use_edge_width or use_node_size:
+        node_sizes = [np.sum(node.indices) for node in nodes]
+        max_n_samples_node, min_n_samples_node = max(node_sizes), min(node_sizes)
+        true_depth = viz_tree.get_depth()
+        depth = min(max(3, true_depth), 12)
+        power = -0.7 / 9 * (depth - 3) + 1
 
     for node in nodes:
         if highlight_x is not None and only_show_highlight and node not in highlight_nodes:
@@ -216,11 +226,33 @@ def viz_tree_to_cytoscape_elements(
                     data["dir_predsplot"] = f"/internal_predsplots/predsplot_node{node.id}_{elements_id}.svg"
                     classes.append("predsplot")
 
+        if use_node_size:
+            x = (n_samples - min_n_samples_node) / (max_n_samples_node - min_n_samples_node)
+            x = x**power
+            height = MIN_NODE_HEIGHT + x * (MAX_NODE_HEIGHT - MIN_NODE_HEIGHT)
+            width = 2*height
+
+            data["height"] = height
+            data["width"] = width
+            if height < 5:
+                data["label_minimal"] = ""
+            elif height > 35:
+                data["label_minimal"] = label
+            classes.append("data_size")
+
         elements.append({"data": data, "classes": " ".join(classes)})
 
     # ── Build edge elements ────────────────────────────────────────────────────
+    first_split_node = viz_tree.root_node
+    while not isinstance(first_split_node, SplitNode):
+        if isinstance(first_split_node, LeafNode):
+            first_split_node = None
+            break
+        first_split_node = first_split_node.get_children()[0]
+
     for parent, child in edges:
-        if highlight_x is not None and only_show_highlight and child not in highlight_nodes:
+        only_show_highlight_active = highlight_x is not None and only_show_highlight
+        if only_show_highlight_active and child not in highlight_nodes:
             continue
         if isinstance(child, NoneNode):
             continue
@@ -230,6 +262,37 @@ def viz_tree_to_cytoscape_elements(
             classes.append("highlight")
         if (parent, child) in combined_lin_edges:
             classes.append("combine_lin")
+
+        if not only_show_highlight_active:
+            if show_all_labels:
+                if isinstance(parent, SplitNode):
+                    if child is parent.left_child:
+                        edge_data["label"] = "No"
+                    elif child is parent.right_child:
+                        edge_data["label"] = "Yes"
+                    classes.append("label")
+            elif parent is first_split_node:
+                if child is parent.left_child:
+                    edge_data["label"] = "No"
+                elif child is parent.right_child:
+                    edge_data["label"] = "Yes"
+                classes.append("label")
+        elif only_show_highlight_active and not show_node_plots and isinstance(parent, SplitNode):
+            if child is parent.left_child:
+                edge_data["label"] = "No (left)"
+            elif child is parent.right_child:
+                edge_data["label"] = "Yes (right)"
+            classes.append("label")
+
+        if use_edge_width:
+            n_samples_child = np.sum(child.indices)
+            x = (n_samples_child - min_n_samples_node) / (max_n_samples_node - min_n_samples_node)
+            x = x**power
+            width = MIN_EDGE_WIDTH + x * (MAX_EDGE_WIDTH - MIN_EDGE_WIDTH)
+
+            edge_data["width"] = width
+            classes.append("data_width")
+
         elements.append({"data": edge_data, "classes": " ".join(classes)})
 
     return elements

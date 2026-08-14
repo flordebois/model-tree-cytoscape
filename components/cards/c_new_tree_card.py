@@ -108,7 +108,7 @@ def make_new_tree_card() -> dbc.Card:
                                     dbc.Button("Load tree", id=ids.BTN_LOAD_TREE, size="sm"),
                                 ],
                             ),
-                            html.Div(id=ids.DUMMY_FOR_SPINNER, style={"display": "none"}),
+                            html.Div(id=ids.TRIGGER_FOR_SPINNER, style={"display": "none"}),
                             dbc.Modal(
                                 [
                                     dbc.ModalHeader("Upload new dataset as CSV file"),

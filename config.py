@@ -47,11 +47,17 @@ DEFAULT_NMAX = 5
 DEFAULT_FIG_W = 5
 DEFAULT_FIG_H = 3
 
+MIN_EDGE_WIDTH = 0.8
+MAX_EDGE_WIDTH = 8
+
+MIN_NODE_HEIGHT = 0.1
+MAX_NODE_HEIGHT = 50
+
 SPINNER_COLOR = "primary"
 
 def get_initial_graph_info():
     with open(
-            "output/saved_viz_trees/tree_28-07-26_16-29-53__1199_BNG_echoMonths-Pilot-12-30-2000-5.pkl",
+            "output/saved_viz_trees/tree_14-08-26_12-45-55__1199_BNG_echoMonths.pmlb-Pilot-12-30-10-5.pkl",
             "rb") as f:
         input_dict = pickle.load(f)
     return input_dict["viz_tree_dict"], input_dict["tree_params"]
@@ -131,6 +137,14 @@ CYTOSCAPE_STYLESHEET = [
             "height": "15px",
         },
     },
+    {
+        "selector": "node.data_size",
+        "style": {
+            "label": "data(label_minimal)",
+            "width": "data(width)",
+            "height": "data(height)",
+        },
+    },
 
     # ── Default edge ──────────────────────────────────────────────────────
     {
@@ -145,9 +159,6 @@ CYTOSCAPE_STYLESHEET = [
             "font-family": font_family,
             "font-size": f"{font_size}px",
             "color": "#000000",
-            "text-background-color": "#ffffff",
-            "text-background-opacity": 0.7,
-            "text-background-padding": "2px",
         },
     },
     # ── Specific edges ────────────────────────────────────────────────────
@@ -157,6 +168,22 @@ CYTOSCAPE_STYLESHEET = [
             "mid-target-arrow-shape": "circle",
             "mid-target-arrow-color": "#9467bd",
         }
+    },
+    {
+        "selector": "edge.label",
+        "style": {
+            "label": "data(label)",
+            "text-background-color": "white",
+            "text-background-opacity": 1,
+            "text-background-padding": "5px",
+            "font-size": "16px",
+        },
+    },
+    {
+        "selector": "edge.data_width",
+        "style": {
+            "width": "data(width)"
+        },
     },
 
     # ── Selected highlight ────────────────────────────────────────────────

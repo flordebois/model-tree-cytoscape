@@ -161,3 +161,37 @@ def register_callbacks(app):
         new_tree_params["subtree_node_id"] = selected_node[0]["id"]
 
         return viz_tree.to_dict(), new_tree_params, f"Subtree from {selected_node[0]['id']}.", time.time()
+
+    @app.callback(
+        Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
+        Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
+        Output(ids.DEBUG_INFO, "children", allow_duplicate=True),
+        Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),
+
+        Input(ids.BTN_PRUNE, "n_clicks"),
+        State(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
+        State(ids.STORE_VIZ_TREE, "data"),
+        State(ids.STORE_TREE_PARAMS, "data"),
+        prevent_initial_call=True,
+    )
+    def prune_from_node(n_clicks, selected_node, viz_tree_dict, tree_params):
+        if not selected_node or tree_params['method_name'] != "Pilot":
+            raise PreventUpdate
+
+        viz_tree = VizTree.from_dict(viz_tree_dict)
+        node = find_node_by_cytoscape_id(viz_tree, selected_node[0]["id"])
+        if isinstance(node, LeafNode):
+            raise PreventUpdate
+
+        viz_tree.prune(node)
+        depth = viz_tree.get_depth()
+        n_leafs = viz_tree.get_n_leafs()
+        n_internal_nodes = len(viz_tree.nodes) - n_leafs
+
+        new_tree_params = tree_params.copy()
+        new_tree_params["pruned"] = True
+        new_tree_params["depth"] = depth
+        new_tree_params["n_leafs"] = n_leafs
+        new_tree_params["n_internal_nodes"] = n_internal_nodes
+
+        return viz_tree.to_dict(), new_tree_params, f"Pruned tree at node {selected_node[0]['id']}.", time.time()

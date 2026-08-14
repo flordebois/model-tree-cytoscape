@@ -3,6 +3,7 @@ CYTOSCAPE_GRAPH = "tree-graph"
 
 # --- Stores ---------------------------------------------------------------
 ELEMENTS_TRIGGER = "elements-trigger"
+NEW_TREE_TRIGGER = "new-tree-trigger"
 STORE_VIZ_TREE = "store-viz-tree"
 STORE_VIZ_TREE_BASE = "store-viz-tree-base"
 STORE_NODE_CLICK = "store-node-click"
@@ -58,7 +59,7 @@ BTN_SAVE_TREE_SVG = "btn-save-tree-svg"
 BTN_RELOAD_TREE = "btn-reload-tree"
 INPUT_LOAD_TREE = "input-load-tree"
 BTN_LOAD_TREE = "btn-load-tree"
-DUMMY_FOR_SPINNER = "dummy-for-spinner"
+TRIGGER_FOR_SPINNER = "dummy-for-spinner"
 
 # --- D Edit Tree card ----------------------------------------------------
 EDIT_TREE_COLLAPSE = "edit-tree-collapse"
@@ -67,6 +68,7 @@ EDIT_TREE_TOGGLE_BUTTON = "edit-tree-button"
 # Tree structure
 BTN_COLLAPSE_EXPAND = "btn-collapse-expand"
 BTN_SUBTREE = "btn-subtree"
+BTN_PRUNE = "btn-prune"
 BTN_EXPAND_ALL = "btn-expand-all"
 BTN_COLLAPSE_LEVEL = "btn-collapse-level"
 INPUT_COLLAPSE_LEVEL = "input-collapse-level"
@@ -84,6 +86,10 @@ MODAL_NODE_PLOTS = "modal-node-plots"
 MODAL_BTN_CONFIRM = "modal-btn-confirm"
 MODAL_BTN_CANCEL = "modal-btn-cancel"
 MODAL_CHECK_DONT_ASK = "modal-dont-ask"
+
+# Data flow
+SWITCH_DATA_EDGE_WIDTH = "switch-data-edge-width"
+SWITCH_DATA_NODE_SIZE = "switch-data-node-size"
 
 # --- E Layout card -------------------------------------------------------
 LAYOUT_COLLAPSE = "layout-collapse"

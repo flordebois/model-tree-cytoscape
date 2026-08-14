@@ -27,6 +27,7 @@ def make_edit_tree_card() -> dbc.Card:
                                     children=[
                                         dbc.Button("Collapse/expand selected node", id=ids.BTN_COLLAPSE_EXPAND, size="sm"),
                                         dbc.Button("Subtree from selected node", id=ids.BTN_SUBTREE, size="sm"),
+                                        dbc.Button("Prune from selected node", id=ids.BTN_PRUNE, size="sm"),
                                         dbc.Button("Expand all nodes", id=ids.BTN_EXPAND_ALL, size="sm"),
                                     ],
                                 ),
@@ -72,30 +73,72 @@ def make_edit_tree_card() -> dbc.Card:
                                 html.Div(
                                     style={"display": "flex", "gap": "16px", "flexWrap": "wrap"},
                                     children=[
-                                        daq.BooleanSwitch(id=ids.SWITCH_NODE_PLOTS, label="Show all node plots", on=False),
-                                        daq.BooleanSwitch(id=ids.SWITCH_MINIMAL, label="Minimal nodes", on=False),
-                                        daq.BooleanSwitch(id=ids.SWITCH_COLOR_FEATURES, label="Features colors", on=False),
-                                        daq.BooleanSwitch(id=ids.SWITCH_RSS, label="Show RSS", on=False),
+                                        dbc.Switch(
+                                            id=ids.SWITCH_NODE_PLOTS,
+                                            label="Show all node plots",
+                                            value=False,
+                                        ),
+                                        dbc.Switch(
+                                            id=ids.SWITCH_MINIMAL,
+                                            label="Minimal nodes",
+                                            value=False,
+                                        ),
+                                        dbc.Switch(
+                                            id=ids.SWITCH_COLOR_FEATURES,
+                                            label="Features colors",
+                                            value=False,
+                                        ),
+                                        dbc.Switch(
+                                            id=ids.SWITCH_RSS,
+                                            label="Show RSS",
+                                            value=False,
+                                        ),
                                     ],
                                 ),
                             ],
                             className="mb-3",
                         ),
-                        dbc.Modal([
-                            dbc.ModalHeader("Confirmation"),
-                            dbc.ModalBody([
-                                html.P([
-                                    "Are you sure you want to show all node plots?",
-                                    html.Br(),
-                                    "This may take a while for large trees."
+                        dbc.Modal(
+                            [
+                                dbc.ModalHeader("Confirmation"),
+                                dbc.ModalBody([
+                                    html.P([
+                                        "Are you sure you want to show all node plots?",
+                                        html.Br(),
+                                        "This may take a while for large trees."
+                                    ]),
+                                    dbc.Checkbox(id=ids.MODAL_CHECK_DONT_ASK, label="Don't ask me again."),
                                 ]),
-                                dbc.Checkbox(id=ids.MODAL_CHECK_DONT_ASK, label="Don't ask me again."),
-                            ]),
-                            dbc.ModalFooter([
-                                dbc.Button("No, cancel.", id=ids.MODAL_BTN_CANCEL),
-                                dbc.Button("Yes, show all node plots", id=ids.MODAL_BTN_CONFIRM)
-                            ])
-                        ], id=ids.MODAL_NODE_PLOTS, is_open=False, backdrop=False),
+                                dbc.ModalFooter([
+                                    dbc.Button("No, cancel.", id=ids.MODAL_BTN_CANCEL),
+                                    dbc.Button("Yes, show all node plots", id=ids.MODAL_BTN_CONFIRM)
+                                ])
+                            ],
+                            id=ids.MODAL_NODE_PLOTS,
+                            is_open=False,
+                            backdrop=False
+                        ),
+                        html.Div(
+                            [
+                                html.Div("Show data flow", className="fw-bold mb-2"),
+                                html.Div(
+                                    style={"display": "flex", "gap": "16px", "flexWrap": "wrap"},
+                                    children=[
+                                        dbc.Switch(
+                                            id=ids.SWITCH_DATA_EDGE_WIDTH,
+                                            label="With edge width",
+                                            value=False,
+                                        ),
+                                        dbc.Switch(
+                                            id=ids.SWITCH_DATA_NODE_SIZE,
+                                            label="With node size",
+                                            value=False,
+                                        ),
+                                    ],
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
                     ]
                 ),
                 id=ids.EDIT_TREE_COLLAPSE,

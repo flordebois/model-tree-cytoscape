@@ -8,6 +8,7 @@ def make_global_stores() -> html.Div:
     return html.Div(
         [
             dcc.Store(id=ids.ELEMENTS_TRIGGER, data=0),
+            dcc.Store(id=ids.NEW_TREE_TRIGGER, data=0),
             dcc.Store(id=ids.STORE_VIZ_TREE, data=viz_tree_dict),
             dcc.Store(id=ids.STORE_VIZ_TREE_BASE, data=viz_tree_dict),
             dcc.Store(id=ids.STORE_NODE_CLICK, data={"last_click": 0, "last_id": None}),

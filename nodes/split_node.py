@@ -87,4 +87,4 @@ class PconcNode(PconNode):
                          left_child, right_child, left_model, right_model)
 
     def get_label(self) -> str:
-        return f"PCONC- X{self.pivot_idx}\nleft:{self.pivot_value}"
+        return f"PCONC- X{self.pivot_idx}\nidx ∉ {self.pivot_value}"
