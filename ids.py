@@ -59,6 +59,9 @@ BTN_SAVE_TREE_SVG = "btn-save-tree-svg"
 BTN_RELOAD_TREE = "btn-reload-tree"
 INPUT_LOAD_TREE = "input-load-tree"
 BTN_LOAD_TREE = "btn-load-tree"
+INPUT_LOAD_TREE_ADAPTOR = "input-load-tree-adapter"
+BTN_LOAD_TREE_ADAPTOR = "btn-load-tree-adapter"
+INPUT_ADAPTOR = "input-adapter"
 TRIGGER_FOR_SPINNER = "dummy-for-spinner"
 
 # --- D Edit Tree card ----------------------------------------------------
@@ -96,7 +99,8 @@ LAYOUT_COLLAPSE = "layout-collapse"
 LAYOUT_TOGGLE_BUTTON = "layout-toggle-button"
 
 BTN_LAYOUT = "btn-layout"
-RANK_DIR = "rank-dir"
+DISPLAY_DIRECTION = "display-direction"
+NODE_RANKER = "node-ranker"
 RANK_SEP = "rank-sep"
 NODE_SEP = "node-sep"
 

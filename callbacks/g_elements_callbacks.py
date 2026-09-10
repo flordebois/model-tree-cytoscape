@@ -149,7 +149,7 @@ def register_callbacks(app):
 
         if viz_tree_dict is None:
             print(f"call to elements update with viz_tree_dict None")
-            raise PreventUpdate#
+            raise PreventUpdate
 
         use_intercept = "intercept" in predsplot_options
         truncate_total_pred = "truncate" in predsplot_options

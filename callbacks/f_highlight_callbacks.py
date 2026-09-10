@@ -41,10 +41,10 @@ def register_callbacks(app):
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_id != ids.BTN_HIGHLIGHT or n_clicks is None or input_highlight_x is None:
             print(f"call to highlight path with id:{triggered_id}")
-            raise PreventUpdate##
+            raise PreventUpdate
         if n_clicks is None:
             print("call to highlight path with clicks None")
-            raise PreventUpdate#
+            raise PreventUpdate
         if input_highlight_x is None:
             raise PreventUpdate
         n_features = np.array(viz_tree_dict["X_train"]).shape[1]

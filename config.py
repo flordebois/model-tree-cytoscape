@@ -17,12 +17,20 @@ METHOD_OPTIONS = [
     {"label": "M5", "value": "M5"},
 ]
 
+ADAPTOR_OPTIONS = [
+    {"label": "Partykit", "value": "Partykit"},
+    {"label": "Pilot", "value": "Pilot"},
+    {"label": "M5", "value": "M5"},
+]
+DEFAULT_ADAPTOR_NAME = "Partykit"
+
 NODE_TYPE_COLORS = {
     "LeafNode": "#2ca02c",
     "LinearNode": "#9467bd",
     "BlinNode": "#1f77b4",
     "PconNode": "#d62728",
     "SplitNode": "#d62728",
+    "SplitCNode": "#8c564b",
     "PlinNode": "#ff7f0e",
     "PconcNode": "#8c564b",
     "CombinedLinNode": "#9467bd",

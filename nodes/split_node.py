@@ -88,3 +88,8 @@ class PconcNode(PconNode):
 
     def get_label(self) -> str:
         return f"PCONC- X{self.pivot_idx}\nidx ∉ {self.pivot_value}"
+
+@BaseNode.register
+class SplitCNode(SplitNode):
+    def get_label(self) -> str:
+        return f"SPLITC X{self.pivot_idx}\nidx ∉ {self.pivot_value}"

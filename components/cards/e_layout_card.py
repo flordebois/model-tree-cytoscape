@@ -23,9 +23,21 @@ def make_layout_card() -> dbc.Card:
                             [
                                 "Display direction:",
                                 dcc.RadioItems(
-                                    id=ids.RANK_DIR,
+                                    id=ids.DISPLAY_DIRECTION,
                                     options=["Top Bottom", "Left Right"],
                                     value="Top Bottom",
+                                    inline=True,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        html.Div(
+                            [
+                                "Node ranker:",
+                                dcc.RadioItems(
+                                    id=ids.NODE_RANKER,
+                                    options=["network-simplex", "tight-tree", "longest-path"],
+                                    value="network-simplex",
                                     inline=True,
                                 ),
                             ],

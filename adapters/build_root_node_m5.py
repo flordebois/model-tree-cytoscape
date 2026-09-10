@@ -6,15 +6,15 @@ from nodes.leaf_node import LeafNode
 from nodes.split_node import SplitNode
 from nodes.node_model import LinearNodeModel, NoneNodeModel, ConstantNodeModel
 
-def build_viz_tree_from_m5(m5_model, X_train, y_train) -> BaseNode:
+def build_root_node_from_m5(m5_model, X_train, y_train) -> BaseNode:
     # builds a viz tree from a fitted m5py model (M5Base / M5Prime).
     tree = m5_model.tree_
     node_models = m5_model.node_models
     root_indices = np.ones(X_train.shape[0], dtype=bool)
 
-    return _build_viz_tree_from_m5(tree, node_models, X_train, y_train, root_indices, node_id=0)
+    return _build_root_node_from_m5(tree, node_models, X_train, y_train, root_indices, node_id=0)
 
-def _build_viz_tree_from_m5(tree, node_models, X_train, y_train, current_indices, node_id) -> BaseNode:
+def _build_root_node_from_m5(tree, node_models, X_train, y_train, current_indices, node_id) -> BaseNode:
 
     current_y_res = y_train[current_indices]
     n_features = X_train.shape[1]
@@ -57,8 +57,8 @@ def _build_viz_tree_from_m5(tree, node_models, X_train, y_train, current_indices
         left_indices[current_indices] = left_mask
         right_indices[current_indices] = right_mask
 
-        left_child = _build_viz_tree_from_m5(tree, node_models, X_train, y_train, left_indices, node_id=left_id)
-        right_child = _build_viz_tree_from_m5(tree, node_models, X_train, y_train, right_indices, node_id=right_id)
+        left_child = _build_root_node_from_m5(tree, node_models, X_train, y_train, left_indices, node_id=left_id)
+        right_child = _build_root_node_from_m5(tree, node_models, X_train, y_train, right_indices, node_id=right_id)
 
         rss = tree.impurity[node_id] * tree.n_node_samples[node_id]  # sklearn stores impurity as MSE; * n -> RSS
 

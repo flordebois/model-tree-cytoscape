@@ -2,7 +2,9 @@ import time
 from dash import Input, Output, State
 
 import ids
-_RANK_DIR_TO_DAGRE = {"Top Bottom": "TB", "Left Right": "LR"}
+_DISPLAY_DIRECTION_TO_DAGRE = {"Top Bottom": "TB", "Left Right": "LR"}
+_NODE_RANKER_TO_DAGRE = {"network-simplex": "network-simplex", "tight-tree": "tight-tree",
+                         "longest-path": "longest-path"}
 
 def register_callbacks(app):
     @app.callback(
@@ -19,15 +21,17 @@ def register_callbacks(app):
         Output(ids.DEBUG_INFO, "children", allow_duplicate=True),
 
         Input(ids.BTN_LAYOUT, "n_clicks"),
-        Input(ids.RANK_DIR, "value"),
+        Input(ids.DISPLAY_DIRECTION, "value"),
+        Input(ids.NODE_RANKER, "value"),
         Input(ids.RANK_SEP, "value"),
         Input(ids.NODE_SEP, "value"),
         prevent_initial_call=True,
     )
-    def update_layout(n_clicks, rank_dir, rank_sep, node_sep):
+    def update_layout(n_clicks, rank_dir, node_rank, rank_sep, node_sep):
         return {
             "name": "dagre",
-            "rankDir": _RANK_DIR_TO_DAGRE[rank_dir],
+            "rankDir": _DISPLAY_DIRECTION_TO_DAGRE[rank_dir],
+            "ranker": _NODE_RANKER_TO_DAGRE[node_rank],
             "rankSep": rank_sep,
             "nodeSep": node_sep,
             "animate": True,

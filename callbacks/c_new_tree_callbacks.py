@@ -2,18 +2,15 @@ from m5py import M5Prime
 import os
 import pickle
 import time
-from dash import Input, Output, State, ctx, callback, no_update
+from dash import Input, Output, State, ctx, no_update
 from dash.exceptions import PreventUpdate
-import numpy as np
 import base64
 from pathlib import Path
 
 import ids
 from config import DIR_SAVED_VIZ_TREES, NO_FILE_SELECTED_PLACEHOLDER, DEFAULT_DATASET_NAME
 from viz_tree.viz_tree import VizTree
-from viz_tree.build_viz_tree_pilot import build_viz_tree_from_pilot
-from viz_tree.build_viz_tree_m5 import build_viz_tree_from_m5
-from benchmark_info import PMLB_DATASETS_CAT_IDS
+from adapters.adapter import ADAPTERS_REGISTRY
 
 from dataset.dataset_registry import (
     NEW_CSV_OPTION,
@@ -23,10 +20,8 @@ from dataset.dataset_registry import (
 )
 from dataset.dataset import Dataset
 
-def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> (VizTree, str):
-    print('Fitting model dataset:')
-    print(input_dataset, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
 
+def get_dataset_X_y(input_dataset):
     if input_dataset.endswith(".csv"):
         csv_path = Path(input_dataset)
         dataset_name = input_dataset[:-4]
@@ -37,8 +32,14 @@ def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sam
     else:
         raise ValueError("Unknown dataset type")
 
-    X = dataset.X
-    y = dataset.y
+    return dataset.X, dataset.y, dataset.cat_ids
+
+def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf) -> (VizTree, str):
+    print('Fitting model dataset:')
+    print(input_dataset, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
+    X, y, cat_ids = get_dataset_X_y(input_dataset)
+
+    adapter = ADAPTERS_REGISTRY[method_name]
     if method_name == "Pilot":
         print("importing PILOT...")
         from pilot.pilot import PILOT
@@ -49,17 +50,9 @@ def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sam
                       min_sample_split=min_sample_split,
                       min_sample_leaf=min_sample_leaf,
                       )
-        model.fit(X, y, categorical=dataset.cat_ids)
-        pilot_tree = model.model_tree
-        root_node = build_viz_tree_from_pilot(
-            pilot_node=pilot_tree,
-            X_train=X,
-            current_indices=np.ones(len(X), dtype=bool),
-            current_y_res=y,
-            accumulated_coefficients=np.zeros(X.shape[1]),
-            accumulated_intercept=0.0
-        )
+        model.fit(X, y, categorical=cat_ids)
         elapsed_time = time.time() - start_time
+        viz_tree = VizTree.from_model(adapter, X, y, model)
     elif method_name == "M5":
         start_time = time.time()
         model = M5Prime(
@@ -71,11 +64,12 @@ def fit_new_tree(input_dataset, method_name, max_depth, max_model_depth, min_sam
             max_depth=max_depth,
         )
         model.fit(X, y)
-        root_node = build_viz_tree_from_m5(model, X, y)
         elapsed_time = time.time() - start_time
+        viz_tree = VizTree.from_model(adapter, X, y, model)
     else:
         raise ValueError(f'Method name {method_name} not recognized.')
-    return VizTree(root_node, X, y, model.predict(X)), f"{int(elapsed_time // 60)}min {int(elapsed_time % 60)}sec"
+    time_string = f"{int(elapsed_time // 60)}min {int(elapsed_time % 60)}sec"
+    return viz_tree, time_string
 
 def register_callbacks(app):
     @app.callback(
@@ -179,7 +173,6 @@ def register_callbacks(app):
         path.write_bytes(decoded)
         return filename, no_update
 
-
     # --- LOAD TREE ---
     @app.callback(
         Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
@@ -196,10 +189,10 @@ def register_callbacks(app):
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_id != ids.BTN_LOAD_TREE:
             print(f"call to load tree with id:{triggered_id}")
-            raise PreventUpdate##
+            raise PreventUpdate
         if n_clicks is None:
             print("call to load tree with clicks None")
-            raise PreventUpdate#
+            raise PreventUpdate
         resolved_path = load_path
         if not resolved_path or not os.path.exists(resolved_path):
             resolved_path = max(
@@ -227,7 +220,7 @@ def register_callbacks(app):
     def reload_tree(n_clicks, viz_tree_dict, tree_params):
         if n_clicks is None:
             print("call to reload tree with clicks None")
-            raise PreventUpdate#
+            raise PreventUpdate
         return  viz_tree_dict, tree_params, time.time()
 
     # --- FIT NEW TREE ---
@@ -251,7 +244,7 @@ def register_callbacks(app):
     def fit_tree(n_clicks, dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf):
         if n_clicks is None:
             print("call to fit tree with clicks None")
-            raise PreventUpdate#
+            raise PreventUpdate
         print("fitting tree")
         viz_tree, training_time = fit_new_tree(dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf)
         viz_tree_dict = viz_tree.to_dict()
@@ -278,6 +271,56 @@ def register_callbacks(app):
         }
 
         return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), ""
+
+    # --- LOAD NEW TREE WITH ADAPTOR ---
+    @app.callback(
+        Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
+        Output(ids.STORE_VIZ_TREE_BASE, "data", allow_duplicate=True),
+        Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
+        Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
+        Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
+
+        Input(ids.BTN_LOAD_TREE_ADAPTOR, "n_clicks"),
+        State(ids.INPUT_DATASET, "value"),
+        State(ids.INPUT_ADAPTOR, "value"),
+        State(ids.INPUT_LOAD_TREE_ADAPTOR, "value"),
+        prevent_initial_call=True,
+    )
+    def fit_tree(n_clicks, input_dataset, adapter_name, model_path):
+        if n_clicks is None:
+            print("call to load new tree with adapter with clicks None")
+            raise PreventUpdate
+
+        adapter = ADAPTERS_REGISTRY[adapter_name]
+        model = adapter.load_model(model_path)
+        X, y, cat_ids = get_dataset_X_y(input_dataset)
+
+        viz_tree = VizTree.from_model(adapter, X, y, model)
+
+        viz_tree_dict = viz_tree.to_dict()
+        n_leafs = viz_tree.get_n_leafs()
+        n_interal_nodes = len(viz_tree.nodes) - n_leafs
+        depth = viz_tree.get_depth()
+        tree_params = {
+            "dataset_name": input_dataset,
+            "method_name": adapter_name,
+            "max_depth": -1,
+            "max_model_depth": -1,
+            "min_sample_split": -1,
+            "min_sample_leaf": -1,
+            "training_time": -1,
+            "subtree_node_id": -1,
+            "collapsed_nodes_count": 0,
+            "highlight_x": None,
+            "n_internal_nodes": n_interal_nodes,
+            "n_leafs": n_leafs,
+            "depth": depth,
+            "n_samples": viz_tree.X_train.shape[0],
+            "n_features": viz_tree.X_train.shape[1],
+            "pruned": False,
+        }
+
+        return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time()
 
     # --- NEW TREE TRIGGER ---
     @app.callback(

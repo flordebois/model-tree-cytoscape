@@ -5,8 +5,8 @@ from nodes.split_node import PconNode, BlinNode, PlinNode, PconcNode
 from nodes.node_model import LinearNodeModel, ConstantNodeModel, SimpleLinearNodeModel
 import numpy as np
 
-def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_res, 
-                              accumulated_coefficients, accumulated_intercept) -> BaseNode:
+def build_root_node_from_pilot(pilot_node, X_train, current_indices, current_y_res,
+                               accumulated_coefficients, accumulated_intercept) -> BaseNode:
 
     if pilot_node.node == 'con' or pilot_node.node == 'END':
         return LeafNode(
@@ -28,8 +28,8 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
         new_y_res = current_y_res - (pilot_node.lm_l[1] +
                                      pilot_node.lm_l[0] * X_train[current_indices, pivot_idx])
 
-        child = build_viz_tree_from_pilot(pilot_node.left, X_train, current_indices, new_y_res,
-                                          new_coefficients, new_intercept)
+        child = build_root_node_from_pilot(pilot_node.left, X_train, current_indices, new_y_res,
+                                           new_coefficients, new_intercept)
 
         return LinearNode(
             indices=current_indices,
@@ -64,10 +64,10 @@ def build_viz_tree_from_pilot(pilot_node, X_train, current_indices, current_y_re
         right_intercept = accumulated_intercept + pilot_node.lm_r[1]
 
         # Recurse to both children
-        left_child = build_viz_tree_from_pilot(pilot_node.left, X_train, left_indices, left_y_res,
-                                               left_coefficients, left_intercept)
-        right_child = build_viz_tree_from_pilot(pilot_node.right, X_train, right_indices, right_y_res,
-                                                right_coefficients, right_intercept)
+        left_child = build_root_node_from_pilot(pilot_node.left, X_train, left_indices, left_y_res,
+                                                left_coefficients, left_intercept)
+        right_child = build_root_node_from_pilot(pilot_node.right, X_train, right_indices, right_y_res,
+                                                 right_coefficients, right_intercept)
 
         if pilot_node.node == 'pcon':
             return PconNode(

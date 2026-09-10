@@ -23,6 +23,7 @@ def make_cytoscape_graph() -> cyto.Cytoscape:
         stylesheet=initial_stylesheet,
         layout={
             "name": "dagre",
+            "ranker": "network-simplex",
             "rankDir": "TB",
             "rankSep": DEFAULT_RANK_SEP,
             "nodeSep": DEFAULT_NODE_SEP,

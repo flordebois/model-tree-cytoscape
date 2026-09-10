@@ -8,7 +8,7 @@ from nodes.internal_node import InternalNode, LinearNode
 from nodes.collapsed_node import CollapsedNode
 from nodes.none_node import NoneNode
 from nodes.node_model import LinearNodeModel, ConstantNodeModel
-from nodes.split_node import SplitNode
+from nodes.split_node import SplitNode, PconcNode, SplitCNode
 
 
 class VizTree:
@@ -28,13 +28,24 @@ class VizTree:
 
         self.X_train = X_train
         self.y_train = y_train
-        self.y_hat = y_hat
 
         self.root_node = root
         self.nodes = self.collect_nodes()
         self.edges = self.collect_edges()
         for i, node in enumerate(self.nodes):
             node.set_id(i)
+
+        if y_hat is None:
+            self.y_hat = self._calculate_y_hat()
+            print("y_hat", self.y_hat)
+        else:
+            self.y_hat = y_hat
+
+    @classmethod
+    def from_model(cls, adapter, X_train, y_train, model):
+        root_node = adapter.build_root_node(X_train, y_train, model)
+        y_hat = adapter.predict(X_train, model)
+        return VizTree(root_node, X_train, y_train, y_hat)
 
     def collect_nodes(self) -> List[BaseNode]:
         nodes = [self.root_node] + self.root_node.get_all_children()
@@ -47,6 +58,32 @@ class VizTree:
                 edges.append((node, child))
         return edges
 
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        y_pred = np.empty(X.shape[0], dtype=float)
+        for i, x in enumerate(X):
+            node = self.root_node
+            while not isinstance(node, LeafNode):
+                if isinstance(node, LinearNode):
+                    node = node.child
+                elif isinstance(node, (PconcNode, SplitCNode)):
+                    if np.isin(x[node.pivot_idx], node.pivot_value):
+                        node = node.left_child
+                    else:
+                        node = node.right_child
+                elif isinstance(node, SplitNode):
+                    if x[node.pivot_idx] <= node.pivot_value:
+                        node = node.left_child
+                    else:
+                        node = node.right_child
+                else:
+                    raise ValueError(f"Can't predict node of type {type(node)}")
+            y_pred[i] = node.node_model.predict(x)[0]
+        return y_pred
+
+
+    def _calculate_y_hat(self) -> np.ndarray:
+        return self.predict(self.X_train)
+
     def get_depth(self, node=None) -> int:
         if node is None:
             node = self.root_node
@@ -57,7 +94,6 @@ class VizTree:
         elif isinstance(node, CollapsedNode):
             return self.get_depth(node.parent)-1
         return max([self.get_depth(node) for node in node.get_children()]) + 1
-
 
     def get_n_leafs(self) -> int:
         count = 0
@@ -153,8 +189,6 @@ class VizTree:
 
         self.nodes = self.collect_nodes()
         self.edges = self.collect_edges()
-
-
 
     def to_dict(self):
         return {

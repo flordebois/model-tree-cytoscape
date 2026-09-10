@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nodes.internal_node import InternalNode, LinearNode
-from nodes.split_node import PconcNode, SplitNode, PconNode
+from nodes.split_node import PconcNode, SplitNode, PconNode, SplitCNode, PlinNode, BlinNode
+
 
 def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file, fig_size, feature_colors, feature_names, highlight_x=None):
     X = viz_tree_X[node.indices,:]
@@ -28,14 +29,13 @@ def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file,
         else:
             plt.scatter(X[idx_point, feature_idx], node.y_res[idx_point], s=60 + scaled_weights[idx_point],
                         facecolors='r', marker='*')
-
     if isinstance(node, LinearNode):
         x = [min_x, max_x]
         y = node.linear_model.predict(x)
         plt.plot(x, y, color=feature_colors[feature_idx], linewidth=3)
         plt.title(f"LIN - Feature: {feature_label}")
 
-    elif isinstance(node, PconcNode):
+    elif isinstance(node, (PconcNode,SplitCNode)):
         left_child_values = node.pivot_value
         possible_values = np.unique(X[:, feature_idx])
         for i in range(len(possible_values)):
@@ -55,13 +55,19 @@ def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file,
         self_name = str(node.__class__.__name__)
         plt.title(f"{self_name} - Feature: {feature_label}")
 
-    elif isinstance(node, SplitNode):  # node.type == "pcon", "plin", "blin"
+    elif isinstance(node, (PconNode, PlinNode, BlinNode)):
         pivot = node.pivot_value
         x1 = [min_x, pivot]
         x2 = [pivot, max_x]
         y1 = node.left_model.predict(x1)
         y2 = node.right_model.predict(x2)
         plt.plot(x1, y1, x2, y2, color=feature_colors[feature_idx], linewidth=3)
+        self_name = str(node.__class__.__name__)
+        plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
+
+    elif isinstance(node, SplitNode):
+        pivot = node.pivot_value
+        plt.axvline(x=pivot, color='k')
         self_name = str(node.__class__.__name__)
         plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
 
