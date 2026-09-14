@@ -17,12 +17,12 @@ METHOD_OPTIONS = [
     {"label": "M5", "value": "M5"},
 ]
 
-ADAPTOR_OPTIONS = [
+ADAPTER_OPTIONS = [
     {"label": "Partykit", "value": "Partykit"},
     {"label": "Pilot", "value": "Pilot"},
     {"label": "M5", "value": "M5"},
 ]
-DEFAULT_ADAPTOR_NAME = "Partykit"
+DEFAULT_ADAPTER_NAME = "Partykit"
 
 NODE_TYPE_COLORS = {
     "LeafNode": "#2ca02c",

@@ -1,7 +1,7 @@
 import numpy as np
 from nodes.base_node import BaseNode
 from .build_root_node_m5 import build_root_node_from_m5
-from .adapter import BaseAdapter, register_adapter
+from .base_adapter import BaseAdapter, register_adapter
 
 @register_adapter("M5")
 class M5Adapter(BaseAdapter):

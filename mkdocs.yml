@@ -1,6 +1,6 @@
 site_name: Visualisation of linear model trees
 site_description: User guide and documentation for the Dash application
-site_url: https://flordebois.github.io/model-tree-cytoscape/home/
+site_url: https://flordebois.github.io/model-tree-cytoscape/
 repo_name: model-tree-cytoscape
 repo_url: https://github.com/flordebois/model-tree-cytoscape
 
@@ -28,21 +28,57 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - md_in_html
   - toc:
       permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+          python:
+              options:
+                  docstring_style: google
+                  show_root_heading: true
+                  show_root_full_path: false
+                  show_object_full_path: false
+                  show_signature_annotations: true
+                  members_order: source
+                  show_source: false
+                  group_by_category: true
 
 nav:
   - Home: home.md
 
   - User Guide:
-      - Interface Overview: user-guide/interface-overview.md
+    - Interface Overview: user-guide/interface-overview.md
 
-      - Interaction Cards:
-          - Tree Info: user-guide/a-tree-info.md
-          - Node Information: user-guide/b-node-info.md
-          - New Tree: user-guide/c-new-tree.md
-          - Edit Tree: user-guide/d-edit-tree.md
-          - Layout: user-guide/e-layout.md
-          - Highlight: user-guide/f-highlight.md
+    - Interaction Cards:
+        - Tree Info: user-guide/a-tree-info.md
+        - Node Information: user-guide/b-node-info.md
+        - New Tree: user-guide/c-new-tree.md
+        - Edit Tree: user-guide/d-edit-tree.md
+        - Layout: user-guide/e-layout.md
+        - Highlight: user-guide/f-highlight.md
+
+  - Adapter:
+    - Overview: adapter/adapter_overview.md
+    - Example: adapter/partykit_example.md
+
+  - Reference:
+    - Overview: reference/reference_overview.md
+    - VizTree: reference/viz_tree.md
+    - Adapters:
+      - BaseAdapter: reference/adapters/base_adapter.md
+      - PartyKitAdapter: reference/adapters/partykit_adapter.md
+    - Nodes:
+      - BaseNode: reference/nodes/base_node.md
+      - NodeModel: reference/nodes/node_model.md
+      - InternalNode: reference/nodes/internal_node.md
+      - SplitNode: reference/nodes/split_node.md
+      - LeafNode: reference/nodes/leaf_node.md
+      - NoneNode: reference/nodes/none_node.md
+#      - CollapsedNode: reference/nodes/collapsed_node.md
+#      - CombinedLinNode: reference/nodes/combined_lin_node.md
 
   - Gallery: gallery.md

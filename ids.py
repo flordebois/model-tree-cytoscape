@@ -59,9 +59,9 @@ BTN_SAVE_TREE_SVG = "btn-save-tree-svg"
 BTN_RELOAD_TREE = "btn-reload-tree"
 INPUT_LOAD_TREE = "input-load-tree"
 BTN_LOAD_TREE = "btn-load-tree"
-INPUT_LOAD_TREE_ADAPTOR = "input-load-tree-adapter"
-BTN_LOAD_TREE_ADAPTOR = "btn-load-tree-adapter"
-INPUT_ADAPTOR = "input-adapter"
+INPUT_LOAD_TREE_ADAPTER = "input-load-tree-adapter"
+BTN_LOAD_TREE_ADAPTER = "btn-load-tree-adapter"
+INPUT_ADAPTER = "input-adapter"
 TRIGGER_FOR_SPINNER = "dummy-for-spinner"
 
 # --- D Edit Tree card ----------------------------------------------------

@@ -72,7 +72,10 @@ def make_regression_plot(node: InternalNode, viz_tree_X, directory_regplot_file,
         plt.title(f"{self_name} - Feature: {feature_label} - Pivot: {pivot:.3g}")
 
     plt.xlabel(feature_label)
-    y_label = "y" if node.id == 0 else "Residuals"
+    if isinstance(node, (SplitNode, SplitCNode)):
+        y_label = "y"
+    else:
+        y_label = "y" if node.id == 0 else "Residuals"
     plt.ylabel(y_label)
     plt.savefig(directory_regplot_file)
     plt.close()

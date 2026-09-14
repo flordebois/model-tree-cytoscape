@@ -1,7 +1,7 @@
 import os
 import json
 import numpy as np
-from adapters.adapter import BaseAdapter, register_adapter
+from adapters.base_adapter import BaseAdapter, register_adapter
 from adapters.adapter_utils import split_by_categories, split_by_threshold
 from nodes.base_node import BaseNode
 from nodes.leaf_node import LeafNode
@@ -10,8 +10,22 @@ from nodes.node_model import LinearNodeModel, NoneNodeModel
 
 @register_adapter('Partykit')
 class PartyKitAdapter(BaseAdapter):
+    """Adapter that builds a BaseNode linked tree from an R `partykit` package model export."""
+
     @staticmethod
-    def load_model(model_path):
+    def load_model(model_path: str) -> dict:
+        """Loads a partykit model export from a JSON file.
+
+        Args:
+            model_path: Path to the JSON file containing the exported
+                partykit model.
+
+        Returns:
+            The parsed model as a dict.
+
+        Raises:
+            ValueError: If model_path does not exist.
+        """
         if not os.path.exists(model_path):
             raise ValueError(f"No such file path to load model: {model_path}")
         with open(model_path) as f:
@@ -21,6 +35,16 @@ class PartyKitAdapter(BaseAdapter):
 
     @staticmethod
     def build_root_node(X_train: np.ndarray, y_train: np.ndarray, model) -> BaseNode:
+        """Builds the BaseNode linked tree representing a partykit model.
+
+        Args:
+            X_train: Training feature matrix the model was fit on.
+            y_train: Training target values the model was fit on.
+            model: Parsed partykit model, as returned by load_model().
+
+        Returns:
+            Root BaseNode of the reconstructed tree.
+        """
         root_indices = np.ones(X_train.shape[0], dtype=bool)
         node_list = model['nodes']
         feature_names = model['names'][1:]
@@ -28,6 +52,24 @@ class PartyKitAdapter(BaseAdapter):
 
     @staticmethod
     def _build_recursive(node_list, feature_names, node, X_train, y_train, current_indices) -> BaseNode:
+        """Recursively builds a BaseNode (sub)tree from partykit node data.
+
+        Args:
+            node_list: Full flat list of partykit node dicts for the model.
+            feature_names: Feature names, in the same column order as X_train.
+            node: The partykit node dict to convert at this recursion step.
+            X_train: Training feature matrix the model was fit on.
+            y_train: Training target values the model was fit on.
+            current_indices: Boolean mask over X_train's rows selecting
+                the samples that reach this node.
+
+        Returns:
+            A BaseNode linked (sub)tree.
+
+        Raises:
+            ValueError: If node has neither a "breaks" nor an "index"
+                key, so its split type can't be determined.
+        """
         current_y_res = y_train[current_indices]
         n_features = X_train.shape[1]
 

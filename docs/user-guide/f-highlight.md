@@ -2,7 +2,10 @@
 
 The **Highlight** card lets you trace the path of a specific data point through the tree. This is useful for understanding exactly how the model arrives at a prediction for a particular observation.
 
+<div style="max-width: 450px;" markdown="1">
+
 ![Screenshot: Highlight card, expanded](../assets/screenshots/f-highlight.png)
+</div>
 
 ## Highlighting a point
 
@@ -14,4 +17,4 @@ The **Highlight** card lets you trace the path of a specific data point through 
 4. Click **Clear highlight** to remove the highlight and return to the normal view.
 
 !!! warning "Highlighting in subtrees"
-    When viewing a subtree, the application always displays a highlighted path, even if the selected data point would not pass through that subtree in the original tree. This is a known limitation of the current implementation and should be taken into account when interpreting highlighted paths in subtree views.
+    When viewing a subtree, the application always displays a highlighted path, even if the selected data point would not pass through that subtree in the original tree. This is a known limitation of the current implementation and should be taken into account when highlighting points in subtrees.

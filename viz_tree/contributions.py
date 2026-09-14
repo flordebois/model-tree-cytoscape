@@ -13,6 +13,24 @@ from nodes.leaf_node import LeafNode
 from plots.beeswarm import beeswarm
 import matplotlib.pyplot as plt
 
+########################################
+#
+# Contributions used in predsplot.py with a leaf node vs this file:
+#
+# When predsplot.py (with intercept==None) is run with the information of a leaf node: contributions are the added
+# prediction on top of the average prediction for that leaf node (predplot.py has no info about the trees structure)
+#
+# In this file: contributions are the added prediction on top of the average prediction using the data of the
+# node where the model (lin, plin, pcon,...) is fitted.
+#
+# With this adjustment to contributions compared to predsplot.py the total contribution also contains the split
+# contributions and is not limited to linear contributions.
+#
+# Remark: The data used when a model is fitted can differ from the data in a leaf node, so the linear contributions in
+# this file and the contributions in predsplot.py can also differ (slightly).
+#
+########################################
+
 # def get_contributions(viz_tree: VizTree):
 #     X = viz_tree.X_train
 #     all_contributions = np.zeros_like(X, dtype=float)

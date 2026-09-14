@@ -1,3 +1,12 @@
+"""
+Node type representing a leaf like node that stands in for a hidden subtree.
+
+Used to collapse a subtree in the visualization while retaining a
+copy of its original structure, so it can be expanded again later.
+
+Not used for initialising a tree structure.
+"""
+
 from nodes.base_node import BaseNode
 
 @BaseNode.register
@@ -36,11 +45,11 @@ class CollapsedNode(BaseNode):
         return node_dict
 
     @classmethod
-    def from_dict(cls, dict):
-        parent_class = cls.class_registry[dict["parent_class"]]
+    def from_dict(cls, dic):
+        parent_class = cls.class_registry[dic["parent_class"]]
 
-        obj = super().from_dict(dict)
-        obj.parent_id = dict["parent_id"]
-        obj.n_nodes = dict["n_nodes"]
-        obj.parent = parent_class.from_dict(dict["parent_dict"])
+        obj = super().from_dict(dic)
+        obj.parent_id = dic["parent_id"]
+        obj.n_nodes = dic["n_nodes"]
+        obj.parent = parent_class.from_dict(dic["parent_dict"])
         return obj

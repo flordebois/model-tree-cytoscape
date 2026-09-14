@@ -1,7 +1,7 @@
 import numpy as np
 from nodes.base_node import BaseNode
 from .build_root_node_pilot import build_root_node_from_pilot
-from .adapter import BaseAdapter, register_adapter
+from .base_adapter import BaseAdapter, register_adapter
 
 @register_adapter("Pilot")
 class PilotAdapter(BaseAdapter):

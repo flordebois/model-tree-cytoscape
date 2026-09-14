@@ -14,17 +14,17 @@ The app window is split into three main areas:
 
 ## Interaction cards
 
-The first two cards — **Tree Info** and **Node Information** — are always visible, the other cards can expanded or collapsed by clicking their header
+The first two cards — **Tree Information** and **Node Information** — are always visible, the other cards can expanded or collapsed by clicking their header
 
-| Interaction Card | Purpose |
-|---|---|
-| [Tree Info](a-tree-info.md) | Summary of the currently loaded tree |
+| Interaction Card                   | Purpose                                                      |
+|------------------------------------|--------------------------------------------------------------|
+| [Tree Information](a-tree-info.md) | Summary of the currently loaded tree                         |
 | [Node Information](b-node-info.md) | Details and diagnostic plots for the currently selected node |
-| [New Tree](c-new-tree.md) | Fit a new tree, or save/load one |
-| [Edit Tree](d-edit-tree.md) | Collapse, expand, and restyle the tree view |
-| [Layout](e-layout.md) | Control how the tree graph is laid out on screen |
-| [Highlight](f-highlight.md) | Trace a specific data point's path through the tree |
+| [New Tree](c-new-tree.md)          | Fit a new tree, or save/load one                             |
+| [Edit Tree](d-edit-tree.md)        | Collapse, expand, and restyle the tree view                  |
+| [Layout](e-layout.md)              | Control how the tree graph is laid out on screen             |
+| [Highlight](f-highlight.md)        | Trace a specific data point's path through the tree          |
 
 ## Selecting a node
 
-Clicking a node in the graph area is how you select it — this drives the **Node Information** card and is a prerequisite for several actions in the **Edit Tree** card (e.g. "Collapse/expand selected node"). When a node is selected it has a yellow outline.
+Clicking a node in the graph area is how you select it. The currenclty selected node is used by the **Node Information** card and is a requirmend for several actions in the **Edit Tree** card (e.g. "Collapse/expand selected node"). When a node is selected it has a yellow outline.

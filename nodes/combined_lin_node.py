@@ -1,3 +1,12 @@
+"""
+Node type combining a chain of successive LinearNode (LIN) nodes into one node.
+
+Used to display a run of single feature linear (LIN) nodes as a
+single combined linear step.
+
+Not used for initialising a tree structure.
+"""
+
 from typing import List
 
 from nodes.base_node import BaseNode
@@ -56,14 +65,14 @@ class CombinedLinNode(BaseNode):
         return node_dict
 
     # @classmethod
-    # def from_dict(cls, dict) -> "LinearNode":
-    #     child_class = cls.class_registry[dict["child_class"]]
-    #     true_child_class = cls.class_registry[dict["true_child_class"]]
+    # def from_dict(cls, dic: dict) -> "LinearNode":
+    #     child_class = cls.class_registry[dic["child_class"]]
+    #     true_child_class = cls.class_registry[dic["true_child_class"]]
     #
-    #     obj = super().from_dict(dict)
-    #     obj.pivot_indices = dict["pivot_indices"]
-    #     obj.lin_coefficients = dict["lin_coefficients"]
-    #     obj.intercept = dict["intercept"]
-    #     obj.child = child_class.from_dict(dict["child_dict"])
-    #     obj.true_child = true_child_class.from_dict(dict["true_child_dict"])
+    #     obj = super().from_dict(dic)
+    #     obj.pivot_indices = dic["pivot_indices"]
+    #     obj.lin_coefficients = dic["lin_coefficients"]
+    #     obj.intercept = dic["intercept"]
+    #     obj.child = child_class.from_dict(dic["child_dict"])
+    #     obj.true_child = true_child_class.from_dict(dic["true_child_dict"])
     #     return obj

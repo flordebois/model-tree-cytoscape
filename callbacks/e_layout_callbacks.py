@@ -3,8 +3,7 @@ from dash import Input, Output, State
 
 import ids
 _DISPLAY_DIRECTION_TO_DAGRE = {"Top Bottom": "TB", "Left Right": "LR"}
-_NODE_RANKER_TO_DAGRE = {"network-simplex": "network-simplex", "tight-tree": "tight-tree",
-                         "longest-path": "longest-path"}
+_NODE_RANKER_TO_DAGRE = {"Compact": "network-simplex", "Align leaves to bottom": "longest-path"}
 
 def register_callbacks(app):
     @app.callback(

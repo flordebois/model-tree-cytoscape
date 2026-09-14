@@ -33,11 +33,11 @@ def make_layout_card() -> dbc.Card:
                         ),
                         html.Div(
                             [
-                                "Node ranker:",
+                                "Layout type:",
                                 dcc.RadioItems(
                                     id=ids.NODE_RANKER,
-                                    options=["network-simplex", "tight-tree", "longest-path"],
-                                    value="network-simplex",
+                                    options=["Compact", "Align leaves to bottom"],
+                                    value="Compact",
                                     inline=True,
                                 ),
                             ],
@@ -45,15 +45,15 @@ def make_layout_card() -> dbc.Card:
                         ),
                         html.Div(
                             [
-                                "rankSep (vertical gap)",
-                                dcc.Slider(id=ids.RANK_SEP, min=5, max=100, step=1, value=DEFAULT_RANK_SEP, marks=None),
+                                "Nodes vertical gap",
+                                dcc.Slider(id=ids.RANK_SEP, min=0, max=150, step=1, value=DEFAULT_RANK_SEP, marks=None),
                             ],
                             className="mb-2",
                         ),
                         html.Div(
                             [
-                                "nodeSep (horizontal gap)",
-                                dcc.Slider(id=ids.NODE_SEP, min=5, max=100, step=1, value=DEFAULT_NODE_SEP, marks=None),
+                                "Nodes horizontal gap",
+                                dcc.Slider(id=ids.NODE_SEP, min=0, max=150, step=1, value=DEFAULT_NODE_SEP, marks=None),
                             ]
                         ),
                     ]

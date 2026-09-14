@@ -15,7 +15,7 @@ def register_callbacks(app):
         Output(ids.SWITCH_NODE_PLOTS, "value"),
         Output(ids.SWITCH_RSS, "value"),
         Output(ids.SWITCH_MINIMAL, "value", allow_duplicate=True),
-        Output(ids.SWITCH_COLOR_FEATURES, "value"),
+        Output(ids.SWITCH_COLOR_FEATURES, "value", allow_duplicate=True),
         Output(ids.SWITCH_DATA_EDGE_WIDTH, "value"),
         Output(ids.SWITCH_DATA_NODE_SIZE, "value"),
         Output(ids.ELEMENTS_TRIGGER, "data", allow_duplicate=True),

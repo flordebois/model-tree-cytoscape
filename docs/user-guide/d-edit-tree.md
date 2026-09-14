@@ -2,27 +2,34 @@
 
 The **Edit Tree** card controls how the tree is structured and displayed in the graph — it doesn't change the underlying fitted model, only what you see.
 
+<div style="max-width: 450px;" markdown="1">
+
 ![Screenshot: Edit Tree card, expanded](../assets/screenshots/d-edit-tree.png)
+</div>
 
 ## Tree structure
 
-These controls determine which parts of the tree are currently visible.
+These buttons determine which parts of the tree are currently visible.
 
-| Control                           | Description |
-| --------------------------------- | ----------- |
-| **Collapse/Expand selected node** | Toggles whether the children of the currently selected internal node are visible. An internal node must be selected before this option can be used. |
-| **Subtree from selected node**    | Displays only the subtree rooted at the selected node. All other parts of the tree are hidden. |
-| **Expand all nodes**              | Expands all previously collapsed nodes. |
-| **Collapse nodes to level: N**    | Collapses the tree so that only the first **N** levels remain. When **Include linear nodes** is enabled (PILOT only), linear (non-splitting) nodes are also counted when determining the collapse level. |
+| Button                            | Description                                                                                                                                                                                                                      |
+|-----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Collapse/Expand selected node** | Toggles whether the children of the currently selected internal node are visible. An internal or collapsed node must be selected.                                                                                                |
+| **Subtree from selected node**    | Look at the subtree rooted at the selected node. The rest of the tree is removed (and can be reloaded by using the reload tree button in [new tree](c-new-tree.md#saving-and-loading-trees)). An internal node must be selected. |
+| **Expand all nodes**              | Expands all previously collapsed nodes in the tree                                                                                                                                                                               |
+| **Collapse nodes to level: N**    | Collapses the tree so that only the first N levels remain. When **Include linear nodes** is enabled (PILOT only), linear (non-splitting) nodes are also counted when determining the collapse level.                             |
 
-## Display options
+## Display switches
 
-| Option                           | Description |
-| -------------------------------- | ----------- |
-| **Linear nodes**        | Controls how chains of linear nodes are displayed in PILOT trees. Available options are **Show all** (each as its own node), **Combine into node** (merged into a single node), or **Combine into edge** (merged into the connecting edge). |
-| **Show all node plots** | Displays the [node plot](b-node-info.md#node-plots) for every node simultaneously instead of only for the selected node. This can take some time for large trees. |
-| **Minimal nodes**       | Uses a more compact node layout with shorter labels and smaller node sizes, making large trees easier to view. |
-| **Feature colors**      | Colors nodes according to the feature associated with that node, rather than by node type. These colors are used consistently throughout the application, including in the [node plots](b-node-info.md#node-plots). |
-| **Show RSS**            | Displays the residual sum of squares (RSS) in the label of every node.|
+These controls change how the nodes and edges of the tree are displayed.
+
+| Switch                             | Description                                                                                                                                                                                                                                 |
+|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Linear nodes**                   | Controls how chains of linear nodes are displayed in PILOT trees. Available options are **Show all** (each as its own node), **Combine into node** (merged into a single node), or **Combine into edge** (merged into the connecting edge). |
+| **Show all node plots**            | Displays the [node plot](b-node-info.md#node-plots) for every node simultaneously instead of only for the selected node. This can take some time for large trees or big datasets.                                                           |
+| **Minimal nodes**                  | Uses a more compact node layout with shorter labels and smaller node sizes, making large trees easier to view.                                                                                                                              |
+| **Feature colors**                 | Colors nodes according to the feature associated with that node, rather than by node type. These colors are used consistently throughout the application, including in the [node plots](b-node-info.md#node-plots).                         |
+| **Show RSS**                       | Displays the residual sum of squares (RSS) in the label of every node.                                                                                                                                                                      |
+| **Show data flow with edge width** | Adjust the thickness of the edges to show the number of datapoints that go trough that edge.                                                                                                                                                |
+| **Show data flow with node size**  | Adjust the size of the node to show the number of datapoints that are in that node.                                                                                                                                                         |
 
 Some combinations of options are not possible, which is adjusted for automatically.

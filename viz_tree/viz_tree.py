@@ -9,9 +9,25 @@ from nodes.collapsed_node import CollapsedNode
 from nodes.none_node import NoneNode
 from nodes.node_model import LinearNodeModel, ConstantNodeModel
 from nodes.split_node import SplitNode, PconcNode, SplitCNode
+from adapters.base_adapter import BaseAdapter
 
 
 class VizTree:
+    """VizTree is used to store the tree and visualise it in the application.
+    It wraps a linked tree of BaseNode instances and provides the operations
+    the visualization app needs: node/edge collection, prediction, collapsing/expanding
+    subtrees, pruning, and serialization. It also saves the training data.
+
+    Attributes:
+        root_node: Root node of the linked tree.
+        nodes: Flat list of all nodes in the tree.
+        edges: List of (parent, child) node pairs for every edge in the tree.
+        X_train: Training feature matrix used to fit the tree.
+        y_train: Training target values used to fit the tree.
+        y_hat: Predictions of the tree on X_train.
+        tree_id: Identifier for this tree, defaults to a unique ID.
+    """
+
     root_node: BaseNode
     nodes: List[BaseNode]
     edges: List[Tuple[BaseNode, BaseNode]]
@@ -20,7 +36,23 @@ class VizTree:
     y_hat: np.ndarray
     tree_id: str
 
-    def __init__(self, root, X_train, y_train, y_hat, tree_id: str = None):
+    def __init__(self,
+                 root: BaseNode,
+                 X_train: np.ndarray,
+                 y_train: np.ndarray,
+                 y_hat: np.ndarray,
+                 tree_id: str = None
+                 ):
+        """
+        Args:
+            root: Root node of the linked tree.
+            X_train: Training feature matrix used to fit the tree.
+            y_train: Training target values used to fit the tree.
+            y_hat: Precomputed predictions of the tree on X_train, or
+                None to compute them via predict().
+            tree_id: Identifier for this tree. Defaults to the current
+                timestamp (format "%d-%m-%y_%H-%M-%S") if not given.
+        """
         if tree_id is None:
             self.tree_id = datetime.now().strftime('%d-%m-%y_%H-%M-%S')
         else:
@@ -37,21 +69,43 @@ class VizTree:
 
         if y_hat is None:
             self.y_hat = self._calculate_y_hat()
-            print("y_hat", self.y_hat)
         else:
             self.y_hat = y_hat
 
     @classmethod
-    def from_model(cls, adapter, X_train, y_train, model):
+    def from_model(cls, adapter: BaseAdapter, X_train: np.ndarray, y_train: np.ndarray, model) -> "VizTree":
+        """Builds a VizTree from a fitted model via an adapter.
+
+        Args:
+            adapter: Object providing build_root_node(X_train, y_train, model)
+                used to translate a model specific tree into a linked BaseNode tree.
+            X_train: Training feature matrix used to fit the model.
+            y_train: Training target values used to fit the model.
+            model: The fitted model to convert to a VizTree.
+
+        Returns:
+            A new VizTree instance wrapping the model's tree.
+        """
         root_node = adapter.build_root_node(X_train, y_train, model)
         y_hat = adapter.predict(X_train, model)
         return VizTree(root_node, X_train, y_train, y_hat)
 
     def collect_nodes(self) -> List[BaseNode]:
+        """Collects all nodes in the tree.
+
+        Returns:
+            List of all nodes, with the root node first followed by
+            all its descendants (depth-first order).
+        """
         nodes = [self.root_node] + self.root_node.get_all_children()
         return nodes
 
     def collect_edges(self) -> List[Tuple[BaseNode, BaseNode]]:
+        """Collects all edges in the tree from self.nodes.
+
+        Returns:
+            List of (parent, child) tuples.
+        """
         edges = []
         for node in self.nodes:
             for child in node.get_children():
@@ -59,6 +113,17 @@ class VizTree:
         return edges
 
     def predict(self, X: np.ndarray) -> np.ndarray:
+        """Predicts target values for each row of X by traversing the tree.
+
+        Args:
+            X: Feature matrix to predict on, one row per sample.
+
+        Returns:
+            Array of predicted values, one per row of X.
+
+        Raises:
+            ValueError: If traversal reaches node type that isn't recognized.
+        """
         y_pred = np.empty(X.shape[0], dtype=float)
         for i, x in enumerate(X):
             node = self.root_node
@@ -82,9 +147,23 @@ class VizTree:
 
 
     def _calculate_y_hat(self) -> np.ndarray:
+        """Computes predictions of the tree on X_train.
+
+        Returns:
+            Array of predicted values for X_train.
+        """
         return self.predict(self.X_train)
 
     def get_depth(self, node=None) -> int:
+        """Computes the depth of the tree, or of a given subtree, recursively.
+
+        Args:
+            node: Root of the subtree to measure. Defaults to the
+                tree's root_node if not given.
+
+        Returns:
+            Depth of the (sub)tree.
+        """
         if node is None:
             node = self.root_node
         elif isinstance(node, LeafNode):
@@ -93,9 +172,14 @@ class VizTree:
             return -1
         elif isinstance(node, CollapsedNode):
             return self.get_depth(node.parent)-1
-        return max([self.get_depth(node) for node in node.get_children()]) + 1
+        return max([self.get_depth(node_i) for node_i in node.get_children()]) + 1
 
     def get_n_leafs(self) -> int:
+        """Counts the number of leaf nodes in the tree.
+
+        Returns:
+            Number of LeafNode instances in nodes.
+        """
         count = 0
         for node in self.nodes:
             if isinstance(node, LeafNode):
@@ -103,6 +187,14 @@ class VizTree:
         return count
 
     def collapse(self, parent_node: InternalNode) -> int:
+        """Collapses a subtree in place, replacing it with a CollapsedNode.
+
+        Args:
+            parent_node: Root of the subtree to collapse.
+
+        Returns:
+            Number of nodes contained in the collapsed subtree.
+        """
         for child in parent_node.get_all_children():
             if isinstance(child, CollapsedNode):
                 self.expand(child)
@@ -116,6 +208,11 @@ class VizTree:
         return collapsed_node.n_nodes
 
     def expand(self, collapsed_node: CollapsedNode):
+        """Expands a previously collapsed subtree back into the tree, in place.
+
+        Args:
+            collapsed_node: The CollapsedNode to expand.
+        """
         for parent_node in self.nodes:
             if parent_node.id == collapsed_node.parent_id:
                 break
@@ -125,6 +222,7 @@ class VizTree:
         self.edges = self.collect_edges()
 
     def expand_all_nodes(self):
+        """Expands every collapsed subtree in the tree, in place."""
         nodes_to_expand = []
         for node in self.nodes:
             if isinstance(node, CollapsedNode):
@@ -133,6 +231,16 @@ class VizTree:
             self.expand(node)
 
     def _get_path_to_node(self, to_find_node: BaseNode, current_node=None) -> List[BaseNode]:
+        """Finds the path from the current_node to a target node, recursively.
+
+        Args:
+            to_find_node: The node to search for.
+            current_node: Node to start the search from. Defaults to
+                the tree's root_node if not given.
+
+        Returns:
+            List of nodes from current_node to to_find_node inclusive.
+        """
         if current_node is None:
             current_node = self.root_node
 
@@ -149,6 +257,15 @@ class VizTree:
         return []
 
     def prune(self, prune_node: InternalNode):
+        """Prunes a subtree in place, replacing it with a new leaf.
+
+        Args:
+            prune_node: Root of the subtree to prune.
+
+        Raises:
+            NotImplementedError: If a node on the path to prune_node,
+                or its immediate parent, is not a LinearNode or SplitNode.
+        """
         self.expand_all_nodes()
         node_path = self._get_path_to_node(prune_node)
         model = LinearNodeModel(coefficients = np.zeros(self.X_train.shape[1]), intercept = 0)
@@ -189,8 +306,16 @@ class VizTree:
 
         self.nodes = self.collect_nodes()
         self.edges = self.collect_edges()
+        self.y_hat = self._calculate_y_hat()
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
+        """Serializes the tree to a dictionary.
+
+        Returns:
+            Dictionary with tree_id, X_train, y_train, y_hat,
+            and the root node's class name and serialized form
+            (which recursively serializes the whole linked tree).
+        """
         return {
             "tree_id": self.tree_id,
             "X_train": self.X_train.tolist(),
@@ -202,7 +327,16 @@ class VizTree:
         }
 
     @classmethod
-    def from_dict(cls, viz_dict):
+    def from_dict(cls, viz_dict:dict) -> "VizTree":
+        """Reconstructs a VizTree instance from a dictionary.
+
+        Args:
+            viz_dict: Dictionary previously produced by to_dict().
+
+        Returns:
+            A new VizTree instance with its root node (and linked tree),
+            and training data restored.
+        """
         root_child_class = BaseNode.class_registry[viz_dict["root_node_class"]]
 
         obj = cls.__new__(cls)

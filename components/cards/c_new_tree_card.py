@@ -11,8 +11,8 @@ from config import (
     DEFAULT_MIN_SAMPLE_LEAF,
     DEFAULT_MIN_SAMPLE_SPLIT,
     NO_FILE_SELECTED_PLACEHOLDER,
-    ADAPTOR_OPTIONS,
-    DEFAULT_ADAPTOR_NAME
+    ADAPTER_OPTIONS,
+    DEFAULT_ADAPTER_NAME
 )
 from dataset.dataset_registry import build_dropdown_options
 
@@ -116,11 +116,11 @@ def make_new_tree_card() -> dbc.Card:
                                 children=[
                                     html.Div(
                                         [
-                                            html.Div("Adaptor", style={"marginBottom": "4px"}),
+                                            html.Div("Adapter", style={"marginBottom": "4px"}),
                                             dcc.Dropdown(
-                                                id=ids.INPUT_ADAPTOR,
-                                                options=ADAPTOR_OPTIONS,
-                                                value=DEFAULT_ADAPTOR_NAME,
+                                                id=ids.INPUT_ADAPTER,
+                                                options=ADAPTER_OPTIONS,
+                                                value=DEFAULT_ADAPTER_NAME,
                                                 clearable=False,
                                                 style={"width": "220px"},
                                             ),
@@ -129,7 +129,7 @@ def make_new_tree_card() -> dbc.Card:
                                     ),
                                     html.Div(
                                         [
-                                            html.Div("Dataset for Adaptor", style={"marginBottom": "4px"}),
+                                            html.Div("Dataset for Adapter", style={"marginBottom": "4px"}),
                                             html.Div(
                                                 "The Training dataset selected above is also the one used when loading via the "
                                                 "adapter. (It can be a subset from the total dataset used for training.)",
@@ -140,17 +140,17 @@ def make_new_tree_card() -> dbc.Card:
                                     ),
                                 ],
                             ),
-                            html.Div("Adaptor model", style={"marginBottom": "4px"}),
+                            html.Div("Adapter model", style={"marginBottom": "4px"}),
                             html.Div(
                                 style={"display": "flex", "gap": "8px"},
                                 children=[
                                     dbc.Input(
-                                        id=ids.INPUT_LOAD_TREE_ADAPTOR,
+                                        id=ids.INPUT_LOAD_TREE_ADAPTER,
                                         type="text",
                                         placeholder="path to model_adapter/...",
                                         value="/Users/flor/Pycharm/Dash/output/r_partykit_trees/tree.json",
                                     ),
-                                    dbc.Button("Load with Adaptor", id=ids.BTN_LOAD_TREE_ADAPTOR, size="sm"),
+                                    dbc.Button("Load with Adapter", id=ids.BTN_LOAD_TREE_ADAPTER, size="sm"),
                                 ],
                             ),
                             html.Div(id=ids.TRIGGER_FOR_SPINNER, style={"display": "none"}),

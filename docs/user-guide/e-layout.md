@@ -2,16 +2,20 @@
 
 The **Layout** card controls how the tree graph is arranged on screen. It doesn't affect the tree's structure or data, only the drawing.
 
+<div style="max-width: 450px;" markdown="1">
+
 ![Screenshot: Layout card, expanded](../assets/screenshots/e-layout.png)
+</div>
 
 ## Controls
 
-| Control | Description |
-|---------|-------------|
-| Refit layout | Re-runs the automatic layout, useful after dragging things around |
-| Display direction | **Top Bottom** or **Left Right** - the direction the tree grows in |
-| rankSep (vertical gap) | Spacing between tree levels (ranks) |
-| nodeSep (horizontal gap) | Spacing between sibling nodes at the same level |
+| Control                  | Description                                                                                       |
+|--------------------------|---------------------------------------------------------------------------------------------------|
+| **Refit layout**         | Re-runs the automatic layout, useful after dragging things around                                 |
+| **Display direction**    | **Top Bottom** or **Left Right** - the direction the tree grows in                                |
+| **Layout type**          | Determinese what is prioritiesed: make the tree **compact** or to **align leaves to the bottom**. |
+| **Nodes vertical gap**   | Spacing between tree levels (ranks)                                                               |
+| **Nodes horizontal gap** | Spacing between sibling nodes at the same level                                                   |
 
 The graph uses the [dagre](https://github.com/dagrejs/dagre) layout engine, which arranges nodes level by level and tries to minimize edge crossings.
 

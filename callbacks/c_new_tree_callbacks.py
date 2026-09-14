@@ -2,7 +2,7 @@ from m5py import M5Prime
 import os
 import pickle
 import time
-from dash import Input, Output, State, ctx, no_update
+from dash import Input, Output, State, ctx, no_update, NoUpdate
 from dash.exceptions import PreventUpdate
 import base64
 from pathlib import Path
@@ -10,7 +10,7 @@ from pathlib import Path
 import ids
 from config import DIR_SAVED_VIZ_TREES, NO_FILE_SELECTED_PLACEHOLDER, DEFAULT_DATASET_NAME
 from viz_tree.viz_tree import VizTree
-from adapters.adapter import ADAPTERS_REGISTRY
+from adapters.base_adapter import ADAPTERS_REGISTRY
 
 from dataset.dataset_registry import (
     NEW_CSV_OPTION,
@@ -230,6 +230,7 @@ def register_callbacks(app):
         Output(ids.STORE_TREE_PARAMS, "data", allow_duplicate=True),
         Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
         Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
+        Output(ids.SWITCH_COLOR_FEATURES, "value", allow_duplicate=True),
         Output(ids.TRIGGER_FOR_SPINNER, "children"),
 
         Input(ids.BTN_FIT_NEW_TREE, "n_clicks"),
@@ -239,9 +240,10 @@ def register_callbacks(app):
         State(ids.INPUT_MAX_MODEL_DEPTH, "value"),
         State(ids.INPUT_MIN_SAMPLE_SPLIT, "value"),
         State(ids.INPUT_MIN_SAMPLE_LEAF, "value"),
+        State(ids.SWITCH_COLOR_FEATURES, "value"),
         prevent_initial_call=True,
     )
-    def fit_tree(n_clicks, dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf):
+    def fit_tree(n_clicks, dataset_name, method_name, max_depth, max_model_depth, min_sample_split, min_sample_leaf, feature_color):
         if n_clicks is None:
             print("call to fit tree with clicks None")
             raise PreventUpdate
@@ -270,9 +272,12 @@ def register_callbacks(app):
             "pruned": False,
         }
 
-        return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), ""
+        if feature_color or method_name == "Pilot":
+            return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), NoUpdate ,""
+        else:
+            return viz_tree_dict, viz_tree_dict, tree_params, tree_params, time.time(), True ,""
 
-    # --- LOAD NEW TREE WITH ADAPTOR ---
+    # --- LOAD NEW TREE WITH ADAPTER ---
     @app.callback(
         Output(ids.STORE_VIZ_TREE, "data", allow_duplicate=True),
         Output(ids.STORE_VIZ_TREE_BASE, "data", allow_duplicate=True),
@@ -280,10 +285,10 @@ def register_callbacks(app):
         Output(ids.STORE_TREE_PARAMS_BASE, "data", allow_duplicate=True),
         Output(ids.NEW_TREE_TRIGGER, "data", allow_duplicate=True),
 
-        Input(ids.BTN_LOAD_TREE_ADAPTOR, "n_clicks"),
+        Input(ids.BTN_LOAD_TREE_ADAPTER, "n_clicks"),
         State(ids.INPUT_DATASET, "value"),
-        State(ids.INPUT_ADAPTOR, "value"),
-        State(ids.INPUT_LOAD_TREE_ADAPTOR, "value"),
+        State(ids.INPUT_ADAPTER, "value"),
+        State(ids.INPUT_LOAD_TREE_ADAPTER, "value"),
         prevent_initial_call=True,
     )
     def fit_tree(n_clicks, input_dataset, adapter_name, model_path):
