@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://flordebois.github.io/model-tree-cytoscape/home/user-guide/c-new-tree/">
+        <link rel="canonical" href="https://flordebois.github.io/model-tree-cytoscape/user-guide/c-new-tree/">
       
       
         <link rel="prev" href="../b-node-info/">
@@ -52,6 +52,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -253,6 +255,46 @@
   
   
   User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../adapter/adapter_overview/" class="md-tabs__link">
+          
+  
+  
+  Adapter
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/reference_overview/" class="md-tabs__link">
+          
+  
+  
+  Reference
 
         </a>
       </li>
@@ -630,6 +672,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#uploading-a-csv-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uploading a CSV dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-an-adapter-to-upload-a-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using an adapter to upload a tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using an adapter to upload a tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-an-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using an Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -744,6 +825,580 @@
   
   
   
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adapter
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Adapter
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapter/adapter_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapter/partykit_example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/reference_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/viz_tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VizTree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adapters
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Adapters
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/adapters/base_adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BaseAdapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/adapters/partykit_adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PartyKitAdapter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nodes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Nodes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/base_node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BaseNode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/node_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NodeModel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/internal_node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InternalNode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/split_node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SplitNode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/leaf_node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LeafNode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/nodes/none_node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoneNode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../gallery/" class="md-nav__link">
         
@@ -813,6 +1468,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#uploading-a-csv-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uploading a CSV dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-an-adapter-to-upload-a-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using an adapter to upload a tree
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using an adapter to upload a tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-an-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using an Adapter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -834,8 +1528,11 @@
 
 
 <h1 id="new-tree">New Tree<a class="headerlink" href="#new-tree" title="Permanent link">&para;</a></h1>
-<p>The <strong>New Tree</strong> card is used to fit a new model tree or to save and load previously fitted trees.</p>
+<p>The <strong>New Tree</strong> card is used to fit a new model tree, to save and load previously fitted trees, or to load a tree with
+an adapter.</p>
+<div style="max-width: 450px;">
 <p><img alt="Screenshot: New Tree card, expanded" src="../../assets/screenshots/c-new-tree.png" /></p>
+</div>
 <h2 id="fitting-a-tree">Fitting a tree<a class="headerlink" href="#fitting-a-tree" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -847,19 +1544,19 @@
 <tbody>
 <tr>
 <td><strong>Dataset</strong></td>
-<td>The dataset on which the tree will be fitted. A selection of datasets from the PMLB repository is available.</td>
+<td>The dataset on which the tree will be fitted. A selection of datasets from the PMLB repository are available. A csv file with a new dataset can also be uploaded.</td>
 </tr>
 <tr>
 <td><strong>Method</strong></td>
-<td>The model tree algorithm to use: <strong>PILOT</strong> or <strong>M5</strong> (see the <a href="../../home/">index</a> for a brief description of each).</td>
+<td>The model tree algorithm to use: PILOT or M5 (see the <a href="../../home/">index</a> for a brief description of each).</td>
 </tr>
 <tr>
 <td><strong>Max depth</strong></td>
-<td>The maximum depth of the tree.</td>
+<td>The maximum depth of the tree. (The root node is at depth 0.)</td>
 </tr>
 <tr>
 <td><strong>Max model depth</strong></td>
-<td>The maximum model depth, excluding the linear models in the leaves (PILOT only).</td>
+<td>PILOT only feauture: The maximum model depth, also counting linear nodes (max depth doesn't count linear nodes).</td>
 </tr>
 <tr>
 <td><strong>Min samples split</strong></td>
@@ -871,14 +1568,42 @@
 </tr>
 </tbody>
 </table>
-<p>Click <strong>Fit Tree</strong> to train and load a new tree using the selected settings. Fitting may take a few seconds for larger datasets or deeper trees.</p>
+<p>Click <strong>Fit Tree</strong> to train and show a new tree using the selected settings. Fitting may take a some time for larger
+datasets or deeper trees.</p>
 <h2 id="saving-and-loading-trees">Saving and loading trees<a class="headerlink" href="#saving-and-loading-trees" title="Permanent link">&para;</a></h2>
-<p>The following actions are available:</p>
+<p>The following actions are also available:</p>
 <ul>
-<li><strong>Save shown tree</strong> – Saves the currently displayed tree as a pickled Python object in <code>application_dir/output/saved_viz_trees</code>. The saved tree can later be reloaded in the application.</li>
+<li><strong>Save shown tree</strong> – Saves the currently displayed tree as a pickled Python object in
+  <code>application_dir/output/saved_viz_trees</code>. The saved tree can later be reloaded in the application.</li>
 <li><strong>Download shown tree</strong> – Downloads the currently displayed tree as an SVG image.</li>
-<li><strong>Reload tree</strong> – Restores the original fitted tree. This is useful after exploring subtrees or making temporary modifications to the visualization. The tree is restored to the state it had immediately after being fitted or loaded.</li>
-<li><strong>Load tree</strong> – Loads a previously saved tree. Enter the path to a saved tree in the text field and click <strong>Load tree</strong>. If no valid path is provided, the application automatically loads the most recently saved tree from <code>application_dir/output/saved_viz_trees</code>.</li>
+<li><strong>Reload tree</strong> – Restores the original fitted tree. This is useful after exploring subtrees or making temporary
+  modifications to the visualization. The tree is restored to the state it had immediately after being fitted or loaded.</li>
+<li><strong>Load tree</strong> – Loads a previously saved tree (pickled Python object). Enter the path to a saved tree in the text
+  field and click <strong>Load tree</strong>. If no valid path is provided, the application automatically loads the most recently
+  saved tree from <code>application_dir/output/saved_viz_trees</code>.</li>
+</ul>
+<h2 id="uploading-a-csv-dataset">Uploading a CSV dataset<a class="headerlink" href="#uploading-a-csv-dataset" title="Permanent link">&para;</a></h2>
+<div style="max-width: 350px;">
+<p><img alt="Screenshot: New Tree card, expanded" src="../../assets/screenshots/csv_upload.png" /></p>
+</div>
+<p>When choosing to upload a CSV dataset, the following pop-up is shown. The uploaded dataset should be a numeric
+dataframe, with one column specified as the target column. In the input field below the upload, you can specify the
+target column by its name or by its index (e.g., the first or last column).</p>
+<p>If you want to use PILOT or M5, categorical variables need to be converted to integers. Categorical variables are
+automatically detected as having fewer than 8 unique values.</p>
+<h2 id="using-an-adapter-to-upload-a-tree">Using an adapter to upload a tree<a class="headerlink" href="#using-an-adapter-to-upload-a-tree" title="Permanent link">&para;</a></h2>
+<p>The application also allows you to upload a linear model tree using an adapter. An adapter converts a tree from an
+external implementation into the internal <code>VizTree</code> object used for visualization.
+Currently, adapters are available for PILOT, M5, and the <em>partykit</em> package in R. (PILOT and M5 trees can also be
+trained directly in the application.) The <em>partykit</em> adapter supports trees fitted using <code>lmtree()</code> in R.</p>
+<p>The documentation page of the <a href="../../home/">adapter</a> explains how to implement your own adapter, allowing trees from other linear model tree
+algorithms in different languages to be imported. It also provides more details on the partykit adapter.</p>
+<h3 id="using-an-adapter">Using an Adapter<a class="headerlink" href="#using-an-adapter" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Select the desired adapter from the dropdown.</li>
+<li>Select the dataset used to fit the tree. You can upload the dataset (or a sample) as a CSV.</li>
+<li>Provide the <strong>path to the model</strong> or file containing the tree information.</li>
+<li>Click on <strong>Load with Adapter</strong>.</li>
 </ul>
 
 
