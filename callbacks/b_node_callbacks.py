@@ -9,6 +9,7 @@ from callbacks.d_edit_tree_callbacks import find_node_by_cytoscape_id
 from config import DIR_LIVE_OUTPUT, NODE_TYPE_COLORS
 from nodes.internal_node import InternalNode
 from nodes.leaf_node import LeafNode
+from nodes.node_model import LinearNodeModel
 from plots.predsplot import predsplot
 from plots.predsplot2 import predsplot2
 from plots.regplot import make_regression_plot
@@ -121,57 +122,60 @@ def register_callbacks(app):
         feature_colors = [cmap(i) for i in range(n_features)]
 
         if isinstance(node, LeafNode):
-            if type2:
-                file_dir = DIR_LIVE_OUTPUT / "predsplots" / f"predsplot2_node{node.id}_{viz_tree.tree_id}.svg"
-                predsplot2(viz_tree=viz_tree,
-                           leaf_node=node,
-                           y_hat = viz_tree.y_hat,
-                           n_max=nmax,
-                           fig_size=(figw, figh),
-                           truncate_total_pred=truncate_total_pred,
-                           variable_tick_width=True,
-                           display_type=display_type,
-                           file_directory=str(file_dir),
-                           highlight_x=highlight_x_arr,
-                           staircase=staircase,
-                           feature_names=None,
-                           all_feature_colors=feature_colors,
-                           )
-            else:
-                if np.any(np.array(node.node_model.coefficients) != 0):
-                    file_dir = DIR_LIVE_OUTPUT / "predsplots" / f"predsplot_node{node.id}_{viz_tree.tree_id}.svg"
-                    node_X = viz_tree.X_train[node.indices, :]
-                    if use_intercept:
-                        intercept = node.node_model.intercept
-                    else:
-                        intercept = None
-                    predsplot(node_X,
-                              np.array(node.node_model.coefficients),
-                              y_hat=np.array(np.sum(node.node_model.coefficients * node_X, axis=1) + node.node_model.intercept),
-                              n_max=nmax,
-                              intercept=intercept,
-                              fig_size=(figw, figh),
-                              feature_names=None,
-                              all_feature_colors=feature_colors,
-                              display_type=display_type,
-                              truncate_total_pred=truncate_total_pred,
-                              variable_tick_width=True,
-                              file_directory=str(file_dir),
-                              highlight_x=highlight_x_arr,
-                              staircase=staircase)
+            if isinstance(node.node_model, LinearNodeModel):
+                if type2:
+                    file_dir = DIR_LIVE_OUTPUT / "predsplots" / f"predsplot2_node{node.id}_{viz_tree.tree_id}.svg"
+                    predsplot2(viz_tree=viz_tree,
+                               leaf_node=node,
+                               y_hat = viz_tree.y_hat,
+                               n_max=nmax,
+                               fig_size=(figw, figh),
+                               truncate_total_pred=truncate_total_pred,
+                               variable_tick_width=True,
+                               display_type=display_type,
+                               file_directory=str(file_dir),
+                               highlight_x=highlight_x_arr,
+                               staircase=staircase,
+                               feature_names=None,
+                               all_feature_colors=feature_colors,
+                               )
                 else:
-                    return "Prediction plots (type 1) can't be made for nodes with no linear model."
-        elif isinstance(node, InternalNode):
-            file_dir = DIR_LIVE_OUTPUT / "regplots" / f"regplot_node{node.id}_{viz_tree.tree_id}.svg"
-            make_regression_plot(
-                node,
-                viz_tree.X_train,
-                str(file_dir),
-                (figw, figh),
-                feature_colors,
-                None,
-                highlight_x_arr
-            )
+                    if np.any(np.array(node.node_model.coefficients) != 0):
+                        file_dir = DIR_LIVE_OUTPUT / "predsplots" / f"predsplot_node{node.id}_{viz_tree.tree_id}.svg"
+                        node_X = viz_tree.X_train[node.indices, :]
+                        if use_intercept:
+                            intercept = node.node_model.intercept
+                        else:
+                            intercept = None
+                        predsplot(node_X,
+                                  np.array(node.node_model.coefficients),
+                                  y_hat=np.array(np.sum(node.node_model.coefficients * node_X, axis=1) + node.node_model.intercept),
+                                  n_max=nmax,
+                                  intercept=intercept,
+                                  fig_size=(figw, figh),
+                                  feature_names=None,
+                                  all_feature_colors=feature_colors,
+                                  display_type=display_type,
+                                  truncate_total_pred=truncate_total_pred,
+                                  variable_tick_width=True,
+                                  file_directory=str(file_dir),
+                                  highlight_x=highlight_x_arr,
+                                  staircase=staircase)
+                    else:
+                        return "Prediction plots (type 1) can't be made for nodes with no linear model."
+            elif isinstance(node, InternalNode):
+                file_dir = DIR_LIVE_OUTPUT / "regplots" / f"regplot_node{node.id}_{viz_tree.tree_id}.svg"
+                make_regression_plot(
+                    node,
+                    viz_tree.X_train,
+                    str(file_dir),
+                    (figw, figh),
+                    feature_colors,
+                    None,
+                    highlight_x_arr
+                )
+            else:
+                return f"No plot available for this type of leaf node.", None
         else:
             return f"No plot available for class {node.__class__.__name__}.", None
 
