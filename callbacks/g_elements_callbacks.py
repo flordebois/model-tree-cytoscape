@@ -35,9 +35,9 @@ def register_callbacks(app):
         out = [no_update] * 7
 
         if trig == ids.SWITCH_NODE_PLOTS and node_plots:
-            out[0] = False  # combine_lin
+            out[0] = 0  # combine_lin
             out[2] = False  # rss
-            out[3] = False  # minimal
+            out[3] = 0  # minimal
             out[4] = True  # color_features
             out[5] = False # data_edge
             out[6] = False # data_node
@@ -47,16 +47,16 @@ def register_callbacks(app):
 
         elif trig == ids.SWITCH_RSS and rss:
             out[1] = False  # node_plots
-            out[3] = False  # minimal
+            out[3] = 0  # minimal
 
-        elif trig == ids.SWITCH_MINIMAL and minimal:
+        elif trig == ids.SWITCH_MINIMAL and minimal > 0:
             out[1] = False  # node_plots
             out[2] = False  # rss
 
         elif trig == ids.SWITCH_DATA_NODE_SIZE and data_node:
             out[1] = False # node_plots
             out[2] = False  # rss
-            out[3] = True  # minimal
+            out[3] = 1  # minimal
 
         out.append(time.time())
         return out
@@ -184,11 +184,15 @@ def register_callbacks(app):
             show_all_labels = show_all_labels,
         )
 
-        if use_minimal:
+        if use_minimal > 0:
+            if use_minimal == 1:
+                class_name = "minimal"
+            else: #use_minimal == 2:
+                class_name = "tiny"
             for el in elements:
                 if "data" in el and "id" in el["data"]:  # node, not edge
                     classes = el.get("classes", "").split()
-                    classes.append("minimal")
+                    classes.append(class_name)
                     el["classes"] = " ".join(classes)
 
         return elements

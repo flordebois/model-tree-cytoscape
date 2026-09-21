@@ -71,16 +71,27 @@ def make_edit_tree_card() -> dbc.Card:
                                     className="mb-2",
                                 ),
                                 html.Div(
+                                    [
+                                        html.Span("Node size: "),
+                                        dbc.RadioItems(
+                                            id=ids.SWITCH_MINIMAL,
+                                            options=[
+                                                {"label": "Normal", "value": 0},
+                                                {"label": "Minimal", "value": 1},
+                                                {"label": "Tiny", "value": 2},
+                                            ],
+                                            value=0,
+                                            inline=True,
+                                        ),
+                                    ],
+                                    className="mb-2",
+                                ),
+                                html.Div(
                                     style={"display": "flex", "gap": "16px", "flexWrap": "wrap"},
                                     children=[
                                         dbc.Switch(
                                             id=ids.SWITCH_NODE_PLOTS,
                                             label="Show all node plots",
-                                            value=False,
-                                        ),
-                                        dbc.Switch(
-                                            id=ids.SWITCH_MINIMAL,
-                                            label="Minimal nodes",
                                             value=False,
                                         ),
                                         dbc.Switch(

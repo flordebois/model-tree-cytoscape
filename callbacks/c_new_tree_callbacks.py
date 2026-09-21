@@ -337,14 +337,13 @@ def register_callbacks(app):
         State(ids.STORE_TREE_PARAMS, "data"),
         prevent_initial_call=True,
     )
-    def new_tree_trigger(_, minimal_on, tree_params):
-        if minimal_on:
-            return no_update, time.time()
+    def new_tree_trigger(_, minimal, tree_params):
+        if minimal == 0 and 8 < tree_params["n_leafs"] < 18:
+            return 1, no_update
+        elif tree_params["n_leafs"] >= 18:
+            return 2, no_update
         else:
-            if tree_params["n_leafs"] > 8:
-                return True, no_update
-            else:
-                return no_update, time.time()
+            return no_update, time.time()
 
     # --- SAVE TREE ---
     @app.callback(

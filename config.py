@@ -63,6 +63,8 @@ MAX_NODE_HEIGHT = 50
 
 SPINNER_COLOR = "primary"
 
+DEFAULT_NODE_METRICS = ["ID", "# Samples", "RSS", 'MAE']
+
 def get_initial_graph_info():
     with open(
             "output/saved_viz_trees/tree_14-08-26_12-45-55__1199_BNG_echoMonths.pmlb-Pilot-12-30-10-5.pkl",
@@ -143,6 +145,14 @@ CYTOSCAPE_STYLESHEET = [
             "label": "data(label_minimal)",
             "width": "30px",
             "height": "15px",
+        },
+    },
+    {
+        "selector": "node.tiny",
+        "style": {
+            "label": "",
+            "width": "0.2px",
+            "height": "0.1px",
         },
     },
     {

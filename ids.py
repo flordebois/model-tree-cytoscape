@@ -11,6 +11,7 @@ STORE_HIGHLIGHT_X = "store-highlight-x"
 STORE_TREE_PARAMS = "store-tree-params"
 STORE_TREE_PARAMS_BASE = "store-tree-params-base"
 STORE_MODAL_DONT_ASK = "store-modal-dont-ask"
+STORE_LAST_PLOT_PATH = "store-last-plot-path"
 
 # --- A Tree Information card ----------------------------------------------
 TREE_INFO_TEXT = "tree-info"
@@ -18,13 +19,12 @@ TREE_INFO_TEXT = "tree-info"
 # --- B Node Information card ----------------------------------------------
 NODE_INFO_TYPE = "node-info-type"
 NODE_INFO_LABEL = "node-info-label"
-NODE_INFO_ID = "node-info-id"
-NODE_INFO_SAMPLES = "node-info-samples"
-NODE_INFO_RSS = "node-info-rss"
-NODE_INFO_RSS_REDUCTION = "node-info-rss-reduction"
 NODE_INFO_PLOT_SWITCH = "node-info-plot-switch"
 NODE_INFO_PLOT_COLLAPSE = "node-info-plot-collapse"
 NODE_INFO_PLOT_CONTAINER = "node-info-plot-container"
+
+NODE_INFO_METRICS_DROPDOWN = "node-info-metrics-dropdown"
+NODE_INFO_METRICS = "node-info-metrics"
 
 # Plot settings
 INPUT_DISPLAY_TYPE = "input-display-type"
@@ -63,6 +63,8 @@ INPUT_LOAD_TREE_ADAPTER = "input-load-tree-adapter"
 BTN_LOAD_TREE_ADAPTER = "btn-load-tree-adapter"
 INPUT_ADAPTER = "input-adapter"
 TRIGGER_FOR_SPINNER = "dummy-for-spinner"
+BTN_DOWNLOAD_PLOT = "btn-download-plot"
+DOWNLOAD_PLOT = "download-plot"
 
 # --- D Edit Tree card ----------------------------------------------------
 EDIT_TREE_COLLAPSE = "edit-tree-collapse"

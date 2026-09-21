@@ -1,5 +1,5 @@
 import dash_bootstrap_components as dbc
-from dash import html
+from dash import html, dcc
 
 import ids
 from config import DEFAULT_DISPLAY_TYPE, DEFAULT_FIG_H, DEFAULT_FIG_W, DEFAULT_NMAX
@@ -111,15 +111,25 @@ def make_settings_card() -> dbc.Card:
                         className="g-3 mb-3 pt-2",
                     ),
 
-                    # Action Button
-                    html.Div(
-                        dbc.Button(
-                            "Refit Plot",
-                            id=ids.BTN_REFIT_PLOTS,
-                            color="primary",
-                            size="sm",
-                            className="px-4 fw-bold",
-                        ),
+                    # Action Buttons
+                    dcc.Download(id=ids.DOWNLOAD_PLOT),
+                    html.Div([
+                        dbc.Stack([
+                            dbc.Button(
+                                "Download Plot",
+                                id=ids.BTN_DOWNLOAD_PLOT,
+                                color="secondary",
+                                size="sm",
+                                className="px-4 fw-bold flex-fill",
+                            ),
+                            dbc.Button(
+                                "Refit Plot",
+                                id=ids.BTN_REFIT_PLOTS,
+                                color="primary",
+                                size="sm",
+                                className="px-4 fw-bold flex-fill",
+                            ),
+                        ], direction="horizontal", gap=2)],
                         className="d-flex justify-content-end",
                     ),
                 ]

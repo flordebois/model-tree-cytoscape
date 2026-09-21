@@ -106,8 +106,8 @@ class BaseNode(ABC):
         """
         obj = cls.__new__(cls)
         obj.id = node_dict["id"]
-        obj.indices = node_dict["indices"]
-        obj.y_res = node_dict["y_res"]
+        obj.indices = np.array(node_dict["indices"])
+        obj.y_res = np.array(node_dict["y_res"])
         obj.rss = node_dict["rss"]
         return obj
 

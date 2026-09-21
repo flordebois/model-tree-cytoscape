@@ -15,6 +15,7 @@ def make_global_stores() -> html.Div:
             dcc.Store(id=ids.STORE_HIGHLIGHT_X, data=None),
             dcc.Store(id=ids.STORE_TREE_PARAMS,data=tree_params),
             dcc.Store(id=ids.STORE_TREE_PARAMS_BASE, data=tree_params),
-            dcc.Store(id=ids.STORE_MODAL_DONT_ASK, data=False)
+            dcc.Store(id=ids.STORE_MODAL_DONT_ASK, data=False),
+            dcc.Store(id=ids.STORE_LAST_PLOT_PATH),
         ]
     )

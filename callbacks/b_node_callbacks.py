@@ -1,7 +1,9 @@
 import ids
-from dash import Input, Output, State, html
+from dash import Input, Output, State, html, dcc
 import numpy as np
 import matplotlib.pyplot as plt
+from urllib.parse import quote
+import dash_bootstrap_components as dbc
 
 from callbacks.d_edit_tree_callbacks import find_node_by_cytoscape_id
 from config import DIR_LIVE_OUTPUT, NODE_TYPE_COLORS
@@ -11,22 +13,21 @@ from plots.predsplot import predsplot
 from plots.predsplot2 import predsplot2
 from plots.regplot import make_regression_plot
 from viz_tree.viz_tree import VizTree
-from urllib.parse import quote
+from node_metrics.node_metric import NODE_METRICS_REGISTRY
 
 def register_callbacks(app):
     @app.callback(
         Output(ids.NODE_INFO_TYPE, "children"),
         Output(ids.NODE_INFO_TYPE, "style"),
         Output(ids.NODE_INFO_LABEL, "children"),
-        Output(ids.NODE_INFO_ID, "children"),
-        Output(ids.NODE_INFO_SAMPLES, "children"),
-        Output(ids.NODE_INFO_RSS, "children"),
-        Output(ids.NODE_INFO_RSS_REDUCTION, "children"),
+        Output(ids.NODE_INFO_METRICS, "children"),
 
         Input(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
+        Input(ids.NODE_INFO_METRICS_DROPDOWN, "value"),
+        State(ids.STORE_VIZ_TREE, "data"),
         prevent_initial_call=True
     )
-    def update_node_info(selected_node):
+    def update_node_info(selected_node, metric_names, viz_tree_dict):
         node = selected_node[0] if selected_node else {}
 
         node_type = node.get("node_type", "—")
@@ -35,12 +36,25 @@ def register_callbacks(app):
         badge_style = {"backgroundColor": badge_color, "color": "#ffffff"}
 
         label = node.get("label", "No node selected.")
-        node_id = node.get("id", "—")
-        n_samples = node.get("n_samples", "—")
-        rss = node.get("rss", "—")
-        rss_root_reduction = node.get("rss_root_reduction", "—")
 
-        return badge_label, badge_style, label, node_id, n_samples, rss, rss_root_reduction
+        if len(metric_names) == 0 or node == {}:
+            metrics_components = "No node or metrics selected."
+        else:
+            metric_cols = []
+            viz_tree = VizTree.from_dict(viz_tree_dict)
+            viz_tree_node = find_node_by_cytoscape_id(viz_tree, node["id"])
+            for metric_name in metric_names:
+                metric_cls = NODE_METRICS_REGISTRY[metric_name]
+                metric_value = metric_cls.run(viz_tree_node, viz_tree.X_train, viz_tree.y_train, viz_tree.y_hat)
+                metric_cols.append(
+                    dbc.Col([
+                        html.Small(metric_name, className="text-muted d-block fw-bold"),
+                        html.Span(children=metric_value, className="fs-6")
+                    ], xs=6, sm=4, md=3)
+                )
+            metrics_components = dbc.Row(metric_cols, className="gy-2")
+
+        return badge_label, badge_style, label, metrics_components
 
 
     @app.callback(
@@ -52,7 +66,20 @@ def register_callbacks(app):
         return bool(switch_on)
 
     @app.callback(
+        Output(ids.DOWNLOAD_PLOT, "data"),
+
+        Input(ids.BTN_DOWNLOAD_PLOT, "n_clicks"),
+        State(ids.STORE_LAST_PLOT_PATH, "data"),
+        prevent_initial_call=True,
+    )
+    def download_tree_svg(n_clicks, plot_path):
+        if not plot_path:
+            return None
+        return dcc.send_file(plot_path)
+
+    @app.callback(
         Output(ids.NODE_INFO_PLOT_CONTAINER, "children"),
+        Output(ids.STORE_LAST_PLOT_PATH, "data"),
 
         Input(ids.NODE_INFO_PLOT_SWITCH, "value"),
         Input(ids.CYTOSCAPE_GRAPH, "selectedNodeData"),
@@ -79,7 +106,7 @@ def register_callbacks(app):
                          predsplot_type,
                          ):
         if not switch_on or not selected_node:
-            return "Plot will appear here, no node selected."
+            return "Plot will appear here, no node selected.", None
 
         use_intercept = "intercept" in predsplot_options
         truncate_total_pred = "truncate" in predsplot_options
@@ -146,15 +173,13 @@ def register_callbacks(app):
                 highlight_x_arr
             )
         else:
-            return f"No plot available for class {node.__class__.__name__}."
+            return f"No plot available for class {node.__class__.__name__}.", None
 
         if file_dir is None:
-            return (
-                "Error, plot no file was created."
-            )
+            return "Error, plot no file was created.", None
 
         svg_data = file_dir.read_text(encoding="utf-8")
         encoded_svg = quote(svg_data)
 
         src_url =  f"data:image/svg+xml;utf8,{encoded_svg}"
-        return html.Img(src=src_url, style={"maxWidth": "100%"})
+        return html.Img(src=src_url, style={"maxWidth": "100%"}), str(file_dir)

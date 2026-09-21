@@ -2,6 +2,8 @@ import dash_bootstrap_components as dbc
 from dash import html, dcc
 from components.cards.bb_node_plot_settings_card import make_settings_card
 import ids
+from node_metrics.node_metric import NODE_METRICS_REGISTRY
+from config import DEFAULT_NODE_METRICS
 
 def make_node_info_card() -> dbc.Card:
     return dbc.Card(
@@ -28,26 +30,29 @@ def make_node_info_card() -> dbc.Card:
                     ], width=12),
                 ], className="mb-3"),
 
-                # ID & Samples
+                # Metrics
                 dbc.Row([
                     dbc.Col([
-                        html.Small("Node ID", className="text-muted d-block fw-bold"),
-                        html.Span(id = ids.NODE_INFO_ID, children="—", className="fs-6")
-                    ], width=2),
-                    dbc.Col([
-                        html.Small("# Samples", className="text-muted d-block fw-bold"),
-                        html.Span(id = ids.NODE_INFO_SAMPLES, children="—", className="fs-6")
-                    ], width=2),
-                    dbc.Col([
-                        html.Small("Current RSS", className="text-muted d-block fw-bold"),
-                        html.Span(id = ids.NODE_INFO_RSS, children="—", className="fs-6")
-                    ], width=3),
-                    dbc.Col([
-                        html.Small("RSS root Reduction", className="text-muted d-block fw-bold"),
-                        html.Span(id = ids.NODE_INFO_RSS_REDUCTION, children="—", className="fs-6")
-                    ], width=4),
-                ], className="mb-3")
-                ,
+                        html.Small("Metrics", className="text-muted d-block fw-bold"),
+                        dcc.Dropdown(
+                            list(NODE_METRICS_REGISTRY.keys()),
+                            DEFAULT_NODE_METRICS,
+                            id=ids.NODE_INFO_METRICS_DROPDOWN,
+                            multi=True,
+                            closeOnSelect=False,
+                            searchable=False,
+                            debounce=True,
+                            maxHeight=300,
+                            search_order="original",
+                            placeholder="Select metrics",
+                            className="mb-2",
+                        ),
+                        html.Div(
+                            id=ids.NODE_INFO_METRICS,
+                            children="No node or metrics selected."
+                        )
+                    ], width=12),
+                ], className="mb-3"),
                 dbc.Switch(
                     id=ids.NODE_INFO_PLOT_SWITCH,
                     label="Show node plot",
