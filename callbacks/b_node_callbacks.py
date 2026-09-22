@@ -163,19 +163,19 @@ def register_callbacks(app):
                                   staircase=staircase)
                     else:
                         return "Prediction plots (type 1) can't be made for nodes with no linear model."
-            elif isinstance(node, InternalNode):
-                file_dir = DIR_LIVE_OUTPUT / "regplots" / f"regplot_node{node.id}_{viz_tree.tree_id}.svg"
-                make_regression_plot(
-                    node,
-                    viz_tree.X_train,
-                    str(file_dir),
-                    (figw, figh),
-                    feature_colors,
-                    None,
-                    highlight_x_arr
-                )
             else:
                 return f"No plot available for this type of leaf node.", None
+        elif isinstance(node, InternalNode):
+            file_dir = DIR_LIVE_OUTPUT / "regplots" / f"regplot_node{node.id}_{viz_tree.tree_id}.svg"
+            make_regression_plot(
+                node,
+                viz_tree.X_train,
+                str(file_dir),
+                (figw, figh),
+                feature_colors,
+                None,
+                highlight_x_arr
+            )
         else:
             return f"No plot available for class {node.__class__.__name__}.", None
 
