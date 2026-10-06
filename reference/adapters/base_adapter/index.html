@@ -27,7 +27,7 @@
     
     
       
-        <title>BaseAdapter - Visualisation of linear model trees</title>
+        <title>BaseAdapter - IMoTE: Interactive MOdel Tree Explorer</title>
       
     
     
@@ -54,6 +54,10 @@
     
     
       <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/custom_api.css">
     
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -94,7 +98,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Visualisation of linear model trees" class="md-header__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-header__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Visualisation of linear model trees
+            IMoTE: Interactive MOdel Tree Explorer
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -227,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../home/" class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -343,13 +347,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Visualisation of linear model trees" class="md-nav__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-nav__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Visualisation of linear model trees
+    IMoTE: Interactive MOdel Tree Explorer
   </label>
   
     <div class="md-nav__source">
@@ -373,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home/" class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -1053,22 +1057,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#adapters.base_adapter" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        base_adapter
+        <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;base_adapter
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="base_adapter">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.ADAPTERS_REGISTRY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;ADAPTERS_REGISTRY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.BaseAdapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BaseAdapter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" BaseAdapter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.ADAPTERS_REGISTRY" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.build_root_node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ADAPTERS_REGISTRY
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;build_root_node
       
     </span>
   </a>
@@ -1076,22 +1102,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.load_model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BaseAdapter
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="BaseAdapter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.build_root_node" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        build_root_node
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;load_model
       
     </span>
   </a>
@@ -1099,21 +1113,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.load_model" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.predict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        load_model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.predict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        predict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;predict
       
     </span>
   </a>
@@ -1124,20 +1127,15 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.register_adapter" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.register_adapter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        register_adapter
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_adapter
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1475,22 +1473,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#adapters.base_adapter" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        base_adapter
+        <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;base_adapter
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="base_adapter">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.ADAPTERS_REGISTRY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;ADAPTERS_REGISTRY
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.BaseAdapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BaseAdapter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" BaseAdapter">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.ADAPTERS_REGISTRY" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.build_root_node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ADAPTERS_REGISTRY
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;build_root_node
       
     </span>
   </a>
@@ -1498,22 +1518,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.load_model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BaseAdapter
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="BaseAdapter">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.build_root_node" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        build_root_node
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;load_model
       
     </span>
   </a>
@@ -1521,21 +1529,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.load_model" class="md-nav__link">
+  <a href="#imote.adapters.base_adapter.BaseAdapter.predict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        load_model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.BaseAdapter.predict" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        predict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;predict
       
     </span>
   </a>
@@ -1546,20 +1543,15 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#adapters.base_adapter.register_adapter" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.adapters.base_adapter.register_adapter" class="md-nav__link">
     <span class="md-ellipsis">
       
-        register_adapter
+        <code class="doc-symbol doc-symbol-toc doc-symbol-function"></code>&nbsp;register_adapter
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1590,12 +1582,7 @@
 
 
 
-<h2 id="adapters.base_adapter" class="doc doc-heading">
-            <code>base_adapter</code>
-
-
-<a href="#adapters.base_adapter" class="headerlink" title="Permanent link">&para;</a></h2>
-
+<a id="imote.adapters.base_adapter"></a>
     <div class="doc doc-contents first">
 
 
@@ -1619,14 +1606,14 @@
 
 
 
-<h3 id="adapters.base_adapter.ADAPTERS_REGISTRY" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ADAPTERS_REGISTRY</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseAdapter</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></code>
+<h2 id="imote.adapters.base_adapter.ADAPTERS_REGISTRY" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">ADAPTERS_REGISTRY</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseAdapter</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
 
-<a href="#adapters.base_adapter.ADAPTERS_REGISTRY" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.adapters.base_adapter.ADAPTERS_REGISTRY" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
@@ -1643,11 +1630,11 @@
 
 
 
-<h3 id="adapters.base_adapter.BaseAdapter" class="doc doc-heading">
-            <code>BaseAdapter</code>
+<h2 id="imote.adapters.base_adapter.BaseAdapter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>BaseAdapter</code>
 
 
-<a href="#adapters.base_adapter.BaseAdapter" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.adapters.base_adapter.BaseAdapter" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
@@ -1667,6 +1654,117 @@ into the BaseNode linked tree structure that VizTree expects.</p>
 
 
 
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/adapters/base_adapter.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for adapters that build a VizTree from a model.</span>
+
+<span class="sd">    An adapter translates a fitted model from a specific source</span>
+<span class="sd">    into the BaseNode linked tree structure that VizTree expects.</span>
+<span class="sd">    """</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_root_node</span><span class="p">(</span><span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseNode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Builds the BaseNode linked tree representing a fitted model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X_train: Training feature matrix the model was fit on.</span>
+<span class="sd">            y_train: Training target values the model was fit on.</span>
+<span class="sd">            model: The fitted model, in whatever format this adapter</span>
+<span class="sd">                supports (as returned by load_model()).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Root BaseNode of the reconstructed linked tree.</span>
+<span class="sd">        """</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Loads a fitted model from disk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_path: Path to the serialized model file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The loaded model, in the format this adapter's</span>
+<span class="sd">            build_root_node() expects.</span>
+<span class="sd">        """</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Predicts target values directly from the underlying model, if possible.</span>
+
+<span class="sd">        This is optional: an adapter can override it to use the</span>
+<span class="sd">        original model's own prediction logic (e.g. for speed or</span>
+<span class="sd">        numerical parity). If not overridden, VizTree instead computes</span>
+<span class="sd">        predictions by traversing the built BaseNode linked tree.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X: Feature matrix to predict on.</span>
+<span class="sd">            model: The fitted model, as returned by load_model().</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array of predicted values, or None if not implemented.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -1684,15 +1782,15 @@ into the BaseNode linked tree structure that VizTree expects.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="adapters.base_adapter.BaseAdapter.build_root_node" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">build_root_node</span><span class="p">(</span><span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseNode</span></code>
+<h3 id="imote.adapters.base_adapter.BaseAdapter.build_root_node" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">build_root_node</span><span class="p">(</span><span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseNode</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#adapters.base_adapter.BaseAdapter.build_root_node" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.adapters.base_adapter.BaseAdapter.build_root_node" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -1774,7 +1872,7 @@ supports (as returned by load_model()).</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../../nodes/base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../../nodes/base_node/#imote.nodes.base_node.BaseNode">BaseNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1786,6 +1884,39 @@ supports (as returned by load_model()).</p>
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/adapters/base_adapter.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_root_node</span><span class="p">(</span><span class="n">X_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Builds the BaseNode linked tree representing a fitted model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X_train: Training feature matrix the model was fit on.</span>
+<span class="sd">        y_train: Training target values the model was fit on.</span>
+<span class="sd">        model: The fitted model, in whatever format this adapter</span>
+<span class="sd">            supports (as returned by load_model()).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Root BaseNode of the reconstructed linked tree.</span>
+<span class="sd">    """</span>
+    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -1793,15 +1924,15 @@ supports (as returned by load_model()).</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="adapters.base_adapter.BaseAdapter.load_model" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+<h3 id="imote.adapters.base_adapter.BaseAdapter.load_model" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#adapters.base_adapter.BaseAdapter.load_model" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.adapters.base_adapter.BaseAdapter.load_model" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -1871,6 +2002,35 @@ supports (as returned by load_model()).</p>
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/adapters/base_adapter.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Loads a fitted model from disk.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model_path: Path to the serialized model file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The loaded model, in the format this adapter's</span>
+<span class="sd">        build_root_node() expects.</span>
+<span class="sd">    """</span>
+    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -1878,14 +2038,14 @@ supports (as returned by load_model()).</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="adapters.base_adapter.BaseAdapter.predict" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span></code>
+<h3 id="imote.adapters.base_adapter.BaseAdapter.predict" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
 
-<a href="#adapters.base_adapter.BaseAdapter.predict" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.adapters.base_adapter.BaseAdapter.predict" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -1966,6 +2126,43 @@ predictions by traversing the built BaseNode linked tree.</p>
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/adapters/base_adapter.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Predicts target values directly from the underlying model, if possible.</span>
+
+<span class="sd">    This is optional: an adapter can override it to use the</span>
+<span class="sd">    original model's own prediction logic (e.g. for speed or</span>
+<span class="sd">    numerical parity). If not overridden, VizTree instead computes</span>
+<span class="sd">    predictions by traversing the built BaseNode linked tree.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X: Feature matrix to predict on.</span>
+<span class="sd">        model: The fitted model, as returned by load_model().</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array of predicted values, or None if not implemented.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -1982,10 +2179,10 @@ predictions by traversing the built BaseNode linked tree.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="adapters.base_adapter.register_adapter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_adapter</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
+<h2 id="imote.adapters.base_adapter.register_adapter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>            <code class="highlight language-python"><span class="n">register_adapter</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span></code>
 
-<a href="#adapters.base_adapter.register_adapter" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.adapters.base_adapter.register_adapter" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
@@ -2055,6 +2252,37 @@ predictions by traversing the built BaseNode linked tree.</p>
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/adapters/base_adapter.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_adapter</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Class decorator that registers an adapter under a given name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: Name to register the adapter under.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A decorator that registers the decorated class and returns it</span>
+<span class="sd">        unchanged.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">adapter_cls</span><span class="p">):</span>
+        <span class="n">ADAPTERS_REGISTRY</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">adapter_cls</span>
+        <span class="k">return</span> <span class="n">adapter_cls</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>

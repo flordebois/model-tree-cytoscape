@@ -27,7 +27,7 @@
     
     
       
-        <title>Node Information - Visualisation of linear model trees</title>
+        <title>Node Information - IMoTE: Interactive MOdel Tree Explorer</title>
       
     
     
@@ -54,6 +54,10 @@
     
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/custom_api.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -94,7 +98,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Visualisation of linear model trees" class="md-header__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-header__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Visualisation of linear model trees
+            IMoTE: Interactive MOdel Tree Explorer
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -227,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../home/" class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -343,13 +347,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Visualisation of linear model trees" class="md-nav__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-nav__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Visualisation of linear model trees
+    IMoTE: Interactive MOdel Tree Explorer
   </label>
   
     <div class="md-nav__source">
@@ -373,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../home/" class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -1704,11 +1708,17 @@ node selected, and the fields below fill in.</p>
 <ul>
 <li><strong>Label</strong> – A description of the node. For split nodes, this provides information about the split condition. For leaf
   nodes, it describes the fitted linear model.</li>
+<li><strong>Metrics</strong> – A dropdown list form which you select the metrics you are interested in.</li>
 <li><strong>Node ID</strong> – The unique identifier of the node in the tree.</li>
 <li><strong>Samples</strong> – The number of data points that reach this node.</li>
-<li><strong>Current RSS</strong> – The residual sum of squares (RSS) of the model fitted at this node.</li>
-<li><strong>RSS Root Reduction</strong> – The reduction in RSS compared to the root node, indicating how much improvement has been
-  achieved by splitting the data.</li>
+<li><strong>RSS</strong> – The residual sum of squares (RSS) of the model fitted at this node.</li>
+<li><strong>MAE</strong> – The mean absolute error (MAE) between the true and predicted values at this node.</li>
+<li><strong>MSE</strong> – The mean squared error (MSE) between the true and predicted values at this node.</li>
+<li><strong>RMSE</strong> – The root mean squared error (RMSE) between the true and predicted values at this node.</li>
+<li><strong>R²</strong> – The coefficient of determination (R²) between the true and predicted values at this node.</li>
+<li><strong>Mean Residual</strong> – The mean of the node's own residuals.</li>
+<li><strong>Std Residual</strong> – The standard deviation of the node's own residuals.</li>
+<li><strong>Split Balance</strong> – The fraction of samples routed to the right child, 0.5 indicates a perfectly balanced split.</li>
 <li><strong>Show node plot</strong> – A switch that enables the node plot for the selected node (see below).</li>
 </ul>
 <hr />

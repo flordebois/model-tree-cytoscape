@@ -27,7 +27,7 @@
     
     
       
-        <title>SplitNode - Visualisation of linear model trees</title>
+        <title>SplitNode - IMoTE: Interactive MOdel Tree Explorer</title>
       
     
     
@@ -54,6 +54,10 @@
     
     
       <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/custom_api.css">
     
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -94,7 +98,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Visualisation of linear model trees" class="md-header__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-header__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +112,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Visualisation of linear model trees
+            IMoTE: Interactive MOdel Tree Explorer
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -227,7 +231,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../home/" class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -343,13 +347,13 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Visualisation of linear model trees" class="md-nav__button md-logo" aria-label="Visualisation of linear model trees" data-md-component="logo">
+    <a href="../../.." title="IMoTE: Interactive MOdel Tree Explorer" class="md-nav__button md-logo" aria-label="IMoTE: Interactive MOdel Tree Explorer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Visualisation of linear model trees
+    IMoTE: Interactive MOdel Tree Explorer
   </label>
   
     <div class="md-nav__source">
@@ -373,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home/" class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -1253,34 +1257,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#nodes.split_node" class="md-nav__link">
+  <a href="#imote.nodes.split_node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        split_node
+        <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;split_node
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="split_node">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SplitNode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" SplitNode">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.model_type" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SplitNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="SplitNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_type
       
     </span>
   </a>
@@ -1288,10 +1291,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.get_children" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.categorical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_children
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;categorical
       
     </span>
   </a>
@@ -1299,10 +1302,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.set_children" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
-        set_children
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
       
     </span>
   </a>
@@ -1310,10 +1313,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.get_label" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.goes_left" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;goes_left
       
     </span>
   </a>
@@ -1321,10 +1324,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.to_dict" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.goes_left_mask" class="md-nav__link">
     <span class="md-ellipsis">
       
-        to_dict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;goes_left_mask
       
     </span>
   </a>
@@ -1332,10 +1335,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.from_dict" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.get_children" class="md-nav__link">
     <span class="md-ellipsis">
       
-        from_dict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_children
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.set_children" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;set_children
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.get_label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_label
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_dict
       
     </span>
   </a>
@@ -1346,160 +1393,59 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PlinNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitCNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PlinNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PlinNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PlinNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SplitCNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.BlinNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PlinNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BlinNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="BlinNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.BlinNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PlinNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.BlinNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PconNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PconNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BlinNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PconNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PconcNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PconcNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PconNode
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode.get_label" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PconcNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PconcNode
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitCNode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SplitCNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="SplitCNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitCNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1637,34 +1583,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#nodes.split_node" class="md-nav__link">
+  <a href="#imote.nodes.split_node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        split_node
+        <code class="doc-symbol doc-symbol-toc doc-symbol-module"></code>&nbsp;split_node
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="split_node">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SplitNode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" SplitNode">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.model_type" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SplitNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="SplitNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model_type
       
     </span>
   </a>
@@ -1672,10 +1617,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.get_children" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.categorical" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_children
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;categorical
       
     </span>
   </a>
@@ -1683,10 +1628,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.set_children" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
-        set_children
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
       
     </span>
   </a>
@@ -1694,10 +1639,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.get_label" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.goes_left" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;goes_left
       
     </span>
   </a>
@@ -1705,10 +1650,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.to_dict" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.goes_left_mask" class="md-nav__link">
     <span class="md-ellipsis">
       
-        to_dict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;goes_left_mask
       
     </span>
   </a>
@@ -1716,10 +1661,54 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitNode.from_dict" class="md-nav__link">
+  <a href="#imote.nodes.split_node.SplitNode.get_children" class="md-nav__link">
     <span class="md-ellipsis">
       
-        from_dict
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_children
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.set_children" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;set_children
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.get_label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_label
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitNode.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_dict
       
     </span>
   </a>
@@ -1730,160 +1719,59 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PlinNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.SplitCNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PlinNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PlinNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PlinNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SplitCNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.BlinNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PlinNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BlinNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="BlinNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.BlinNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PlinNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.BlinNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PconNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PconNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BlinNode
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PconNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PconcNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PconcNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode.__init__" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        __init__
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PconNode
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.PconcNode.get_label" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#imote.nodes.split_node.PconcNode" class="md-nav__link">
     <span class="md-ellipsis">
       
-        get_label
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;PconcNode
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitCNode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SplitCNode
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="SplitCNode">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nodes.split_node.SplitCNode.get_label" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_label
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1914,12 +1802,7 @@
 
 
 
-<h2 id="nodes.split_node" class="doc doc-heading">
-            <code>split_node</code>
-
-
-<a href="#nodes.split_node" class="headerlink" title="Permanent link">&para;</a></h2>
-
+<a id="imote.nodes.split_node"></a>
     <div class="doc doc-contents first">
 
 
@@ -1945,20 +1828,23 @@
 
 
 
-<h3 id="nodes.split_node.SplitNode" class="doc doc-heading">
-            <code>SplitNode</code>
+<h2 id="imote.nodes.split_node.SplitNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>SplitNode</code>
 
 
-<a href="#nodes.split_node.SplitNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.SplitNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="InternalNode (nodes.internal_node.InternalNode)" href="../internal_node/#nodes.internal_node.InternalNode">InternalNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            InternalNode (imote.nodes.internal_node.InternalNode)" href="../internal_node/#imote.nodes.internal_node.InternalNode">InternalNode</a></code></p>
 
 
 
-        <p>Base split node with a left and right child.</p>
+        <p>Split node with a left and right child.</p>
+<p>The plain SplitNode only splits the data and applies no model, so both
+side models are NoneNodeModel. Subclasses change the expected model type
+(model_type) and/or make the split categorical (categorical).</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -1972,20 +1858,22 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><span title="nodes.split_node.SplitNode.pivot_value">pivot_value</span></code></td>
+            <td><code><span title="imote.nodes.split_node.SplitNode.pivot_value">pivot_value</span></code></td>
             <td>
-                  <code><span title="float">float</span></code>
+                  <code><span title="typing.Union">Union</span>[<span title="float">float</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Threshold value the split compares against.</p>
+                <p>Threshold for a numeric split (left if x &lt;= pivot_value),
+or the list of categories routed to the left child for a
+categorical split.</p>
               </div>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="nodes.split_node.SplitNode.left_child">left_child</span></code></td>
+            <td><code><span title="imote.nodes.split_node.SplitNode.left_child">left_child</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1994,8 +1882,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="nodes.split_node.SplitNode.right_child">right_child</span></code></td>
+            <td><code><span title="imote.nodes.split_node.SplitNode.right_child">right_child</span></code></td>
             <td>
+                  <code><a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2004,9 +1893,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="nodes.split_node.SplitNode.left_model">left_model</span></code></td>
+            <td><code><span title="imote.nodes.split_node.SplitNode.left_model">left_model</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="NodeModel (nodes.node_model.NodeModel)" href="../node_model/#nodes.node_model.NodeModel">NodeModel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            NodeModel (imote.nodes.node_model.NodeModel)" href="../node_model/#imote.nodes.node_model.NodeModel">NodeModel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2015,9 +1904,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><span title="nodes.split_node.SplitNode.right_model">right_model</span></code></td>
+            <td><code><span title="imote.nodes.split_node.SplitNode.right_model">right_model</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="NodeModel (nodes.node_model.NodeModel)" href="../node_model/#nodes.node_model.NodeModel">NodeModel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            NodeModel (imote.nodes.node_model.NodeModel)" href="../node_model/#imote.nodes.node_model.NodeModel">NodeModel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2035,6 +1924,347 @@
 
 
 
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplitNode</span><span class="p">(</span><span class="n">InternalNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Split node with a left and right child.</span>
+
+<span class="sd">    The plain SplitNode only splits the data and applies no model, so both</span>
+<span class="sd">    side models are NoneNodeModel. Subclasses change the expected model type</span>
+<span class="sd">    (model_type) and/or make the split categorical (categorical).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        pivot_value: Threshold for a numeric split (left if x &lt;= pivot_value),</span>
+<span class="sd">            or the list of categories routed to the left child for a</span>
+<span class="sd">            categorical split.</span>
+<span class="sd">        left_child: Child node for samples on the left of the split.</span>
+<span class="sd">        right_child: Child node for samples on the right of the split.</span>
+<span class="sd">        left_model: Model applied to samples on the left of the split.</span>
+<span class="sd">        right_model: Model applied to samples on the right of the split.</span>
+<span class="sd">    """</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">NoneNodeModel</span>
+<span class="w">    </span><span class="sd">"""Model class both side models must be an instance of."""</span>
+    <span class="n">categorical</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Whether pivot_value is a list of left categories instead of a threshold."""</span>
+
+    <span class="n">pivot_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span>
+    <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span>
+    <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span>
+    <span class="n">left_model</span><span class="p">:</span> <span class="n">NodeModel</span>
+    <span class="n">right_model</span><span class="p">:</span> <span class="n">NodeModel</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_res</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rss</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">pivot_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+                 <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span>
+                 <span class="n">left_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">,</span> <span class="n">right_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Args:</span>
+<span class="sd">            indices: Row indices of the samples belonging to this node.</span>
+<span class="sd">            y_res: Residuals of the target variable at this node.</span>
+<span class="sd">            rss: Residual sum of squares at this node.</span>
+<span class="sd">            pivot_idx: Index of the feature the split is based on.</span>
+<span class="sd">            pivot_value: Threshold value, or list of left categories for a</span>
+<span class="sd">                categorical split.</span>
+<span class="sd">            left_child: Child node for samples on the left of the split.</span>
+<span class="sd">            right_child: Child node for samples on the right of the split.</span>
+<span class="sd">            left_model: Model applied to samples on the left of the split.</span>
+<span class="sd">            right_model: Model applied to samples on the right of the split.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If a side model is not an instance of model_type, or</span>
+<span class="sd">                pivot_value doesn't match the kind of split.</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">y_res</span><span class="p">,</span> <span class="n">rss</span><span class="p">,</span> <span class="n">pivot_idx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_pivot_value</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">left_child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">right_child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_model</span> <span class="o">=</span> <span class="n">left_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span> <span class="o">=</span> <span class="n">right_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_models</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_pivot_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> expects a list of categories as pivot_value, "</span>
+                                <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> expects a single threshold as pivot_value"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pivot_value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> expects </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> side models, "</span>
+                                <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">goes_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns whether a sample with this pivot feature value goes to the left child.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value: Value of the sample at feature pivot_idx.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the sample is routed to the left child.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">goes_left_mask</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">goes_left_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Vectorized goes_left: returns a boolean mask of the values routed to the left child.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            values: Array of sample values at feature pivot_idx.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Boolean array, True where the sample goes to the left child.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Returns this node's left and right children.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of [left_child, right_child].</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">"""Replaces this node's left and right children.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            children: List of [new_left_child, new_right_child].</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns the full display label for this node.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Label of the form "&lt;NAME&gt;\\nX&lt;pivot_idx&gt; &gt; &lt;pivot_value&gt;", or</span>
+<span class="sd">            "&lt;NAME&gt; X&lt;pivot_idx&gt;\\nidx ∉ &lt;categories&gt;" for a categorical split.</span>
+<span class="sd">        """</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">"Node"</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> X</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="si">}</span><span class="se">\n</span><span class="s2">idx ∉ </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">X</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Serializes the node to a dictionary.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary with base attributes plus pivot_idx, pivot_value,</span>
+<span class="sd">            both children's class names and serialized forms, and both</span>
+<span class="sd">            models' serialized forms.</span>
+<span class="sd">        """</span>
+        <span class="n">node_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">node_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">"pivot_idx"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="p">,</span>
+            <span class="s2">"pivot_value"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">,</span>
+            <span class="s2">"left_child_class"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">"left_child_dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s2">"right_child_class"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">"right_child_dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s2">"left_model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_model</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s2">"right_model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="p">})</span>
+        <span class="k">return</span> <span class="n">node_dict</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dic</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"SplitNode"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Reconstructs a SplitNode instance, including children and models.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dic: Dictionary previously produced by to_dict().</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new instance of cls with children and side models restored.</span>
+<span class="sd">        """</span>
+        <span class="n">left_child_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">class_registry</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_child_class"</span><span class="p">]]</span>
+        <span class="n">right_child_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">class_registry</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_child_class"</span><span class="p">]]</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">pivot_idx</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s2">"pivot_idx"</span><span class="p">]</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">pivot_value</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s2">"pivot_value"</span><span class="p">]</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">left_child_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_child_dict"</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">right_child_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_child_dict"</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">left_model</span> <span class="o">=</span> <span class="n">node_model_from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_model"</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">right_model</span> <span class="o">=</span> <span class="n">node_model_from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_model"</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -2046,16 +2276,62 @@
 
 
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="imote.nodes.split_node.SplitNode.model_type" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">model_type</span> <span class="o">=</span> <span class="n">NoneNodeModel</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#imote.nodes.split_node.SplitNode.model_type" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Model class both side models must be an instance of.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="imote.nodes.split_node.SplitNode.categorical" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">categorical</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#imote.nodes.split_node.SplitNode.categorical" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether pivot_value is a list of left categories instead of a threshold.</p>
+
+    </div>
+
+</div>
+
 
 
 
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_res</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rss</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pivot_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">left_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">,</span> <span class="n">right_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">)</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_res</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rss</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pivot_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">left_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">,</span> <span class="n">right_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">)</span></code>
 
-<a href="#nodes.split_node.SplitNode.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2142,11 +2418,12 @@
                 <code>pivot_value</code>
             </td>
             <td>
-                  <code><span title="float">float</span></code>
+                  <code><span title="typing.Union">Union</span>[<span title="float">float</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Threshold value the split compares against.</p>
+                <p>Threshold value, or list of left categories for a
+categorical split.</p>
               </div>
             </td>
             <td>
@@ -2158,7 +2435,7 @@
                 <code>left_child</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2174,7 +2451,7 @@
                 <code>right_child</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2190,7 +2467,7 @@
                 <code>left_model</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="NodeModel (nodes.node_model.NodeModel)" href="../node_model/#nodes.node_model.NodeModel">NodeModel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            NodeModel (imote.nodes.node_model.NodeModel)" href="../node_model/#imote.nodes.node_model.NodeModel">NodeModel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2206,7 +2483,7 @@
                 <code>right_model</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="NodeModel (nodes.node_model.NodeModel)" href="../node_model/#nodes.node_model.NodeModel">NodeModel</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            NodeModel (imote.nodes.node_model.NodeModel)" href="../node_model/#imote.nodes.node_model.NodeModel">NodeModel</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2221,6 +2498,89 @@
     </table>
 
 
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If a side model is not an instance of model_type, or
+pivot_value doesn't match the kind of split.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_res</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rss</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+             <span class="n">pivot_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+             <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span>
+             <span class="n">left_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">,</span> <span class="n">right_model</span><span class="p">:</span> <span class="n">NodeModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Args:</span>
+<span class="sd">        indices: Row indices of the samples belonging to this node.</span>
+<span class="sd">        y_res: Residuals of the target variable at this node.</span>
+<span class="sd">        rss: Residual sum of squares at this node.</span>
+<span class="sd">        pivot_idx: Index of the feature the split is based on.</span>
+<span class="sd">        pivot_value: Threshold value, or list of left categories for a</span>
+<span class="sd">            categorical split.</span>
+<span class="sd">        left_child: Child node for samples on the left of the split.</span>
+<span class="sd">        right_child: Child node for samples on the right of the split.</span>
+<span class="sd">        left_model: Model applied to samples on the left of the split.</span>
+<span class="sd">        right_model: Model applied to samples on the right of the split.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If a side model is not an instance of model_type, or</span>
+<span class="sd">            pivot_value doesn't match the kind of split.</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">y_res</span><span class="p">,</span> <span class="n">rss</span><span class="p">,</span> <span class="n">pivot_idx</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_pivot_value</span><span class="p">(</span><span class="n">pivot_value</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">left_child</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">right_child</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">left_model</span> <span class="o">=</span> <span class="n">left_model</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span> <span class="o">=</span> <span class="n">right_model</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_models</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2228,10 +2588,202 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.get_children" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_children</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.goes_left" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">goes_left</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
 
-<a href="#nodes.split_node.SplitNode.get_children" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.goes_left" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns whether a sample with this pivot feature value goes to the left child.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>value</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Value of the sample at feature pivot_idx.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>True if the sample is routed to the left child.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">goes_left</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Returns whether a sample with this pivot feature value goes to the left child.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value: Value of the sample at feature pivot_idx.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the sample is routed to the left child.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">goes_left_mask</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="imote.nodes.split_node.SplitNode.goes_left_mask" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">goes_left_mask</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></code>
+
+<a href="#imote.nodes.split_node.SplitNode.goes_left_mask" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Vectorized goes_left: returns a boolean mask of the values routed to the left child.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>values</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Array of sample values at feature pivot_idx.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="numpy.ndarray">ndarray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Boolean array, True where the sample goes to the left child.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">goes_left_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Vectorized goes_left: returns a boolean mask of the values routed to the left child.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values: Array of sample values at feature pivot_idx.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Boolean array, True where the sample goes to the left child.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="imote.nodes.split_node.SplitNode.get_children" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_children</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]</span></code>
+
+<a href="#imote.nodes.split_node.SplitNode.get_children" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2250,7 +2802,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a>]</code>
+                  <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2262,6 +2814,23 @@
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Returns this node's left and right children.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of [left_child, right_child].</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2269,10 +2838,10 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.set_children" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">set_children</span><span class="p">(</span><span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">])</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.set_children" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">set_children</span><span class="p">(</span><span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">])</span></code>
 
-<a href="#nodes.split_node.SplitNode.set_children" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.set_children" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2296,7 +2865,7 @@
                 <code>children</code>
             </td>
             <td>
-                  <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a>]</code>
+                  <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="            BaseNode (imote.nodes.base_node.BaseNode)" href="../base_node/#imote.nodes.base_node.BaseNode">BaseNode</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2311,6 +2880,25 @@
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseNode</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">"""Replaces this node's left and right children.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        children: List of [new_left_child, new_right_child].</span>
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">children</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2318,10 +2906,10 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.get_label" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
-<a href="#nodes.split_node.SplitNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.get_label" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2344,7 +2932,17 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Label of the form "SPLIT\nX<pivot_idx> &gt; <pivot_value>".</p>
+                <p>Label of the form "<NAME>\nX<pivot_idx> &gt; <pivot_value>", or</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>"<NAME> X<pivot_idx>\nidx ∉ <categories>" for a categorical split.</p>
               </div>
             </td>
           </tr>
@@ -2352,6 +2950,31 @@
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Returns the full display label for this node.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Label of the form "&lt;NAME&gt;\\nX&lt;pivot_idx&gt; &gt; &lt;pivot_value&gt;", or</span>
+<span class="sd">        "&lt;NAME&gt; X&lt;pivot_idx&gt;\\nidx ∉ &lt;categories&gt;" for a categorical split.</span>
+<span class="sd">    """</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">"Node"</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> X</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="si">}</span><span class="se">\n</span><span class="s2">idx ∉ </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">X</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2359,10 +2982,10 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.to_dict" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.to_dict" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span></code>
 
-<a href="#nodes.split_node.SplitNode.to_dict" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.to_dict" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2413,6 +3036,49 @@
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Serializes the node to a dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with base attributes plus pivot_idx, pivot_value,</span>
+<span class="sd">        both children's class names and serialized forms, and both</span>
+<span class="sd">        models' serialized forms.</span>
+<span class="sd">    """</span>
+    <span class="n">node_dict</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">node_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s2">"pivot_idx"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_idx</span><span class="p">,</span>
+        <span class="s2">"pivot_value"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">,</span>
+        <span class="s2">"left_child_class"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="s2">"left_child_dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="s2">"right_child_class"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="s2">"right_child_dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="s2">"left_model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_model</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="s2">"right_model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">node_dict</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2420,14 +3086,14 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="nodes.split_node.SplitNode.from_dict" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SplitNode</span></code>
+<h3 id="imote.nodes.split_node.SplitNode.from_dict" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SplitNode</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-<a href="#nodes.split_node.SplitNode.from_dict" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#imote.nodes.split_node.SplitNode.from_dict" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -2477,11 +3143,11 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="SplitNode (nodes.split_node.SplitNode)" href="#nodes.split_node.SplitNode">SplitNode</a></code>
+                  <code><a class="autorefs autorefs-internal" title="            SplitNode (imote.nodes.split_node.SplitNode)" href="#imote.nodes.split_node.SplitNode">SplitNode</a></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A new SplitNode instance with children and side models restored.</p>
+                <p>A new instance of cls with children and side models restored.</p>
               </div>
             </td>
           </tr>
@@ -2489,6 +3155,51 @@
     </table>
 
 
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dic</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"SplitNode"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reconstructs a SplitNode instance, including children and models.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dic: Dictionary previously produced by to_dict().</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A new instance of cls with children and side models restored.</span>
+<span class="sd">    """</span>
+    <span class="n">left_child_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">class_registry</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_child_class"</span><span class="p">]]</span>
+    <span class="n">right_child_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">class_registry</span><span class="p">[</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_child_class"</span><span class="p">]]</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">pivot_idx</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s2">"pivot_idx"</span><span class="p">]</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">pivot_value</span> <span class="o">=</span> <span class="n">dic</span><span class="p">[</span><span class="s2">"pivot_value"</span><span class="p">]</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">left_child</span> <span class="o">=</span> <span class="n">left_child_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_child_dict"</span><span class="p">])</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">right_child</span> <span class="o">=</span> <span class="n">right_child_class</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_child_dict"</span><span class="p">])</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">left_model</span> <span class="o">=</span> <span class="n">node_model_from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"left_model"</span><span class="p">])</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">right_model</span> <span class="o">=</span> <span class="n">node_model_from_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">[</span><span class="s2">"right_model"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">obj</span>
+</code></pre></div></td></tr></table></div>
+            </details>
     </div>
 
 </div>
@@ -2505,28 +3216,41 @@
 
 
 
-<h3 id="nodes.split_node.PlinNode" class="doc doc-heading">
-            <code>PlinNode</code>
+<h2 id="imote.nodes.split_node.SplitCNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>SplitCNode</code>
 
 
-<a href="#nodes.split_node.PlinNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.SplitCNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="SplitNode (nodes.split_node.SplitNode)" href="#nodes.split_node.SplitNode">SplitNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SplitNode (imote.nodes.split_node.SplitNode)" href="#imote.nodes.split_node.SplitNode">SplitNode</a></code></p>
 
 
 
-        <p>PLIN split node: split with linear models on both sides.</p>
-
-
-
-
+        <p>Categorical SplitNode: pivot_value lists the categories routed to the left child.</p>
 
 
 
 
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplitCNode</span><span class="p">(</span><span class="n">SplitNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Categorical SplitNode: pivot_value lists the categories routed to the left child."""</span>
+
+    <span class="n">categorical</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -2540,47 +3264,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.PlinNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#nodes.split_node.PlinNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the full display label for this node.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Label of the form "PLIN\nX<pivot_idx> &gt; <pivot_value>".</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
 
 
 
@@ -2594,28 +3277,41 @@
 
 
 
-<h3 id="nodes.split_node.BlinNode" class="doc doc-heading">
-            <code>BlinNode</code>
+<h2 id="imote.nodes.split_node.PlinNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>PlinNode</code>
 
 
-<a href="#nodes.split_node.BlinNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.PlinNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="SplitNode (nodes.split_node.SplitNode)" href="#nodes.split_node.SplitNode">SplitNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SplitNode (imote.nodes.split_node.SplitNode)" href="#imote.nodes.split_node.SplitNode">SplitNode</a></code></p>
 
 
 
-        <p>BLIN split node: split with a shared/blended linear model.</p>
-
-
-
-
+        <p>PLIN: piecewise linear split with a SimpleLinearNodeModel on each side.</p>
 
 
 
 
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PlinNode</span><span class="p">(</span><span class="n">SplitNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""PLIN: piecewise linear split with a SimpleLinearNodeModel on each side."""</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">SimpleLinearNodeModel</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -2629,47 +3325,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.BlinNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#nodes.split_node.BlinNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the full display label for this node.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Label of the form "BLIN\nX<pivot_idx> &gt; <pivot_value>".</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
 
 
 
@@ -2683,28 +3338,55 @@
 
 
 
-<h3 id="nodes.split_node.PconNode" class="doc doc-heading">
-            <code>PconNode</code>
+<h2 id="imote.nodes.split_node.BlinNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>BlinNode</code>
 
 
-<a href="#nodes.split_node.PconNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.BlinNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="SplitNode (nodes.split_node.SplitNode)" href="#nodes.split_node.SplitNode">SplitNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SplitNode (imote.nodes.split_node.SplitNode)" href="#imote.nodes.split_node.SplitNode">SplitNode</a></code></p>
 
 
 
-        <p>PCON split node: split with constant models on both sides.</p>
-
-
-
-
+        <p>BLIN: broken linear split, like PLIN but the two models are continuous at pivot_value.</p>
 
 
 
 
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlinNode</span><span class="p">(</span><span class="n">SplitNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""BLIN: broken linear split, like PLIN but the two models are continuous at pivot_value."""</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">SimpleLinearNodeModel</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_models</span><span class="p">()</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">right_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BlinNode models are not continuous at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pivot_value</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -2718,47 +3400,6 @@
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.PconNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#nodes.split_node.PconNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the full display label for this node.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Label of the form "PCON\nX<pivot_idx> &gt; <pivot_value>".</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
 
 
 
@@ -2772,23 +3413,20 @@
 
 
 
-<h3 id="nodes.split_node.PconcNode" class="doc doc-heading">
-            <code>PconcNode</code>
+<h2 id="imote.nodes.split_node.PconNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>PconNode</code>
 
 
-<a href="#nodes.split_node.PconcNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.PconNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="PconNode (nodes.split_node.PconNode)" href="#nodes.split_node.PconNode">PconNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            SplitNode (imote.nodes.split_node.SplitNode)" href="#imote.nodes.split_node.SplitNode">SplitNode</a></code></p>
 
 
 
-        <p>PCONC split node: categorical PCON variant.</p>
-<p>Splits samples on category membership (pivot_value holds the set
-of categories routed to the left child), using constant models on both sides.</p>
-
+        <p>PCON: piecewise constant split with a ConstantNodeModel on each side.</p>
 
 
 
@@ -2796,6 +3434,20 @@ of categories routed to the left child), using constant models on both sides.</p
 
 
 
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PconNode</span><span class="p">(</span><span class="n">SplitNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""PCON: piecewise constant split with a ConstantNodeModel on each side."""</span>
+
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">ConstantNodeModel</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -2809,223 +3461,6 @@ of categories routed to the left child), using constant models on both sides.</p
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.PconcNode.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_res</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rss</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pivot_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pivot_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">left_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">right_child</span><span class="p">:</span> <span class="n">BaseNode</span><span class="p">,</span> <span class="n">left_model</span><span class="p">:</span> <span class="n">ConstantNodeModel</span><span class="p">,</span> <span class="n">right_model</span><span class="p">:</span> <span class="n">ConstantNodeModel</span><span class="p">)</span></code>
-
-<a href="#nodes.split_node.PconcNode.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>indices</code>
-            </td>
-            <td>
-                  <code><span title="numpy.ndarray">ndarray</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Row indices of the samples belonging to this node.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>y_res</code>
-            </td>
-            <td>
-                  <code><span title="numpy.ndarray">ndarray</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Residuals of the target variable at this node.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>rss</code>
-            </td>
-            <td>
-                  <code><span title="float">float</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Residual sum of squares at this node.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>pivot_idx</code>
-            </td>
-            <td>
-                  <code><span title="int">int</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Index of the categorical feature the split is based on.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>pivot_value</code>
-            </td>
-            <td>
-                  <code><span title="float">float</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Category or set of categories defining the split.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>left_child</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Child node for samples on the left of the split.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>right_child</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="BaseNode (nodes.base_node.BaseNode)" href="../base_node/#nodes.base_node.BaseNode">BaseNode</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Child node for samples on the right of the split.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>left_model</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="ConstantNodeModel (nodes.node_model.ConstantNodeModel)" href="../node_model/#nodes.node_model.ConstantNodeModel">ConstantNodeModel</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Constant model applied to the left of the split.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>right_model</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="ConstantNodeModel (nodes.node_model.ConstantNodeModel)" href="../node_model/#nodes.node_model.ConstantNodeModel">ConstantNodeModel</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Constant model applied to the right of the split.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.PconcNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#nodes.split_node.PconcNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the full display label for this node.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Label of the form "PCONC- X<pivot_idx>\nidx ∉ <pivot_value>".</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
 
 
 
@@ -3039,28 +3474,41 @@ of categories routed to the left child), using constant models on both sides.</p
 
 
 
-<h3 id="nodes.split_node.SplitCNode" class="doc doc-heading">
-            <code>SplitCNode</code>
+<h2 id="imote.nodes.split_node.PconcNode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>PconcNode</code>
 
 
-<a href="#nodes.split_node.SplitCNode" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#imote.nodes.split_node.PconcNode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="SplitNode (nodes.split_node.SplitNode)" href="#nodes.split_node.SplitNode">SplitNode</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="            PconNode (imote.nodes.split_node.PconNode)" href="#imote.nodes.split_node.PconNode">PconNode</a></code></p>
 
 
 
-        <p>Categorical variant of SplitNode, splitting on category membership.</p>
-
-
-
-
+        <p>PCONC: categorical PCON, pivot_value lists the categories routed to the left child.</p>
 
 
 
 
+
+
+
+
+              <details class="mkdocstrings-source">
+                <summary>Source code in <code>imote/nodes/split_node.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@BaseNode</span><span class="o">.</span><span class="n">register</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PconcNode</span><span class="p">(</span><span class="n">PconNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""PCONC: categorical PCON, pivot_value lists the categories routed to the left child."""</span>
+
+    <span class="n">categorical</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+              </details>
 
 
 
@@ -3074,47 +3522,6 @@ of categories routed to the left child), using constant models on both sides.</p
 
 
 
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="nodes.split_node.SplitCNode.get_label" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_label</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-<a href="#nodes.split_node.SplitCNode.get_label" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Returns the full display label for this node.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Label of the form "SPLITC X<pivot_idx>\nidx ∉ <pivot_value>".</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    </div>
-
-</div>
 
 
 
